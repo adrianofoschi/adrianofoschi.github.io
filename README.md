@@ -1,18 +1,16 @@
-# Adriano Foschi
+# adrianofoschi.com
 
-Full-stack engineer focused on distributed systems, system architecture, and shipping robust products.
+Personal site and blog, built with [Astro](https://astro.build).
 
-## Personal Projects
+Software architecture, design patterns and AI-assisted coding — field notes from a developer with 15+ years of experience.
 
-[![Veive](https://avatars.githubusercontent.com/u/167282867?s=18)](https://veive.io) **[Veive](https://veive.io)** — Modular and extensible smart account development framework | AssemblyScript, Typescript ([github](https://github.com/veive-io))
+## Development
 
+```sh
+npm install
+npm run dev
+```
 
-[![Sovrano](https://avatars.githubusercontent.com/u/182758601?s=18)](https://sovrano.io) **[Sovrano](https://sovrano.io)** — Decentralized frictionless smart wallet | Typescript, Assemblyscript, React Native, iOS, Android ([github](https://github.com/sovrano-io))
+## Deployment
 
-[![Konio](https://avatars.githubusercontent.com/u/140590333?s=18)](https://github.com/konio-io) **[Konio](https://github.com/konio-io)** — Native mobile wallet for Koinos blockchain | iOS, Android, TypeScript, React Native ([github](https://github.com/konio-io))
-
-[![Kuku Games](https://avatars.githubusercontent.com/u/164148863?s=18)](https://github.com/kuku-games) **[Kuku Games](https://kuku.games)** — Decentralized price prediction prototype platform on Koinos | Typescript, Assemblyscript, React ([github](https://github.com/kuku-games))
-
-## Skills
-
-[Full CV](https://rxresu.me/adrianofoschi/cv)
+Every push to `main` builds the site and deploys it to GitHub Pages via the workflow in `.github/workflows/deploy.yml`.
