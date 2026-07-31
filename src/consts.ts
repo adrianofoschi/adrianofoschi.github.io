@@ -3,4 +3,4 @@
 
 export const SITE_TITLE = 'Adriano Foschi';
 export const SITE_DESCRIPTION =
-	'Software architecture, design patterns and AI-assisted coding — field notes from a developer with 15+ years of experience.';
+	"Projects, experiments and lessons from 20+ years of building software — what I've built, and what I'm building now.";
