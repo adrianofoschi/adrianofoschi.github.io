@@ -4,7 +4,7 @@ description: "Still a student, still making FIFA patches on the side — but at 
 pubDate: 'Aug 1 2026'
 ---
 
-While footballmatch.it was still running, I was also just a student at a technical institute in Triggiano, outside Bari. Nobody there cared about FIFA superpatches. But somewhere along the way, my school's principal noticed what I could actually build, and decided to find out what I could do with it.
+While footballmatch.it was still running, I was also just a student at a technical institute. Nobody there cared about FIFA superpatches. But somewhere along the way, my school's principal noticed what I could actually build, and decided to find out what I could do with it.
 
 ## Scrutini
 
@@ -20,7 +20,7 @@ There's something worth noticing here that I didn't clock at the time: I was bui
 
 ## Ambito5
 
-The bigger jump came with Ambito5: a real institutional project, a web portal supporting a formal social-services collaboration between five municipalities in the Province of Bari — the kind of inter-comune administrative arrangement Italian public services run on, coordinating things like social assistance across towns too small to each staff their own office. This wasn't a school exercise anymore; it was public infrastructure, and it earned me a scholarship for building it.
+The bigger jump came with Ambito5: a real institutional project, a web portal supporting a formal social-services collaboration between five municipalities — the kind of inter-comune administrative arrangement Italian public services run on, coordinating things like social assistance across towns too small to each staff their own office. This wasn't a school exercise anymore; it was public infrastructure, and it earned me a scholarship for building it.
 
 It was also my first real requirements-and-architecture job, not just implementation. Multiple municipalities meant multiple stakeholders with their own needs, and someone had to turn that into one coherent system before a single line of code got written. I built it on .NET, with AJAX for the interactive parts — which in 2006 was still new enough that using it was a deliberate, slightly bleeding-edge choice, not a default.
 

@@ -1,6 +1,6 @@
 ---
 title: 'How it started: modding FIFA at 14'
-description: "The first post on this blog, about the first thing I ever shipped: a teenager in Bari building Windows tools that let strangers customize FIFA."
+description: "The first post on this blog, about the first thing I ever shipped: a teenager building Windows tools that let strangers customize FIFA."
 pubDate: 'Jul 31 2026'
 heroImage: '../../assets/blog/fifa-modding/face-importer.jpg'
 ---
@@ -31,7 +31,7 @@ _Footballmatch Player Edit — face, hair, boots, gloves and shin guards, all th
 
 ## A distributed team before I knew that word
 
-footballmatch.it was never a solo project. Beyond my father and me, the credits page listed a handful of other teenagers scattered across Italy — Bari, Cagliari, Florence, Treviso — plus one adult in his thirties, none of whom I'd ever met face to face. Everyone owned a slice: someone did kits, someone did stadium graphics, someone did advertising boards. We coordinated over forums and email, with no version control, no CI, and no shared understanding of the word "release" beyond "we're all done, let's zip it."
+footballmatch.it was never a solo project. Beyond my father and me, the credits page listed a handful of other teenagers scattered across Italy, plus one adult in his thirties, none of whom I'd ever met face to face. Everyone owned a slice: someone did kits, someone did stadium graphics, someone did advertising boards. We coordinated over forums and email, with no version control, no CI, and no shared understanding of the word "release" beyond "we're all done, let's zip it."
 
 And yet the output looked exactly like a release: the **FIFA Footballmatch 2003 Superpatch** bundled the full Serie A 2002-03 squad update, home and away kits for every team, flags, a new ball, a re-skinned in-game menu with custom cursor, updated league badges, transfers current to the end of August, and stadium chants — actual crowd and ultras recordings, captured and audio-edited in by hand so the stadium sounded alive instead of generic. Every contributor got credited by name for their piece. Nobody called it a changelog, but that's what it was.
 

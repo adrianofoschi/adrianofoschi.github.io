@@ -8,7 +8,7 @@ Everything up to this point had come with someone else's name attached to it —
 
 ## Finding clients, two different ways
 
-I worked both ends of it: bidding for projects on Freelancer.com, competing with people I'd never see, entirely on a portfolio and a proposal — and local clients, found the older way, through word of mouth around Bari. The two were almost opposite experiences. On Freelancer.com you were a line item in a list of quotes, judged on price and past reviews before anyone read a word you wrote. Locally, you were a person someone's cousin recommended, and the first meeting mattered more than the portfolio did.
+I worked both ends of it: bidding for projects on Freelancer.com, competing with people I'd never see, entirely on a portfolio and a proposal — and local clients, found the older way, through word of mouth. The two were almost opposite experiences. On Freelancer.com you were a line item in a list of quotes, judged on price and past reviews before anyone read a word you wrote. Locally, you were a person someone's cousin recommended, and the first meeting mattered more than the portfolio did.
 
 ## What the work actually was
 
