@@ -28,14 +28,14 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 								height={510}
 								src={heroImage}
 								alt=""
-								class="mx-auto block rounded-xl shadow-lg"
+								class="mx-auto block rounded-md border border-border"
 							/>
 						</div>
 					)
 				}
 				<div class="mx-auto w-full max-w-[760px] px-4 py-8">
 					<div class="mb-8 text-center">
-						<p class="mb-2 text-zinc-500">
+						<p class="mb-2 text-muted">
 							<FormattedDate date={pubDate} />
 							{
 								updatedDate && (
@@ -45,11 +45,11 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 								)
 							}
 						</p>
-						<h1 class="mb-4 text-4xl font-bold leading-tight text-zinc-900">{title}</h1>
-						<hr class="border-zinc-200" />
+						<h1 class="mb-4 text-4xl font-bold leading-tight text-fg">{title}</h1>
+						<hr class="border-border" />
 					</div>
 					<div
-						class="prose prose-lg prose-zinc max-w-none prose-headings:text-zinc-900 prose-a:text-accent prose-blockquote:border-accent"
+						class="prose prose-invert prose-lg max-w-none prose-p:text-fg prose-headings:text-fg prose-strong:text-fg prose-a:text-accent prose-blockquote:border-accent prose-blockquote:text-muted prose-code:text-accent prose-hr:border-border prose-img:rounded-md prose-img:border prose-img:border-border prose-figcaption:text-muted"
 					>
 						<slot />
 					</div>

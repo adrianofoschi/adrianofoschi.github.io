@@ -3,16 +3,16 @@ import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 ---
 
-<header class="bg-white px-4 shadow-sm">
-	<nav class="mx-auto flex max-w-[960px] items-center justify-between">
+<header class="border-b border-border bg-bg px-4">
+	<nav class="mx-auto flex max-w-[720px] items-center justify-between">
 		<h2 class="text-base font-bold">
-			<a href="/" class="text-zinc-900 no-underline">{SITE_TITLE}</a>
+			<a href="/" class="text-fg no-underline">{SITE_TITLE}</a>
 		</h2>
 		<div class="flex items-center">
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
+			<HeaderLink href="/">home</HeaderLink>
+			<HeaderLink href="/about">about</HeaderLink>
 			<HeaderLink href="https://rxresu.me/adrianofoschi/cv" target="_blank" rel="noopener">
-				CV
+				cv
 			</HeaderLink>
 		</div>
 		<div class="hidden sm:flex">
@@ -20,7 +20,7 @@ import HeaderLink from './HeaderLink.astro';
 				href="https://github.com/adrianofoschi"
 				target="_blank"
 				rel="noopener"
-				class="text-zinc-900 transition-colors hover:text-accent"
+				class="text-muted transition-colors hover:text-accent"
 			>
 				<span class="sr-only">Adriano Foschi on GitHub</span>
 				<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"

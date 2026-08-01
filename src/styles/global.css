@@ -2,13 +2,22 @@
 @plugin '@tailwindcss/typography';
 
 @theme {
-	--font-sans: var(--font-atkinson), ui-sans-serif, system-ui, sans-serif;
-	--color-accent: #2337ff;
-	--color-accent-dark: #000d8a;
+	--font-mono: var(--font-mono), ui-monospace, 'SFMono-Regular', monospace;
+	--font-sans: var(--font-mono), ui-monospace, 'SFMono-Regular', monospace;
+	--color-bg: #0a0a0a;
+	--color-fg: #e5e5e5;
+	--color-muted: #737373;
+	--color-border: #262626;
+	--color-accent: #22d3ee;
+	--color-accent-dark: #06b6d4;
 }
 
 @layer base {
+	html {
+		color-scheme: dark;
+	}
 	body {
-		@apply bg-white text-zinc-800 antialiased;
+		@apply bg-bg text-fg antialiased;
+		font-family: var(--font-mono);
 	}
 }
