@@ -1,10 +1,10 @@
 ---
-title: "What came next: building software my school actually used"
-description: "Still a student, still making FIFA patches on the side — but at 16 my school's principal handed me a real assignment: grade management software the whole school would depend on."
+title: "Building software my school actually used, at 16"
+description: "At 16, my school's principal noticed what I could build and handed me a real assignment: grade management software the whole school would depend on."
 pubDate: 'Aug 1 2026'
 ---
 
-While footballmatch.it was still running, I was also just a student at a technical institute. Nobody there cared about FIFA superpatches. But somewhere along the way, my school's principal noticed what I could actually build, and decided to find out what I could do with it.
+In 2006, at a technical institute, my school's principal noticed what I could actually build, and decided to find out what I could do with it.
 
 ## Scrutini
 
@@ -24,6 +24,6 @@ The bigger jump came with Ambito5: a real institutional project, a web portal su
 
 It was also my first real requirements-and-architecture job, not just implementation. Multiple municipalities meant multiple stakeholders with their own needs, and someone had to turn that into one coherent system before a single line of code got written. I built it on .NET, with AJAX for the interactive parts — which in 2006 was still new enough that using it was a deliberate, slightly bleeding-edge choice, not a default.
 
-## Where this was heading
+## What it taught me
 
-Two years later I'd start a computer science degree, but by then the pattern was already set: whatever I was interested in, or wherever someone handed me a real problem, I'd go build the actual thing rather than just study it. Modding a video game and writing grade-management software for a real institution look like unrelated worlds. From the inside, they were the same instinct pointed at two different problems.
+By the end of it, the pattern was already set: whenever someone handed me a real problem, I'd go build the actual thing rather than just study it. Software a real institution depends on doesn't come with training wheels — nobody double-checks it for you just because you're young. Trust gets earned by the work holding up, nothing else.

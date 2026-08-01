@@ -11,7 +11,7 @@ This is the first post on this blog, and I want to start at the actual beginning
 
 If you're in your twenties reading this, it's worth pausing on how different the landscape was. There was no GitHub, no npm, no Stack Overflow to speak of. If you wanted software, you either bought it in a box or you found it — poorly documented, distributed as a .zip on someone's personal page — through a web ring of enthusiast sites that linked to each other because search engines were still catching up. "Webmaster" was a real job title people put on a personal site's credits page, and it usually meant one teenager with an FTP client and more patience than sense.
 
-Building a website meant Microsoft FrontPage, WYSIWYG tables nested inside tables, and a free hosting account from whichever Italian community would give you one. That's exactly how footballmatch.it started: a site my father and I put together, in FrontPage, hosted for free on an Italian web community before we ever pointed our own domain at it.
+Building a website meant Microsoft FrontPage, WYSIWYG tables nested inside tables, and a free hosting account from whichever Italian community would give you one. That's exactly how footballmatch.it started in 2001: a site my father and I put together, in FrontPage, hosted for free on an Italian web community before we ever pointed our own domain at it. It ran until 2005.
 
 ## Never much of a player
 
