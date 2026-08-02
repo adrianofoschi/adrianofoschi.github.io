@@ -2,7 +2,7 @@
 title: "The blockchain that felt like web2, and the mobile wallet it was missing"
 description: "In 2023 I found a blockchain whose developer experience looked like ordinary web work, and no native mobile wallet for it. So I wrote one — and the hard part turned out to have nothing to do with cryptography."
 pubDate: 'Aug 8 2026'
-heroImage: '../../assets/blog/konio-wallet/balance-screen.png'
+heroImage: '../../assets/blog/konio-wallet/hero.png'
 ---
 
 In 2023 I wanted to build something on a blockchain instead of reading about one. What made me stop on [Koinos](https://koinos.io/) wasn't the tokenomics — it was that the developer experience looked like ordinary web development.
@@ -18,6 +18,9 @@ What Koinos didn't have was a way to use it from a phone. There were browser ext
 I started Konio on 22 June 2023 and had it on both app stores by the autumn: a native wallet for iOS and Android, built with [React Native](https://reactnative.dev/) and [Expo](https://expo.dev/), using `koilib` to talk to the chain.
 
 The feature list is what you'd expect. Create or import a wallet from a seed phrase, then derive additional named accounts from that same seed so you only ever have one thing to back up. Biometric unlock and an autolock timer. Send and receive tokens and NFTs, with an address book so you're not pasting base58 strings by hand. [WalletConnect](https://walletconnect.network/), so the wallet could sign for dApps — including scanning a QR code from a desktop browser. An in-app browser for dApps. Multiple networks. Eleven languages, because the Koinos community was scattered across a lot of countries and none of them were mine.
+
+![The Konio main screen on Android: a $25.83 total balance, an account named Main with a truncated address, a MANA row at 100%, and KOIN and VHP balances](../../assets/blog/konio-wallet/balance-screen.png)
+_The main screen. Mana is the resource that makes transactions free on Koinos, so it gets a row of its own next to the balances._
 
 ![The Konio send screen: a recipient field, recent recipients, the user's own accounts, and an address book with saved contacts](../../assets/blog/konio-wallet/send-screen.png)
 _Sending tokens. Most of the work in a wallet is in the ordinary screens, not the cryptography._

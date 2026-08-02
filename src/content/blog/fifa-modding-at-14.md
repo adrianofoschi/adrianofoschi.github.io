@@ -2,7 +2,7 @@
 title: 'How it started: modding FIFA at 14'
 description: "The first post on this blog, about the first thing I ever shipped: a teenager building Windows tools that let strangers customize FIFA."
 pubDate: 'Jul 31 2026'
-heroImage: '../../assets/blog/fifa-modding/face-importer.jpg'
+heroImage: '../../assets/blog/fifa-modding/hero.png'
 ---
 
 This is the first post on this blog, and I want to start at the actual beginning — not a résumé bullet point, but where the passion for building software actually came from. It didn't start in a computer science classroom. It started with a football video game, a website built in Microsoft FrontPage, and a group of teenagers scattered across Italy who had never met in person.
@@ -23,6 +23,9 @@ That got tedious fast, so I did what any 14-year-old with too much time and a co
 - **Footballmatch Player Edit** — a fuller editor: face textures, hairstyles, boots, gloves, even shin guards, all through a proper Windows GUI instead of a hex editor.
 - **Footballmatch Flags Importer** — swapped team badges and banners, with thumbnail previews of every asset before you committed to importing it.
 - **Footballmatch Shoes Importer** — the same idea, scoped to boot textures.
+
+![Footballmatch Face Importer 2.0: two panes previewing a player's head and hair mesh, dropdowns for the structure and the hairstyle, and a list of face texture files with import buttons](../../assets/blog/fifa-modding/face-importer.jpg)
+_Footballmatch Face Importer 2.0 — the preview is the whole point: see the head before writing it into the game's texture archive._
 
 There were others besides these. But none of them were really the product — they were the assembly line. The actual product was the patch: a complete, installable bundle of updated squads, kits, boots, flags, faces and eventually stadiums that turned a stale FIFA install into something close to the current season. Build the tools, use them to produce assets at volume, bundle everything into one patch, do it again for the next transfer window. Looking back, that's the part that mattered most: not any single tool, but the pipeline behind it — and the willingness to build the tool instead of doing the tedious part by hand every time.
 

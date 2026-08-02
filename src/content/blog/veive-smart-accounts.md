@@ -2,7 +2,7 @@
 title: "Veive: turning a blockchain account into something you can program"
 description: "In 2024 I built a modular smart account protocol for the Koinos blockchain. The absence of the piece everyone else builds on turned out to produce a stronger authorization model than the one I was copying."
 pubDate: 'Aug 12 2026'
-heroImage: '../../assets/blog/veive/docs-site.png'
+heroImage: '../../assets/blog/veive/hero.png'
 ---
 
 On most blockchains, an account is a key pair. Not a record, not an object with rules — a public key you can be paid at, and a private key that can do absolutely anything with what's there.
@@ -98,6 +98,9 @@ That nickname registry in the diagram is the last piece of the barrier. An accou
 ## Where it stands
 
 The module packages are published on npm under MIT — validation, execution, sign and hooks base libraries, plus concrete modules for mnemonic, WebAuthn and OpenID signing, multisig validation, and pre-authorized allowances. They're still installable today.
+
+![The Veive documentation site, on the Framework page: a sidebar covering the protocol, use-cases, module types and roadmap, and a body explaining modular smart accounts inspired by ERC-7579](../../assets/blog/veive/docs-site.png)
+_The documentation site while it was still up._
 
 The rest is honest to report. The documentation site and the domain are gone; the DNS records lapsed. The Koinos token followed the wider crypto market down, the ecosystem thinned out with it, and the protocol is dormant. Adoption never arrived, and a protocol without applications built on it is, functionally, a library nobody imports.
 

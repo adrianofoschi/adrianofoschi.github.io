@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # editorial planning notes (not for publication)
 /notes/
+
+# generated-asset tooling cache (fonts)
+.cache/

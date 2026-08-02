@@ -2,7 +2,7 @@
 title: "No system call for that: getting passkey and JWT signatures verified on chain"
 description: "A smart contract that wants to accept a fingerprint or a Google login has to verify signature formats the blockchain knows nothing about. The fix wasn't writing cryptography — it was knowing where to find code that already fits inside a VM."
 pubDate: 'Aug 16 2026'
-heroImage: '../../assets/blog/verifiers/p256-verify-flow.png'
+heroImage: '../../assets/blog/verifiers/hero.png'
 ---
 
 Every blockchain hands contracts a short, fixed menu of cryptography. Usually it's exactly one curve: the one the chain's own accounts are built on, wired in as a system call, and nothing else.
@@ -66,6 +66,9 @@ constexpr std::size_t msg_size        = 70;
 ```
 
 Sixty-five bytes is an uncompressed elliptic curve point, sixty-four is `r` and `s` back to back — and the seventy-byte message is WebAuthn's own construction, the authenticator data concatenated with the hash of the client data. The contract doesn't parse a passkey response; it's handed the exact bytes the browser signed.
+
+![A sequence diagram: the authenticator returns a signature, authenticator data and client data; the smart account authorizes the call and forwards p256_verify with the signature, the public key and a message built from authenticator data plus the hash of the client data; the verifier answers true](../../assets/blog/verifiers/p256-verify-flow.png)
+_The verifier's whole job, at the right-hand end of the flow: three arguments in, `true` out._
 
 Around that: fixed-size buffers, a static work buffer of three words per RSA word, and a protobuf interface generated at build time. No dynamic allocation anywhere. Both contracts are the same file with a different verifier inside.
 
