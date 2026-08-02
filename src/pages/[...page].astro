@@ -39,10 +39,9 @@ const { page } = Astro.props;
 									{post.data.heroImage && (
 										<Image
 											width={720}
-											height={360}
 											src={post.data.heroImage}
 											alt=""
-											class="mb-4 w-full rounded-md border border-border transition group-hover:border-accent"
+											class="mx-auto mb-4 block h-auto max-h-[340px] w-auto max-w-full rounded-md border border-border transition group-hover:border-accent"
 										/>
 									)}
 									<p class="mb-1 text-muted">
