@@ -119,6 +119,13 @@ const POSTS = [
 		sources: ['prediction-screens.png'],
 	},
 	{
+		slug: 'quality-was-nobodys-job',
+		dir: 'consulting-then-product',
+		caption: 'consulting · product · 2015–2023',
+		quote:
+			'Quality wasn’t a requirement that had been considered and traded away against cost. It just wasn’t a requirement.',
+	},
+	{
 		slug: 'wallet-in-a-chat-app',
 		dir: 'telegram-wallet',
 		caption: 'Sovrano Telegram bot · 2025',

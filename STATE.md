@@ -27,7 +27,7 @@ post. For the editorial backlog (what's planned, sourcing notes per post), see
   cropped to fit; per-source `crop` in the script's `POSTS` table exists only to remove
   junk (a video player bar, an over-long docs page), not to force the ratio.
 
-## Content — published (11 posts)
+## Content — published (12 posts)
 
 Posts 1–4, the early chronology:
 
@@ -74,6 +74,16 @@ Posts 5–11, the blockchain cluster (2023–2025, all on the Koinos chain):
 11. **"A wallet inside a chat app that holds no keys"** (`wallet-in-a-chat-app.md`) — a
     Telegram bot as a remote control for a signer that lives elsewhere. No image survives.
 
+Post 12, back off the blockchain cluster:
+
+12. **"Quality was nobody's job, and then it was mine"** (`quality-was-nobodys-job.md`,
+    2015–2023) — eight years at a software house in two halves: consulting for clients in
+    regulated sectors until 2019, then the company's own B2B SaaS. Two opposite ways of
+    losing quality — too much roadmap rigidity on one side, too little on the other. The
+    employer, the clients and the product are all deliberately unnamed; the post is scoped
+    explicitly to what he saw rather than to a verdict on any industry. No inline images,
+    no outbound links, typographic hero.
+
 ## Editorial rules established (see AGENTS.md/CLAUDE.md for the full version)
 
 - No unifying "thesis" framing for the blog as a whole.
@@ -102,9 +112,11 @@ Posts 5–11, the blockchain cluster (2023–2025, all on the Koinos chain):
 
 ## Next
 
-- **Change cluster.** Seven of eleven posts are now Koinos. `notes/content-plan.md`
-  candidates: palumb (Cluster 2 — the best-documented material, can be drafted without
-  new input), the Hitech→AWS sysadmin thread (Cluster 12), boticam (Cluster 4b).
+- **Keep alternating clusters.** Post 12 broke the Koinos run; don't go straight back to it.
+  Candidates in `notes/content-plan.md`: the Hitech→AWS sysadmin thread (Cluster 12, needs
+  an input session — the CV is thin), boticam (Cluster 4b, and its repo is not on this
+  machine), the AI-assisted-coding thread (Cluster 6). The palumb cluster is **on hold**
+  until the project is public — don't propose it.
 - Consider retrofitting outbound links into posts 1–4.
 - Housekeeping flagged during the blockchain work: four private repos have committed
   secrets — `sovrano-io/identity-broker/keys/private.key`, the bot tokens in
