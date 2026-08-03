@@ -2,6 +2,7 @@
 title: "The blockchain that felt like web2, and the mobile wallet it was missing"
 description: "In 2023 I found a blockchain whose developer experience looked like ordinary web work, and no native mobile wallet for it. So I wrote one — and the hard part turned out to have nothing to do with cryptography."
 pubDate: 'Aug 8 2026'
+tags: ["blockchain", "wallets"]
 ---
 
 In 2023 I wanted to build something on a blockchain instead of reading about one. What made me stop on [Koinos](https://koinos.io/) wasn't the tokenomics — it was that the developer experience looked like ordinary web development.

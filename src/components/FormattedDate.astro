@@ -3,10 +3,12 @@ interface Props {
 	date: Date;
 }
 
+import { isoDate } from '../utils/date';
+
 const { date } = Astro.props;
 ---
 
-<time datetime={date.toISOString()}>
+<time datetime={isoDate(date)}>
 	{
 		date.toLocaleDateString('en-us', {
 			year: 'numeric',

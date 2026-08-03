@@ -1,0 +1,32 @@
+# adrianofoschi.com — everything here is meant to be read, by people and by machines.
+
+User-agent: *
+Allow: /
+
+# Search and answer engines are explicitly welcome: being quoted with attribution is the
+# point of writing this in public.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://adrianofoschi.com/sitemap-index.xml

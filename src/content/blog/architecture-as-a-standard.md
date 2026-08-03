@@ -2,6 +2,7 @@
 title: "Architecture as a standard, not a suggestion"
 description: "A service template where the dependency rule is a lint rule and the conventions decide where code goes — which turns out to be exactly what makes a codebase workable with an AI agent."
 pubDate: 'Aug 24 2026'
+tags: ["architecture", "ai"]
 ---
 
 In 2026 I built myself a service template: a NestJS skeleton I clone whenever I start a new backend, with all the cross-cutting plumbing already wired and zero business logic in it. Health probes, structured logging, exception filters, OIDC authentication, an event publisher. Nothing in it is clever. The interesting part isn't what it contains — it's that the architecture is not written down as advice. It's enforced.

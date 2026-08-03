@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { TAG_NAMES } from './consts';
 
 const blog = defineCollection({
 	// Load Markdown and MDX files in the `src/content/blog/` directory.
@@ -12,6 +13,10 @@ const blog = defineCollection({
 		// Transform string to Date object
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
+		// Closed vocabulary — see TAGS in src/consts.ts. Keeping it closed is deliberate:
+		// a tag page with a single post is a thin page, so new tags are added only when at
+		// least two posts genuinely share the topic.
+		tags: z.array(z.enum(TAG_NAMES)).nonempty(),
 	}),
 });
 

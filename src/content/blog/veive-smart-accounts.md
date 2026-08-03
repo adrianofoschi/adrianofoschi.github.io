@@ -2,6 +2,7 @@
 title: "Veive: turning a blockchain account into something you can program"
 description: "In 2024 I built a modular smart account protocol for the Koinos blockchain. The absence of the piece everyone else builds on turned out to produce a stronger authorization model than the one I was copying."
 pubDate: 'Aug 12 2026'
+tags: ["blockchain", "architecture"]
 ---
 
 On most blockchains, an account is a key pair. Not a record, not an object with rules — a public key you can be paid at, and a private key that can do absolutely anything with what's there.

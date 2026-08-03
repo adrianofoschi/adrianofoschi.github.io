@@ -2,6 +2,7 @@
 title: "No system call for that: getting passkey and JWT signatures verified on chain"
 description: "A smart contract that wants to accept a fingerprint or a Google login has to verify signature formats the blockchain knows nothing about. The fix wasn't writing cryptography — it was knowing where to find code that already fits inside a VM."
 pubDate: 'Aug 16 2026'
+tags: ["blockchain"]
 ---
 
 Every blockchain hands contracts a short, fixed menu of cryptography. Usually it's exactly one curve: the one the chain's own accounts are built on, wired in as a system call, and nothing else.

@@ -18,6 +18,24 @@ post. For the editorial backlog (what's planned, sourcing notes per post), see
   theme — black background, IBM Plex Mono everywhere (Google font provider), cyan
   accent, borders instead of box-shadows, `prose-invert` for post content. Original
   template placeholder posts and the local Atkinson font files were removed.
+- **Tags and the SEO surface (Aug 2026).** Posts carry `tags` from a **closed six-tag
+  vocabulary** defined in `src/consts.ts` and enforced by the content schema: `blockchain` (7),
+  `wallets` (4), `architecture` (3), `early-projects` (3), `ai` (2),
+  `career` (2). Deliberately broad, and every tag has at least two posts — single-post tag
+  pages are thin pages. Tags render under each post title and in every list, with
+  `/tags/<tag>/` pages plus a `/tags/` index linked from the header nav. They exist to give
+  the site internal linking, which it had none of, because the editorial rules forbid posts
+  from referring to each other.
+  Also done in the same pass: JSON-LD (`BlogPosting` with author, dates and keywords on posts,
+  `WebSite` elsewhere); `og:type` fixed to `article` on posts; `twitter:title`/`description`/
+  `image` added; `public/robots.txt` created, allowing GPTBot, OAI-SearchBot, ClaudeBot,
+  PerplexityBot and friends explicitly and pointing at the sitemap; `/llms.txt` generated from
+  the collection by `src/pages/llms.txt.ts`; and `public/og.png`, one generated 1200×630 card
+  for link unfurls — which replaced `blog-placeholder-1.jpg`, an Astro-starter stock photo that
+  had been serving as the social image for the entire site. All six template placeholder JPGs
+  are gone.
+  Still open from the audit: passage-level work on the posts themselves (question-shaped
+  headings, self-contained answer blocks) was deliberately not done.
 - **No hero images — removed entirely (Aug 2026).** Adriano's call: the generated 1200×630
   frames weren't earning their place. Gone in one pass: the render blocks in
   `BlogPost.astro` and `[...page].astro`, the `heroImage` field in `src/content.config.ts`

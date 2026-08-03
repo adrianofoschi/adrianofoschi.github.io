@@ -47,7 +47,24 @@ next post; update it after publishing one.
 ## Structure
 
 - `src/content/blog/*.md` — posts. Frontmatter: `title`, `description`, `pubDate`
-  (coerced to Date, e.g. `'Aug 6 2026'`), optional `updatedDate`. Nothing else.
+  (coerced to Date, e.g. `'Aug 6 2026'`), `tags` (at least one), optional `updatedDate`.
+- **Tags are a closed vocabulary**, defined with their labels and descriptions in
+  `src/consts.ts` (`TAGS`) and enforced by the content schema — an unknown tag fails the
+  build. Every tag must cover **at least two posts**: a tag page with one post is a thin
+  page. Adding a tag means editing `TAGS`, and only when two posts genuinely share the topic.
+  Tags are also the site's only internal linking, since rule 1 forbids posts referring to
+  each other — that's what they're for, not decoration.
+- `src/pages/tags/[tag].astro`, `src/pages/tags/index.astro` — per-tag lists and the topics
+  index, both generated from the vocabulary.
+- SEO/machine-readable surface, all handled centrally in `src/components/BaseHead.astro`:
+  canonical, Open Graph (`article` on posts, `website` elsewhere), Twitter card, and JSON-LD
+  (`BlogPosting` with author/dates/keywords on posts, `WebSite` elsewhere). The social image
+  is `public/og.png`, a single generated card — it never appears on a page. `public/robots.txt`
+  allows the AI search crawlers explicitly and points at the sitemap; `src/pages/llms.txt.ts`
+  generates `/llms.txt` from the collection, so it can't go stale.
+- Machine-readable dates use `isoDate()` from `src/utils/date.ts`, never `toISOString()`:
+  frontmatter dates are calendar days parsed as local midnight, so an instant shifts them a
+  day backwards in any timezone east of UTC.
 - `src/assets/blog/<post-dir>/` — one folder per post, holding the real images used inline
   in that post. Posts with no surviving imagery have no folder at all.
 - `src/pages/[...page].astro` — paginated home page (post list).

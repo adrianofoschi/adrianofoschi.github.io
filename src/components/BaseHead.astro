@@ -2,20 +2,61 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
-import type { ImageMetadata } from 'astro';
-import FallbackImage from '../assets/blog-placeholder-1.jpg';
-import { SITE_TITLE } from '../consts';
 import { Font } from 'astro:assets';
+import { AUTHOR, OG_IMAGE, SITE_TITLE, TAGS, type TagName } from '../consts';
+import { isoDate } from '../utils/date';
 
 interface Props {
 	title: string;
 	description: string;
-	image?: ImageMetadata;
+	/** `article` on blog posts, `website` everywhere else. */
+	type?: 'website' | 'article';
+	pubDate?: Date;
+	updatedDate?: Date;
+	tags?: readonly TagName[];
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(OG_IMAGE, Astro.site);
 
-const { title, description, image = FallbackImage } = Astro.props;
+const { title, description, type = 'website', pubDate, updatedDate, tags = [] } = Astro.props;
+
+// Structured data: a BlogPosting on articles, the site itself elsewhere. Both carry the author
+// as a Person, so every page is attributable — which is what crawlers and AI search look for,
+// and which this site otherwise states only in prose.
+const author = {
+	'@type': 'Person',
+	name: AUTHOR.name,
+	url: AUTHOR.url,
+	sameAs: [AUTHOR.github],
+};
+
+const structuredData =
+	type === 'article'
+		? {
+				'@context': 'https://schema.org',
+				'@type': 'BlogPosting',
+				headline: title,
+				description,
+				url: canonicalURL.href,
+				mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL.href },
+				datePublished: pubDate && isoDate(pubDate),
+				dateModified: (updatedDate ?? pubDate) && isoDate(updatedDate ?? pubDate!),
+				keywords: tags.map((tag) => TAGS[tag].label).join(', '),
+				inLanguage: 'en',
+				image: ogImageURL.href,
+				author,
+				publisher: author,
+			}
+		: {
+				'@context': 'https://schema.org',
+				'@type': 'WebSite',
+				name: SITE_TITLE,
+				description,
+				url: new URL('/', Astro.site).href,
+				inLanguage: 'en',
+				author,
+			};
 ---
 
 <!-- Global Metadata -->
@@ -41,13 +82,33 @@ const { title, description, image = FallbackImage } = Astro.props;
 <!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="description" content={description} />
+<meta name="author" content={AUTHOR.name} />
 
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.url} />
+<!-- Open Graph -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image.src, Astro.url)} />
+<meta property="og:image" content={ogImageURL} />
+<meta property="og:site_name" content={SITE_TITLE} />
+<meta property="og:locale" content="en" />
+{
+	type === 'article' && (
+		<Fragment>
+			<meta property="article:author" content={AUTHOR.name} />
+			{pubDate && <meta property="article:published_time" content={isoDate(pubDate)} />}
+			{updatedDate && <meta property="article:modified_time" content={isoDate(updatedDate)} />}
+			{tags.map((tag) => (
+				<meta property="article:tag" content={TAGS[tag].label} />
+			))}
+		</Fragment>
+	)
+}
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageURL} />
+
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} is:inline />

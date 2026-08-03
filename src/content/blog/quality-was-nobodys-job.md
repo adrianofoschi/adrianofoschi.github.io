@@ -2,6 +2,7 @@
 title: "Quality was nobody's job, and then it was mine"
 description: "Eight years at a software house, four in consulting and four on the company's own product — and two opposite ways of losing the same thing."
 pubDate: 'Aug 22 2026'
+tags: ["career"]
 ---
 
 From 2015 to 2023 I worked as a full-stack developer at a software house, and those eight years split cleanly in half. Until 2019 I was in consulting, on projects for clients in banking, insurance and online learning. From 2019 on I worked on the company's own product, a B2B SaaS — with some overlap in the middle, the way these transitions actually go rather than the way an org chart draws them.
