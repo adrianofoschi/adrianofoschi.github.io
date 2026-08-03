@@ -9,8 +9,10 @@ import { isoDate } from '../utils/date';
 interface Props {
 	title: string;
 	description: string;
-	/** `article` on blog posts, `website` everywhere else. */
-	type?: 'website' | 'article';
+	/** `article` on blog posts, `profile` on the about page, `website` everywhere else. */
+	type?: 'website' | 'article' | 'profile';
+	/** Extra schema.org nodes to publish alongside the page's own entity. */
+	schemaExtras?: object[];
 	pubDate?: Date;
 	updatedDate?: Date;
 	tags?: readonly TagName[];
@@ -19,7 +21,15 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(OG_IMAGE, Astro.site);
 
-const { title, description, type = 'website', pubDate, updatedDate, tags = [] } = Astro.props;
+const {
+	title,
+	description,
+	type = 'website',
+	pubDate,
+	updatedDate,
+	tags = [],
+	schemaExtras = [],
+} = Astro.props;
 
 // Structured data: a BlogPosting on articles, the site itself elsewhere. Both carry the author
 // as a Person, so every page is attributable — which is what crawlers and AI search look for,
@@ -31,10 +41,26 @@ const author = {
 	sameAs: [AUTHOR.github],
 };
 
-const structuredData =
+const person = {
+	...author,
+	'@id': `${new URL('/about', Astro.site).href}#person`,
+	jobTitle: 'Chief Technology Officer',
+	description:
+		'Full-stack engineer with 20+ years of experience, from self-taught teenage projects to leading software architecture as a CTO.',
+	knowsAbout: [
+		'software architecture',
+		'AI-assisted software development',
+		'blockchain',
+		'wallets',
+		'authentication',
+		'TypeScript',
+		'NestJS',
+	],
+};
+
+const mainEntity =
 	type === 'article'
 		? {
-				'@context': 'https://schema.org',
 				'@type': 'BlogPosting',
 				headline: title,
 				description,
@@ -43,20 +69,37 @@ const structuredData =
 				datePublished: pubDate && isoDate(pubDate),
 				dateModified: (updatedDate ?? pubDate) && isoDate(updatedDate ?? pubDate!),
 				keywords: tags.map((tag) => TAGS[tag].label).join(', '),
+				articleSection: tags.map((tag) => TAGS[tag].label),
 				inLanguage: 'en',
 				image: ogImageURL.href,
-				author,
-				publisher: author,
+				author: { '@id': person['@id'] },
+				publisher: { '@id': person['@id'] },
+				isPartOf: { '@type': 'Blog', '@id': `${new URL('/', Astro.site).href}#blog` },
 			}
-		: {
-				'@context': 'https://schema.org',
-				'@type': 'WebSite',
-				name: SITE_TITLE,
-				description,
-				url: new URL('/', Astro.site).href,
-				inLanguage: 'en',
-				author,
-			};
+		: type === 'profile'
+			? {
+					'@type': 'ProfilePage',
+					url: canonicalURL.href,
+					name: title,
+					description,
+					inLanguage: 'en',
+					mainEntity: { '@id': person['@id'] },
+				}
+			: {
+					'@type': 'WebSite',
+					name: SITE_TITLE,
+					description,
+					url: new URL('/', Astro.site).href,
+					inLanguage: 'en',
+					author: { '@id': person['@id'] },
+				};
+
+// One @graph per page: the page's own entity, the author as a stable @id every page points
+// at, and whatever the page adds (the home page publishes its post list this way).
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [mainEntity, person, ...schemaExtras],
+};
 ---
 
 <!-- Global Metadata -->

@@ -3,6 +3,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import RelatedPosts from '../components/RelatedPosts.astro';
 import TagList from '../components/TagList.astro';
 import type { TagName } from '../consts';
 
@@ -14,9 +15,13 @@ interface Props {
 	pubDate: Date;
 	updatedDate?: Date;
 	tags?: readonly TagName[];
+	/** The About page is a profile, not an article. */
+	type?: 'website' | 'article' | 'profile';
+	/** Slug of the post, used to pick related reading. Absent on the About page. */
+	id?: string;
 }
 
-const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
+const { title, description, pubDate, updatedDate, tags = [], type, id } = Astro.props;
 ---
 
 <html lang="en">
@@ -24,7 +29,7 @@ const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
 		<BaseHead
 			title={title}
 			description={description}
-			type={tags.length ? 'article' : 'website'}
+			type={type ?? (tags.length ? 'article' : 'website')}
 			pubDate={pubDate}
 			updatedDate={updatedDate}
 			tags={tags}
@@ -62,6 +67,7 @@ const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
 					>
 						<slot />
 					</div>
+					{id && tags.length > 0 && <RelatedPosts currentId={id} tags={tags} />}
 				</div>
 			</article>
 		</main>

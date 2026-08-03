@@ -1,11 +1,11 @@
 ---
 title: 'How it started: modding FIFA at 14'
-description: "The first post on this blog, about the first thing I ever shipped: a teenager building Windows tools that let strangers customize FIFA."
+description: "The first thing I ever shipped, in 2001, at 14: Windows tools that let strangers customize FIFA, a modding site run with a group of teenagers, and the Serie A superpatch that came out of it."
 pubDate: 'Jul 31 2026'
 tags: ["early-projects"]
 ---
 
-This is the first post on this blog, and I want to start at the actual beginning — not a résumé bullet point, but where the passion for building software actually came from. It didn't start in a computer science classroom. It started with a football video game, a website built in Microsoft FrontPage, and a group of teenagers scattered across Italy who had never met in person.
+I started writing software at 14, in 2001, to change a football video game. Not in a computer science classroom — in Microsoft FrontPage, on a modding site I ran with a group of teenagers who had never met in person, shipping Windows installers that let strangers replace the faces, kits and boots in their copy of FIFA. This is where the whole thing started, and I'd rather begin at the actual beginning than at a résumé bullet point.
 
 ## The world before GitHub
 

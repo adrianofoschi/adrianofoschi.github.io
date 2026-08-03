@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+import TagList from './TagList.astro';
+import type { TagName } from '../consts';
+
+interface Props {
+	/** Slug of the post being read, so it doesn't recommend itself. */
+	currentId: string;
+	tags: readonly TagName[];
+}
+
+const { currentId, tags } = Astro.props;
+
+// Ranked by how many tags a post shares with this one, then by recency. This is the site's
+// only post-to-post linking: the editorial rules keep articles from referring to each other
+// in prose, so the connections live in navigation instead.
+const related = (await getCollection('blog'))
+	.filter((post) => post.id !== currentId)
+	.map((post) => ({
+		post,
+		shared: post.data.tags.filter((tag) => tags.includes(tag)).length,
+	}))
+	.filter(({ shared }) => shared > 0)
+	.sort(
+		(a, b) => b.shared - a.shared || b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf(),
+	)
+	.slice(0, 3)
+	.map(({ post }) => post);
+---
+
+{
+	related.length > 0 && (
+		<nav aria-labelledby="related-heading" class="mt-16 border-t border-border pt-8">
+			<h2 id="related-heading" class="mb-6 text-lg font-bold text-fg">Related reading</h2>
+			<ul class="flex list-none flex-col gap-6 p-0">
+				{related.map((post) => (
+					<li class="m-0 p-0">
+						<a href={`/blog/${post.id}/`} class="group block no-underline">
+							<p class="mb-1 text-sm text-muted">
+								<FormattedDate date={post.data.pubDate} />
+							</p>
+							<h3 class="m-0 text-base font-bold leading-tight text-fg transition-colors group-hover:text-accent">
+								{post.data.title}
+							</h3>
+							<p class="mt-1 text-sm text-muted">{post.data.description}</p>
+						</a>
+						<div class="mt-2">
+							<TagList tags={post.data.tags} size="sm" />
+						</div>
+					</li>
+				))}
+			</ul>
+		</nav>
+	)
+}

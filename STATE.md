@@ -34,8 +34,22 @@ post. For the editorial backlog (what's planned, sourcing notes per post), see
   for link unfurls — which replaced `blog-placeholder-1.jpg`, an Astro-starter stock photo that
   had been serving as the social image for the entire site. All six template placeholder JPGs
   are gone.
-  Still open from the audit: passage-level work on the posts themselves (question-shaped
-  headings, self-contained answer blocks) was deliberately not done.
+  Second pass, same day, working through the `seo-geo` skill's rubric: the author is now a
+  single `Person` entity with a stable `@id` at `/about#person`, referenced by every page
+  instead of repeated as a string; `/about` is a `ProfilePage` with `jobTitle` and
+  `knowsAbout`; the home page publishes `Blog` (with `blogPost`) and an `ItemList`; the RSS
+  feed carries tags as categories and declares its language; and each post ends with a
+  **Related reading** block — up to three posts ranked by shared tags, then recency. That block
+  plus the tag pages mean every post is reachable from at least two other pages, which is the
+  whole fix for a site whose editorial rules forbid posts from linking to each other in prose.
+  Also fixed: `fifa-modding-at-14` opened with "This is the first post on this blog" — meta,
+  fragile, and it spent sixty words before saying what it was about. It now states what, when
+  and at what age in the first line, and its description was rewritten to match.
+  **Deliberately not done**, with reasons recorded in `notes/geo-analysis.md`: converting
+  headings to question form, and adding FAQ blocks. Both trade the writing's voice for keyword
+  shape, and the voice is what makes these posts worth reading. That report also names the real
+  remaining gap, which is off-site: brand mentions correlate far more strongly with AI citation
+  than anything on-page, and no amount of markup produces them.
 - **No hero images — removed entirely (Aug 2026).** Adriano's call: the generated 1200×630
   frames weren't earning their place. Gone in one pass: the render blocks in
   `BlogPost.astro` and `[...page].astro`, the `heroImage` field in `src/content.config.ts`
