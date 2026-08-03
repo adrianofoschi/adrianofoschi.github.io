@@ -18,14 +18,18 @@ post. For the editorial backlog (what's planned, sourcing notes per post), see
   theme — black background, IBM Plex Mono everywhere (Google font provider), cyan
   accent, borders instead of box-shadows, `prose-invert` for post content. Original
   template placeholder posts and the local Atkinson font files were removed.
-- Hero images are generated, uniform and mandatory: every post has a `hero.png` at
-  1200×630, produced by `scripts/generate-heroes.mjs` (ImageMagick + IBM Plex Mono fetched
-  into the gitignored `.cache/fonts/`). Because they all share one aspect ratio,
-  `BlogPost.astro` and `[...page].astro` now render them at `w-full h-auto` with a single
-  `width` — no height cap, no `w-auto`. Do not pass a `height` to `<Image>`: Astro would
-  centre-crop the asset. Inside the frame, source screenshots are contain-fit, never
-  cropped to fit; per-source `crop` in the script's `POSTS` table exists only to remove
-  junk (a video player bar, an over-long docs page), not to force the ratio.
+- **No hero images — removed entirely (Aug 2026).** Adriano's call: the generated 1200×630
+  frames weren't earning their place. Gone in one pass: the render blocks in
+  `BlogPost.astro` and `[...page].astro`, the `heroImage` field in `src/content.config.ts`
+  and in every post's frontmatter, all twelve generated `hero.png` files, and
+  `scripts/generate-heroes.mjs`. Posts now open on the title; the home page is a list of
+  titles and descriptions. **No real imagery was lost** — every genuine screenshot is used
+  inline in an article body, and the four posts whose only image was a typographic hero
+  (school software, freelance, Telegram wallet, consulting) simply have no images, which
+  was already true of their bodies. `src/assets/blog/` now holds only body images, and its
+  four hero-only folders were deleted. One orphan remains on purpose:
+  `konio-growth/nft-autotracking-cover.png` was a hero source and appears in no body — keep
+  or delete when convenient.
 
 ## Content — published (12 posts)
 
@@ -81,8 +85,17 @@ Post 12, back off the blockchain cluster:
     regulated sectors until 2019, then the company's own B2B SaaS. Two opposite ways of
     losing quality — too much roadmap rigidity on one side, too little on the other. The
     employer, the clients and the product are all deliberately unnamed; the post is scoped
-    explicitly to what he saw rather than to a verdict on any industry. No inline images,
-    no outbound links, typographic hero.
+    explicitly to what he saw rather than to a verdict on any industry. No images, no
+    outbound links.
+
+Post 13 exists in the repo but is **not final**:
+
+13. **"Architecture as a standard, not a suggestion"** (`architecture-as-a-standard.md`,
+    2026) — a NestJS service template where the dependency rule is a lint rule, plus the
+    conventions that decide where code goes, and why that shape suits AI-assisted work. The
+    template repo is private, so the post links nowhere. **Flagged for a re-read before it
+    ships**: it may need revising against the latest palumb standards work — see
+    `notes/content-plan.md`, Cluster 5.
 
 ## Editorial rules established (see AGENTS.md/CLAUDE.md for the full version)
 
@@ -98,14 +111,8 @@ Post 12, back off the blockchain cluster:
   survives for them (checked again: the freelance-era repos only hold client-site theme
   screenshots, which the no-client-names rule excludes, and `sovrano-io/telegram-wallet`
   has no images at all).
-- Heroes are a separate thing from body images, and every post has one. They are generated
-  onto the site theme at a uniform 1200×630 by `scripts/generate-heroes.mjs`: real
-  screenshots contain-fit inside the frame, or — for posts 2, 3 and 11 — a typographic
-  card quoting a line from the post itself. Every hero carries the same accent tick and
-  `project · years` caption. Screenshots that used to serve as a raw heroImage were moved
-  into the article bodies (face importer, Konio balance screen, Veive docs site, the
-  P-256 verify flow); `nft-autotracking-cover.png` stays hero-only, since the post never
-  discusses that release.
+- No heroes at all (removed Aug 2026 — see Infrastructure above). Images live in article
+  bodies or nowhere. Posts 2, 3, 11 and 12 carry no images.
 - A topic/cluster can get more than one post over time.
 - Outbound links are welcome, introduced with the blockchain cluster. Verify every URL
   resolves before publishing. Posts 1–4 predate this and carry no links.
