@@ -2,7 +2,6 @@
 title: 'How it started: modding FIFA at 14'
 description: "The first post on this blog, about the first thing I ever shipped: a teenager building Windows tools that let strangers customize FIFA."
 pubDate: 'Jul 31 2026'
-heroImage: '../../assets/blog/fifa-modding/hero.png'
 ---
 
 This is the first post on this blog, and I want to start at the actual beginning — not a résumé bullet point, but where the passion for building software actually came from. It didn't start in a computer science classroom. It started with a football video game, a website built in Microsoft FrontPage, and a group of teenagers scattered across Italy who had never met in person.

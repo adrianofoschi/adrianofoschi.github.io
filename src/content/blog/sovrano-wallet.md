@@ -2,7 +2,6 @@
 title: "Sovrano: a self-custody wallet you open with a fingerprint"
 description: "From 2024 to 2025 I built a wallet where creating a blockchain account means touching a fingerprint sensor or signing in with Google — no seed phrase, no extension, no tokens to buy first. Here is what it took, and what it cost."
 pubDate: 'Aug 14 2026'
-heroImage: '../../assets/blog/sovrano/hero.png'
 ---
 
 Self-custody is presented as freedom, and it is, but the fine print is that you become your own bank's entire security department. Write down twelve words. Store them somewhere a fire won't reach and a guest won't find. Never type them into anything. Lose them and your money is gone, with no one to appeal to.

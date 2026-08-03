@@ -1,6 +1,5 @@
 ---
 import type { GetStaticPaths, Page } from 'astro';
-import { Image } from 'astro:assets';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
@@ -36,14 +35,6 @@ const { page } = Astro.props;
 						page.data.map((post) => (
 							<li class="border-b border-border pb-10 last:border-0 last:pb-0">
 								<a href={`/blog/${post.id}/`} class="group block no-underline">
-									{post.data.heroImage && (
-										<Image
-											width={720}
-											src={post.data.heroImage}
-											alt=""
-											class="mb-4 block h-auto w-full rounded-md border border-border transition group-hover:border-accent"
-										/>
-									)}
 									<p class="mb-1 text-muted">
 										<FormattedDate date={post.data.pubDate} />
 									</p>

@@ -2,7 +2,6 @@
 title: "The freelance years: real clients, and a lesson school never taught me"
 description: "Freelancing was the first time nobody vouched for the work but me — and the first time I learned that technical skill alone isn't enough."
 pubDate: 'Aug 4 2026'
-heroImage: '../../assets/blog/freelance-years/hero.png'
 ---
 
 Freelancing, from 2013 to 2015, was the first time nobody else's name was attached to the work — no principal assigning it, no institution funding it, no program structuring it. No one was vouching for me. If a client trusted the work, it was because of the work itself, not because something else stood behind it.

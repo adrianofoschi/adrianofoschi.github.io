@@ -2,7 +2,6 @@
 title: "My thesis: Hadoop vs. MySQL, and an honest result nobody expected"
 description: "For my computer science thesis I built the same data warehouse twice — once in Hive, once in MySQL — and benchmarked them head to head. The new technology didn't win by default."
 pubDate: 'Aug 6 2026'
-heroImage: '../../assets/blog/uniba-thesis/hero.png'
 ---
 
 I started a computer science degree in 2009. By the time I got to my thesis in 2012, Big Data was becoming a real word, not just a buzzword yet, and I wanted my thesis to be about actually building one of these systems rather than just reading about them — a data warehouse that pulled together data from different web sources using the emerging Hadoop/Hive stack, instead of a traditional relational database.

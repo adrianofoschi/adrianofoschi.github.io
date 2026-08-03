@@ -2,7 +2,6 @@
 title: "Building software my school actually used, at 16"
 description: "At 16, my school's principal noticed what I could build and handed me a real assignment: grade management software the whole school would depend on."
 pubDate: 'Aug 1 2026'
-heroImage: '../../assets/blog/school-software/hero.png'
 ---
 
 In 2006, at a technical institute, my school's principal noticed what I could actually build, and decided to find out what I could do with it.
