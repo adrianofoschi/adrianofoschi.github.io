@@ -22,7 +22,7 @@ The practical consequence is that **"done" has to be measurable rather than a ju
 
 ## Introducing Obrussa
 
-**Obrussa** is what I call the repository where all of this lives. The word is Latin, from the Greek *obryza*: the assaying of gold by fire. *Aurum ad obrussam* is gold refined to the highest purity, and Seneca uses *ad obrussam* figuratively for something that has been put to the test and proved genuine. It seemed like the right name for a system whose entire job is telling apart what is correct from what merely looks correct.
+**[Obrussa](https://github.com/adrianofoschi/obrussa)** is what I call the repository where all of this lives, and it's public — MIT, so the template can be copied into anything, including closed source. The word is Latin, from the Greek *obryza*: the assaying of gold by fire. *Aurum ad obrussam* is gold refined to the highest purity, and Seneca uses *ad obrussam* figuratively for something that has been put to the test and proved genuine. It seemed like the right name for a system whose entire job is telling apart what is correct from what merely looks correct.
 
 Obrussa contains no product code at all. It holds the decisions, the standards and the templates that every project of mine inherits: architecture decision records covering the framework itself, a document on how to keep many repositories aligned without duplicating or contradicting each other, and a service template — the skeleton a new repo starts from, carrying a deliberately thin context file, the gate specification, a state file, a contract, and an empty skills folder waiting to be earned.
 
