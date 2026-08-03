@@ -1,12 +1,12 @@
 ---
 title: "The cost of writing collapsed. The cost of checking didn't"
-description: "An approach I'm trying right now: treating AI-assisted development as a system problem — an explicit framework of context, gates and state, because the bottleneck moved from producing code to verifying it."
+description: "Obrussa is an approach I'm trying right now: treating AI-assisted development as a system problem — explicit context, a blocking gate, durable state — because the bottleneck moved from producing code to verifying it."
 pubDate: 'Aug 26 2026'
 ---
 
 This is an approach I started building in 2026 and am still in the middle of. It has no results to report yet — no before-and-after numbers, no verdict. I'm writing it down because the reasoning behind it is the part I'd want to read from someone else, and because committing to it in public makes it harder for me to quietly move the goalposts later.
 
-The short version: getting an AI agent to write code well is not mainly a prompting problem. The leverage isn't in the prompt. It's in the system that decides what the agent works on, what gate verifies the result, and what state survives between one run and the next. So instead of collecting prompting tricks, I've been building the system: a framework repo — obrussa, the Latin word for the assaying of gold by fire — holding the decisions, standards and templates every project of mine inherits, with no product code in it at all.
+The short version: getting an AI agent to write code well is not mainly a prompting problem. The leverage isn't in the prompt. It's in the system that decides what the agent works on, what gate verifies the result, and what state survives between one run and the next. So instead of collecting prompting tricks, I've been building the system.
 
 ## The asymmetry that motivates all of it
 
@@ -20,7 +20,15 @@ There's an obvious move here that doesn't work: have a second agent review the f
 
 The practical consequence is that **"done" has to be measurable rather than a judgement**. Which means as much verification as possible has to stop being an act of reading and become an act of running.
 
-## Form and substance
+## Introducing Obrussa
+
+**Obrussa** is what I call the repository where all of this lives. The word is Latin, from the Greek *obryza*: the assaying of gold by fire. *Aurum ad obrussam* is gold refined to the highest purity, and Seneca uses *ad obrussam* figuratively for something that has been put to the test and proved genuine. It seemed like the right name for a system whose entire job is telling apart what is correct from what merely looks correct.
+
+Obrussa contains no product code at all. It holds the decisions, the standards and the templates that every project of mine inherits: architecture decision records covering the framework itself, a document on how to keep many repositories aligned without duplicating or contradicting each other, and a service template — the skeleton a new repo starts from, carrying a deliberately thin context file, the gate specification, a state file, a contract, and an empty skills folder waiting to be earned.
+
+At the top of it sits the principle everything else is derived from: the leverage is no longer in the prompt, it's in the system that decides what the agent works on, what gate verifies the result, and what state survives between runs. Everything below is what that turns into when you make it concrete.
+
+## The gate of substance
 
 Tests check what you thought to check. That covers *form*: the code compiles, the happy path works, the cases someone imagined are covered. What tests systematically miss is *substance*:
 
@@ -28,7 +36,7 @@ Tests check what you thought to check. That covers *form*: the code compiles, th
 - contradictions between modules — A assumes X, B assumes not-X, and each passes its own tests;
 - code that is internally coherent and wrong with respect to the intent.
 
-Substance bugs don't announce themselves per-change. They accumulate invisibly and then surface together, late, which is the most expensive moment possible. So the framework's first decision is a **gate of substance** in CI: blocking, four levels.
+Substance bugs don't announce themselves per-change. They accumulate invisibly and then surface together, late, which is the most expensive moment possible. So Obrussa's first decision is a **gate of substance** in CI: blocking, four levels.
 
 1. **Form** — strict type-check, lint, format, build, unit and e2e tests.
 2. **Security** — SAST, dependency scanning, secret scanning.
@@ -43,13 +51,13 @@ The point of the four levels isn't thoroughness for its own sake. It's convertin
 
 The metric I'm tracking is **cost per accepted change**: what it takes, end to end including my own review time, to get one change actually merged. Not lines produced, not tokens spent, not how impressive the diff looked.
 
-That number is also the falsification condition, which matters to me more than the framework itself. Below a certain acceptance rate, AI leverage is negative — you're paying in review attention more than you're saving in production. If that's where the number lands, the honest response is to say so rather than to keep adding process. I'd rather have a metric that can tell me I'm wrong than a conviction that can't.
+That number is also the falsification condition, which matters to me more than Obrussa does. Below a certain acceptance rate, AI leverage is negative — you're paying in review attention more than you're saving in production. If that's where the number lands, the honest response is to say so rather than to keep adding process. I'd rather have a metric that can tell me I'm wrong than a conviction that can't.
 
 And there is an irreducible share of human judgement that no gate absorbs. I handle it by risk-tiering rather than by pretending: authentication, payments, personal data and security boundaries get read line by line, by me. Everywhere else, the gate plus spot-checks is the deal. That's an explicit trade, and writing it down is what makes it a trade instead of a drift.
 
 ## Three kinds of memory, and one that's deferred
 
-The other half of the system is what an agent knows when it starts. Three tiers, separated by cost and by when they load:
+The other half of Obrussa is what an agent knows when it starts. Three tiers, separated by cost and by when they load:
 
 - **Always-on context** — vision, architecture, domain, threat model, and the repo's `CLAUDE.md`. This describes *what the system is*. It loads every session, so it's paid for in tokens every session, so it has to stay thin.
 - **Skills** — a procedure for something recurring, loaded on demand, able to carry scripts and reference material. This is where repeatable know-how goes precisely so it doesn't bloat the always-on context.
@@ -67,8 +75,8 @@ The layout I use is hub and spoke: one private repo holding system-level documen
 
 The substitute for the unified context you gave up is contracts published as versioned artefacts, with consumer/provider contract tests in the gate. That's the machine-checkable replacement — it doesn't inform the agent, it *fails* when the agent gets it wrong, which is the same outcome one step later. And the tedious job of keeping N repos on the same version of shared conventions is repetitive and machine-checkable, which makes it the honest place for an automated maintenance loop: a bot opening pull requests across repos when the standards change. Loops earn their place there, in maintenance, not in greenfield work where nobody can say what "correct" means yet.
 
-## Where this actually stands
+## Where Obrussa actually stands
 
-It's a boilerplate and a set of decisions, currently being applied for the first time. The parts I believe most are the asymmetry argument and the insistence that "done" be measurable — those hold regardless of tooling. The part I'm least sure about is proportion: whether a solo developer can carry four levels of gate plus contract tests plus a review pass without the ceremony eating the gain it was supposed to protect. That's exactly what cost per accepted change is there to answer, and it's a number I don't have yet.
+Today it is a boilerplate and a set of decisions, being applied for the first time. The parts I believe most are the asymmetry argument and the insistence that "done" be measurable — those hold regardless of tooling. The part I'm least sure about is proportion: whether a solo developer can carry four levels of gate plus contract tests plus a review pass without the ceremony eating the gain it was supposed to protect. That's exactly what cost per accepted change is there to answer, and it's a number I don't have yet.
 
 What I'm confident about is the shape of the problem. When producing a change becomes nearly free and verifying it doesn't, everything that matters moves to the verification side. Prompting better doesn't touch that. Building a system where correctness is checked by something that never gets tired, and where human attention is spent deliberately on the parts that deserve it, might.
