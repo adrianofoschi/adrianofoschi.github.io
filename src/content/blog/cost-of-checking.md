@@ -2,6 +2,7 @@
 title: "The cost of writing collapsed. The cost of checking didn't"
 description: "Obrussa is an approach I'm trying right now: treating AI-assisted development as a system problem — explicit context, a blocking gate, durable state — because the bottleneck moved from producing code to verifying it."
 pubDate: 'Aug 26 2026'
+updatedDate: 'Aug 28 2026'
 tags: ["ai", "architecture"]
 ---
 
@@ -29,24 +30,35 @@ Obrussa contains no product code at all. It holds the decisions, the standards a
 
 At the top of it sits the principle everything else is derived from: the leverage is no longer in the prompt, it's in the system that decides what the agent works on, what gate verifies the result, and what state survives between runs. Everything below is what that turns into when you make it concrete.
 
-## The gate of substance
+## Two tiers, split by what happens when a check is wrong
 
-Tests check what you thought to check. That covers *form*: the code compiles, the happy path works, the cases someone imagined are covered. What tests systematically miss is *substance*:
+Tests check what you thought to check. That covers the code compiling, the happy path working, the cases someone imagined. What tests systematically miss is a different category:
 
 - security that isn't a functional bug — missing authorisation, an injection point where the happy path passes cleanly, careless secret handling;
 - contradictions between modules — A assumes X, B assumes not-X, and each passes its own tests;
 - code that is internally coherent and wrong with respect to the intent.
 
-Substance bugs don't announce themselves per-change. They accumulate invisibly and then surface together, late, which is the most expensive moment possible. So Obrussa's first decision is a **gate of substance** in CI: blocking, four levels.
+These don't announce themselves per change. They accumulate invisibly and surface together, late, which is the most expensive moment available.
 
-1. **Form** — strict type-check, lint, format, build, unit and e2e tests.
-2. **Security** — SAST, dependency scanning, secret scanning.
-3. **Coherence** — architecture fitness functions that check the module boundaries the architecture document claims exist; consumer/provider contract tests; property-based tests on domain invariants where they earn their keep; and types designed so illegal states can't be represented in the first place.
-4. **Licensing** — SPDX headers, license and SBOM scanning that knows which direction a dependency may flow, for projects that have a licence boundary.
+My first attempt at the gate sorted the checks into four levels: form, security, coherence, licensing. It looked tidy and it was the wrong cut, because it answered *what gets checked* and left open the only question that turns out to matter — **what must never be left to a judgement**. Those are different questions, and only the second one tells you where to spend.
 
-Maker/checker sits *above* that, not instead of it: an agent implements, then a review pass by a different model checks the change against the threat model and the domain document. The objective gate runs first and isn't negotiable, so the review pass argues about substance rather than about formatting.
+So the gate has two tiers, and an invariant is assigned to one by the consequence of getting it wrong.
 
-The point of the four levels isn't thoroughness for its own sake. It's converting as much substance as possible into form — into something CI can fail. What CI fails, nobody has to notice.
+**Tier one is deterministic and blocking**, and it exists only for invariants where a false negative is catastrophic and irreversible. In most systems that list is short, and writing it down explicitly is most of the work: cross-tenant data access, a secret reaching a commit, something private crossing into something public, a licence boundary that may only be crossed one way. For these, a probabilistic guarantee is not a guarantee. They get fitness functions on the import graph, isolation tests, secret and dependency and licence scanning, strict types and lint. **Never an LLM alone** — a model may review them in addition, never instead.
+
+**Tier two is an LLM reading the standards as its rubric**, and it covers everything that resists codification: architectural intent, whether a write really goes through a properly scoped use case, naming coherence, replay safety. A different model from the one that wrote the change.
+
+The rule fits on one line:
+
+> Catastrophic and irreversible → deterministic. Everything else → the rubric.
+
+Two things follow from that, and they're the parts I'd defend hardest.
+
+The first is that **the prose is the prompt**. The reviewing model reads the standards documents themselves — not a checklist derived from them. Nothing gets translated, so there's no second artefact to drift out of sync, and the standards earn their token cost twice: once as the rules a person argues with, once as the rubric a model applies. It also disciplines the writing, because a rule too vague to be applied by a model was too vague to be applied by a person and nobody had noticed.
+
+The second is a small operational rule with a nasty failure mode behind it. A change to a standard that touches a deterministic check has to land in the **same pull request** as the change to its config. Otherwise the code stays green while obeying the rule you just replaced, and prose and enforcement part company silently. The gate guarantees code follows the standard; that rule is what keeps the standard and its enforcement together, and nothing automated catches it.
+
+What the two tiers have in common is the same purpose as before: converting as much as possible into something CI can fail. What CI fails, nobody has to notice.
 
 ## The number that decides whether this works
 
@@ -60,7 +72,7 @@ And there is an irreducible share of human judgement that no gate absorbs. I han
 
 The other half of Obrussa is what an agent knows when it starts. Three tiers, separated by cost and by when they load:
 
-- **Always-on context** — vision, architecture, domain, threat model, and the repo's `CLAUDE.md`. This describes *what the system is*. It loads every session, so it's paid for in tokens every session, so it has to stay thin.
+- **Always-on context** — vision, architecture, domain, threat model, the standards that apply, and the repo's `CLAUDE.md`. This describes *what the system is* and what the rules are. It loads every session, so it's paid for in tokens every session, so it has to stay thin. It's also the tier-two rubric, which is the argument for paying for it.
 - **Skills** — a procedure for something recurring, loaded on demand, able to carry scripts and reference material. This is where repeatable know-how goes precisely so it doesn't bloat the always-on context.
 - **Dynamic state** — a `STATE.md` saying where the work currently is, updated as slices land.
 
@@ -78,6 +90,6 @@ The substitute for the unified context you gave up is contracts published as ver
 
 ## Where Obrussa actually stands
 
-Today it is a boilerplate and a set of decisions, being applied for the first time. The parts I believe most are the asymmetry argument and the insistence that "done" be measurable — those hold regardless of tooling. The part I'm least sure about is proportion: whether a solo developer can carry four levels of gate plus contract tests plus a review pass without the ceremony eating the gain it was supposed to protect. That's exactly what cost per accepted change is there to answer, and it's a number I don't have yet.
+Today it is a boilerplate and a set of decisions, being applied for the first time. The parts I believe most are the asymmetry argument and the insistence that "done" be measurable — those hold regardless of tooling. The part I'm least sure about is proportion: whether a solo developer can carry a deterministic tier plus contract tests plus a review pass without the ceremony eating the gain it was supposed to protect. Splitting the gate by consequence helps here more than it first appears — the expensive tier is the deterministic one, so keeping its list of invariants short is exactly what makes the thing affordable. That's exactly what cost per accepted change is there to answer, and it's a number I don't have yet.
 
 What I'm confident about is the shape of the problem. When producing a change becomes nearly free and verifying it doesn't, everything that matters moves to the verification side. Prompting better doesn't touch that. Building a system where correctness is checked by something that never gets tired, and where human attention is spent deliberately on the parts that deserve it, might.
