@@ -15,12 +15,12 @@ Koinos, a blockchain with no transaction fees, had none of this. In 2024 I set o
 
 ## An account made of parts
 
-A Veive account is a contract that does very little by itself. It's a container. Behaviour arrives as modules you install into it, and there are four kinds:
+A Veive account is a contract that does very little by itself. It's a container. Behaviour arrives as [modules](https://veive-io.github.io/framework/module-types/) you install into it, and there are four kinds:
 
-- **Validation modules** decide whether an operation is authorized. This is policy: a valid signature, multiple approvers, a pre-authorized allowance.
-- **Execution modules** carry an operation out — and, because they're just code, they can do more than the operation literally asked for.
-- **Sign modules** define *how you prove it's you* — a seed phrase, a passkey, an identity provider.
-- **Hook modules** run before and after an operation. Pre-hooks can check conditions and block; post-hooks can log, notify, or trigger follow-up work.
+- **[Validation modules](https://veive-io.github.io/framework/module-types/validation-modules/)** decide whether an operation is authorized. This is policy: a valid signature, multiple approvers, a pre-authorized allowance.
+- **[Execution modules](https://veive-io.github.io/framework/module-types/execution-modules/)** carry an operation out — and, because they're just code, they can do more than the operation literally asked for.
+- **[Sign modules](https://veive-io.github.io/framework/module-types/sign-modules/)** define *how you prove it's you* — a seed phrase, a passkey, an identity provider.
+- **[Hook modules](https://veive-io.github.io/framework/module-types/hooks-modules/)** run before and after an operation. Pre-hooks can check conditions and block; post-hooks can log, notify, or trigger follow-up work.
 
 It's tempting to read that list as four flavours of permission check. It isn't. Only the first one is about saying no.
 
@@ -72,7 +72,7 @@ The reason all of this matters isn't the taxonomy — it's that behaviour people
 
 **A notification.** A post-hook that fires after significant transfers. Because hooks are scoped like everything else, "significant" can mean one thing for a specific token contract and something else globally.
 
-**A pre-authorized allowance.** `mod-allowance` is a validation module that inverts the usual order: you approve an exact operation in advance — contract, method, arguments, transaction — and store it. When the operation later arrives, it's checked against what you approved, and on a match the allowance is *consumed*. Approving something once means it can happen once; a replayed transaction finds nothing left to spend. And since Veive validates internally generated operations too, this covers the calls a contract makes on your behalf partway through doing something else, not just the ones you sent yourself.
+**A pre-authorized allowance.** [`mod-allowance`](https://veive-io.github.io/framework/core-modules/mod-allowance/) is a validation module that inverts the usual order: you approve an exact operation in advance — contract, method, arguments, transaction — and store it. When the operation later arrives, it's checked against what you approved, and on a match the allowance is *consumed*. Approving something once means it can happen once; a replayed transaction finds nothing left to spend. And since Veive validates internally generated operations too, this covers the calls a contract makes on your behalf partway through doing something else, not just the ones you sent yourself.
 
 **Multiple signatures.** A validation module requiring several approvers for operations in a given scope, while everything outside that scope carries on with a single signature.
 
@@ -82,7 +82,7 @@ None of these need the applications to cooperate, and none of them need the acco
 
 The sign modules are where the abstraction stops being theory.
 
-`mod-sign-webauthn` lets an account be controlled by a [WebAuthn](https://www.w3.org/TR/webauthn-2/) credential — a passkey. You register the credential's public key with the account, and from then on a fingerprint or a face signs transactions. No seed phrase exists anywhere.
+[`mod-sign-webauthn`](https://veive-io.github.io/framework/core-modules/mod-sign-webauthn/) lets an account be controlled by a [WebAuthn](https://www.w3.org/TR/webauthn-2/) credential — a passkey. You register the credential's public key with the account, and from then on a fingerprint or a face signs transactions. No seed phrase exists anywhere.
 
 [`mod-sign-openid`](https://github.com/veive-io/mod-sign-openid-as) goes further: you link an [OpenID Connect](https://openid.net/developers/how-connect-works/) identity — a Google or Microsoft account — and the account verifies the provider's ID token itself. On chain, the contract decodes the JWT, checks it against the provider's public key, and reads the claims to confirm the operation was authorized by that user. A person who has never heard of a blockchain signs in with the account they already have.
 
@@ -100,8 +100,8 @@ That nickname registry in the diagram is the last piece of the barrier. An accou
 The module packages are published on npm under MIT — validation, execution, sign and hooks base libraries, plus concrete modules for mnemonic, WebAuthn and OpenID signing, multisig validation, and pre-authorized allowances. They're still installable today.
 
 ![The Veive documentation site, on the Framework page: a sidebar covering the protocol, use-cases, module types and roadmap, and a body explaining modular smart accounts inspired by ERC-7579](../../assets/blog/veive/docs-site.png)
-_The documentation site while it was still up._
+_The documentation site, [rebuilt and republished on GitHub](https://veive-io.github.io/)._
 
-The rest is honest to report. The documentation site and the domain are gone; the DNS records lapsed. The Koinos token followed the wider crypto market down, the ecosystem thinned out with it, and the protocol is dormant. Adoption never arrived, and a protocol without applications built on it is, functionally, a library nobody imports.
+The rest is honest to report. The Koinos token followed the wider crypto market down, the ecosystem thinned out with it, and the protocol is dormant. Adoption never arrived, and a protocol without applications built on it is, functionally, a library nobody imports.
 
 What I don't discount is the design. The constraint I thought was a deficiency — no EntryPoint to build on — is exactly what forced validation down into the layer where every call is visible, and produced authorization coverage the pattern I was copying doesn't have. That's happened to me a few times since: the platform is missing the obvious foundation, so you're pushed to a lower one, and the lower one turns out to be the right place to have been standing.
