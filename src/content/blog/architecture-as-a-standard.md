@@ -2,6 +2,7 @@
 title: "Architecture as a standard, not a suggestion"
 description: "A service template where the dependency rule is a lint rule and the conventions decide where code goes — which turns out to be exactly what makes a codebase workable with an AI agent."
 pubDate: 'Aug 24 2026'
+updatedDate: 'Sep 1 2026'
 tags: ["architecture", "ai"]
 ---
 
@@ -116,3 +117,7 @@ A standard that decides everything is a framework, and I didn't want a framework
 And where the design has a real limit, it says so instead of glossing: Redis pub/sub is at-most-once, so if a service needs at-least-once delivery it pairs the publisher with an outbox table and a re-publisher. That's a sentence in the template's own docs. I'd rather inherit an honest limitation I can see than a guarantee I've assumed.
 
 The cost of all of this is real: more files, more indirection, and a `Symbol` for a thing that could have been a class import. On a script it would be absurd. On a service that will be maintained for years, by people who weren't there at the start — and increasingly by tools that were never there at all — I'll take the ceremony in exchange for a rule that can't quietly stop being true.
+
+## What I'd change now
+
+Since I built this template, the way I apply these same principles has moved in three specific spots. First: I would no longer make the class name the interface — today I use a stable `code` field, decoupled from the name, because renaming a class shouldn't break whoever consumes it. Second: I would no longer use `eslint-plugin-boundaries` for the layer boundary — today I prefer `dependency-cruiser`, because the former is blind to cycles and to cross-module imports that don't go through a direct import. Third: I wouldn't even leave the door open to a decorator-based ORM — today the baseline is "no ORM," with a typed query builder in its place. None of these three things makes what I wrote above wrong — it was my best answer at the time. But it's also proof that an enforced architecture isn't the same thing as a finished one — it keeps moving, and an honest standard has to admit that instead of pretending to be final.
