@@ -7,11 +7,11 @@ tags: ["blockchain", "architecture"]
 
 On most blockchains, an account is a key pair. Not a record, not an object with rules — a public key you can be paid at, and a private key that can do absolutely anything with what's there.
 
-Almost every complaint about using a blockchain follows from that one fact. There is no recovery, because there is nothing to recover to: lose the key and the account is gone, and no one can help you. There are no permissions, because a key has nothing to reason with — an account can either do everything or nothing. No spending limit, no second approver, no letting an application move exactly one token and nothing else. And onboarding always terminates in the same instruction: write down these twelve words, keep them forever, tell no one.
+Almost every complaint about using a blockchain follows from that one fact. There is no recovery, because there is nothing to recover to: lose the key and the account is gone, and no one can help you. There are no permissions, because a key has nothing to reason with — an account can either do everything or nothing. No spending limit, no second approver, no letting an application move exactly one token and nothing else. And onboarding always terminates in the same instruction: write down these twelve words, keep them forever, tell no one. All of these are symptoms of the same cause: there's no account capable of running its own logic — not just signing or refusing, but reacting, automating, doing things on its own behalf.
 
 Ethereum's answer is account abstraction: make the account a smart contract, so it can decide for itself what a valid signature is and what an operation is allowed to do. [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) established the pattern, and [ERC-7579](https://eips.ethereum.org/EIPS/eip-7579) standardized *modular* smart accounts — accounts you extend by installing modules.
 
-Koinos, a blockchain with no transaction fees, had none of this. In 2024 I set out to build it, and called it [Veive](https://github.com/veive-io).
+Koinos, a blockchain with no transaction fees, had none of this. I set out to build it, and called it [Veive](https://github.com/veive-io).
 
 ## An account made of parts
 
@@ -21,6 +21,9 @@ A Veive account is a contract that does very little by itself. It's a container.
 - **[Execution modules](https://veive-io.github.io/framework/module-types/execution-modules/)** carry an operation out — and, because they're just code, they can do more than the operation literally asked for.
 - **[Sign modules](https://veive-io.github.io/framework/module-types/sign-modules/)** define *how you prove it's you* — a seed phrase, a passkey, an identity provider.
 - **[Hook modules](https://veive-io.github.io/framework/module-types/hooks-modules/)** run before and after an operation. Pre-hooks can check conditions and block; post-hooks can log, notify, or trigger follow-up work.
+
+![Sequence diagram of a single operation flowing from a DApp into an Account, which calls a ValidationModule, then a pre-check HookModule, then an ExecutionModule, then a post-check HookModule, before returning a result](../../assets/blog/veive/module-execution-flow.png)
+_The flow of a single operation through validation, a pre-hook, execution, and a post-hook — straight from the protocol's own documentation._
 
 It's tempting to read that list as four flavours of permission check. It isn't. Only the first one is about saying no.
 
@@ -74,6 +77,8 @@ The reason all of this matters isn't the taxonomy — it's that behaviour people
 
 **A pre-authorized allowance.** [`mod-allowance`](https://veive-io.github.io/framework/core-modules/mod-allowance/) is a validation module that inverts the usual order: you approve an exact operation in advance — contract, method, arguments, transaction — and store it. When the operation later arrives, it's checked against what you approved, and on a match the allowance is *consumed*. Approving something once means it can happen once; a replayed transaction finds nothing left to spend. And since Veive validates internally generated operations too, this covers the calls a contract makes on your behalf partway through doing something else, not just the ones you sent yourself.
 
+**Recovery through guardians.** The same multisig module used for shared ownership also works for recovery: installed in the module install/uninstall scopes, a group of guardians — with a configurable threshold, say two of three — can authorize replacing a lost signing method, like a lost device's WebAuthn key. No external recovery service is needed: it's the same validation mechanism, applied to a different scope.
+
 **Multiple signatures.** A validation module requiring several approvers for operations in a given scope, while everything outside that scope carries on with a single signature.
 
 None of these need the applications to cooperate, and none of them need the account to be rewritten. Install, and the account behaves differently from that block onward.
@@ -90,18 +95,13 @@ Neither of those was possible with what the chain provided. WebAuthn signs with 
 
 The cryptography itself I didn't write, and there's no reason anyone should — P-256 verification came from BearSSL's single-file ECDSA verifier, and RSA from the implementation in Chrome OS's verified boot, [which I forked](https://github.com/adrianofoschi/rsa-verify) to work through JWT verification before porting it. The work was getting battle-tested C into a blockchain VM: onto the Koinos C++ SDK, through the WASI toolchain, and small enough to deploy.
 
-![A sequence diagram covering three phases — registration, authentication and a token transfer — between a browser, an authenticator, the smart wallet contract, a nickname registry, a verifier contract and the KOIN contract](../../assets/blog/veive/protocol-sequence.png)
-_A design diagram from NUB, the earlier attempt this grew out of: registering a passkey against a human-readable nickname, verifying the P-256 signature on chain, and spending through a pre-authorized allowance._
-
-That nickname registry in the diagram is the last piece of the barrier. An account you reach by `@name`, open with a fingerprint, on a chain where transactions cost nothing, is an account a normal person can be handed. No extension to install, no tokens to buy first, no secret to guard for the rest of their life.
+A nickname registry is the last piece of the barrier. An account you reach by `@name`, open with a fingerprint, on a chain where transactions cost nothing, is an account a normal person can be handed. No extension to install, no tokens to buy first, no secret to guard for the rest of their life.
 
 ## Where it stands
 
-The module packages are published on npm under MIT — validation, execution, sign and hooks base libraries, plus concrete modules for mnemonic, WebAuthn and OpenID signing, multisig validation, and pre-authorized allowances. They're still installable today.
+The module packages are published on npm under MIT — validation, execution, sign and hooks base libraries, plus concrete modules for mnemonic, WebAuthn and OpenID signing, multisig validation, and pre-authorized allowances. They're installable.
 
 ![The Veive documentation site, on the Framework page: a sidebar covering the protocol, use-cases, module types and roadmap, and a body explaining modular smart accounts inspired by ERC-7579](../../assets/blog/veive/docs-site.png)
 _The documentation site, [rebuilt and republished on GitHub](https://veive-io.github.io/)._
 
-The rest is honest to report. The Koinos token followed the wider crypto market down, the ecosystem thinned out with it, and the protocol is dormant. Adoption never arrived, and a protocol without applications built on it is, functionally, a library nobody imports.
-
-What I don't discount is the design. The constraint I thought was a deficiency — no EntryPoint to build on — is exactly what forced validation down into the layer where every call is visible, and produced authorization coverage the pattern I was copying doesn't have. That's happened to me a few times since: the platform is missing the obvious foundation, so you're pushed to a lower one, and the lower one turns out to be the right place to have been standing.
+What I don't discount is the design. The constraint I thought was a deficiency — no EntryPoint to build on — is exactly what forced validation down into the layer where every call is visible, and produced authorization coverage the pattern I was copying doesn't have.
