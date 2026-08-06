@@ -33,8 +33,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          # The action's 10-minute default is not enough when the Pages backend is
-          # slow: deployments that normally settle in seconds have taken 6+ minutes,
-          # and two runs were aborted mid-flight by the default timeout. 20 minutes.
-          timeout: 1200000
