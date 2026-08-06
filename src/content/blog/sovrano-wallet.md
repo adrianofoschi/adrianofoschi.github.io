@@ -26,9 +26,9 @@ _Sign-up. Note the last line: the seed phrase survives as a discouraged fallback
 
 A passkey, an account you already have, or — if you insist — twelve words. Inverting that default was the entire point. No extension to install, no tokens to acquire before you start, and nothing to write on paper.
 
-<video src="/videos/sovrano/webauthn.mp4" poster="/videos/sovrano/webauthn-poster.jpg" controls preload="none" playsinline style="max-width: 360px; margin-inline: auto;"></video>
+<iframe src="https://www.youtube-nocookie.com/embed/Xe9HAZJkPOI" title="Sign up to Sovrano Wallet using your X account" loading="lazy" allowfullscreen style="width:100%;aspect-ratio:16/9;border:1px solid var(--color-border);border-radius:0.375rem"></iframe>
 
-_The full flow: picking a nickname, creating a passkey, and authorizing a transfer with a fingerprint._
+_Signing up with an account you already have: pick a nickname, authorize with X, done._
 
 ## Passkeys, and hardware keys
 
@@ -36,9 +36,9 @@ Passkeys were the straightforward half: [WebAuthn](https://www.w3.org/TR/webauth
 
 What I like most about that approach is what it opens up as a consequence. A passkey doesn't have to live in a phone: WebAuthn also talks to FIDO2 security keys — a YubiKey, a SoloKey, or any cheap USB key. Plug it in, enter the PIN, touch it to confirm, and you have the security of a hardware wallet without buying one: the keys never leave the device, physical presence is required to approve a transaction, and there's no seed phrase in existence to be stolen or intercepted.
 
-<video src="/videos/sovrano/hardware.mp4" poster="/videos/sovrano/hardware-poster.jpg" controls preload="none" playsinline></video>
+<iframe src="https://www.youtube-nocookie.com/embed/R3yglDDOwio" title="Sign in to Sovrano Wallet using a hardware passkey" loading="lazy" allowfullscreen style="width:100%;aspect-ratio:16/9;border:1px solid var(--color-border);border-radius:0.375rem"></iframe>
 
-_Setting up an account with a USB security key instead of a cold wallet: choosing the device, the PIN, and the physical touch on the key to confirm._
+_Signing in with a hardware passkey: the PIN, then a physical touch on the key._
 
 ## Making "sign in with Discord" into a signature
 
@@ -46,9 +46,9 @@ Social login was the awkward half. [OpenID Connect](https://openid.net/developer
 
 So I wrote an identity broker: a small [Passport](https://www.passportjs.org/) service that speaks each provider's own dialect — OAuth for Google, whatever Discord and X and Telegram want — normalizes the result into a subject like `google|1234`, and mints an RS256-signed ID token of its own, published with a JWK so anything can verify it. Downstream, every provider looks identical: one token shape, one signature algorithm, one public key. The on-chain module doesn't need to know which one you used.
 
-<video src="/videos/sovrano/openid.mp4" poster="/videos/sovrano/openid-poster.jpg" controls preload="none" playsinline></video>
+<iframe src="https://www.youtube-nocookie.com/embed/DHXAwzcrW5w" title="Sign in to Sovrano Wallet using a Telegram account" loading="lazy" allowfullscreen style="width:100%;aspect-ratio:16/9;border:1px solid var(--color-border);border-radius:0.375rem"></iframe>
 
-_Signing in with a Google account, choosing a nickname, and authorizing a transaction without ever touching a seed phrase._
+_Telegram is one of the providers that isn’t OpenID at all — the broker is what makes it verifiable on chain._
 
 I want to be straight about the cost of that. The broker signs those tokens, so the broker is a trusted issuer, and whoever holds its private key can mint an identity for anyone. In a wallet whose whole premise is self-custody, that's a real centralization point sitting next to the front door. The honest framing is that it was a deliberate trade — reach now, decentralize the issuer later — and "later" is doing a lot of work in that sentence.
 
