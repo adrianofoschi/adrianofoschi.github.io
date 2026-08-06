@@ -40,6 +40,7 @@ just at translation time (rule violations are much cheaper to catch in Italian):
 - Ask which existing tag(s) from `src/consts.ts` apply, or whether this needs a new
   tag (only viable if a second post already exists or is planned for it).
 - Check whether any real images exist for this topic (ask the user; don't assume none).
+- Ask the temporal voice (see below) before outlining.
 
 **Revision:**
 - Read the existing post file and its frontmatter (title, description, pubDate, tags).
@@ -47,6 +48,22 @@ just at translation time (rule violations are much cheaper to catch in Italian):
 - Ask the user what's driving the redo: a full rewrite, fixing specific weak spots,
   updating stale claims, or just a fresh editing pass. This changes how much of the
   existing structure/content survives vs. gets rebuilt.
+- Ask the temporal voice (see below) before outlining — even if the post was already
+  classified in a prior session, confirm it still holds; voice can be the sole reason
+  for a redo.
+
+**Temporal voice — always ask explicitly, never infer from the topic's era.** Every
+post is either:
+- *today looking back at the past* — retrospective, hindsight allowed (e.g. "that habit
+  saved me more than once since," honest-outcome closings);
+- *as if it were happening today* — contemporaneous, no hindsight at all: no sentence
+  may reveal anything only knowable from later than the period the post narrates;
+- *mixed* — pin down exactly which section/beat is remembered-past and which is not,
+  before outlining, so the split is deliberate rather than accidental.
+
+Don't assume from whether the topic is "youth" or "professional" — confirmed wrong once
+already: a professional-era post was classified retrospective, same as a youth one.
+There is no default; ask every time.
 
 Then ask a *small* number of targeted questions (don't over-ask) needed to fix the
 paragraph-level outline: what's the arc of the post, what's the opening hook, what
@@ -70,6 +87,10 @@ Once the outline is approved:
   one back up, and don't restate the full draft-so-far on every turn — just the piece
   under review, unless the user asks to see the whole thing.
 - Keep applying the editorial rules from Step 0 as you write, not just at the end.
+- Keep applying the temporal voice decided in Step 1 as you write each paragraph — for
+  a contemporaneous post, watch for hindsight slipping in (e.g. "years later," "it turned
+  out," anything implying knowledge from after the narrated period) and flag it rather
+  than let it pass.
 
 Work through the outline top to bottom this way until every paragraph is approved.
 
