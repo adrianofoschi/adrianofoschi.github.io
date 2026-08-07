@@ -1,79 +1,94 @@
 ---
 title: "No system call for that: getting passkey and JWT signatures verified on chain"
-description: "A smart contract that wants to accept a fingerprint or a Google login has to verify signature formats the blockchain knows nothing about. The fix wasn't writing cryptography — it was knowing where to find code that already fits inside a VM."
+description: "A smart contract that wants to accept a fingerprint or a Google login has to verify signature formats the blockchain knows nothing about. Writing that verification myself cost too much to run, so the answer turned out to be knowing where to look for code that already fits inside a constrained VM."
 pubDate: 'Apr 15 2025'
 tags: ["blockchain"]
 ---
 
 Every blockchain hands contracts a short, fixed menu of cryptography. Usually it's exactly one curve: the one the chain's own accounts are built on, wired in as a system call, and nothing else.
 
-That's fine right up until you want an account controlled by something people actually own. A passkey signs with ECDSA over the NIST P-256 curve. An OpenID Connect identity token from Google or Microsoft is signed RS256 — RSA with SHA-256. On [Koinos](https://koinos.io/), in 2024, a contract could verify neither. There was no system call, so there was nothing to call.
+That's fine right up until you want an account controlled by something people actually own. A passkey signs with ECDSA over the NIST P-256 curve. An OpenID Connect identity token issued by Google or Microsoft is signed RS256 — RSA with SHA-256. On [Koinos](https://koinos.io/), a contract can verify neither: the system call doesn't exist, so there's nothing to call.
 
-If you want smart accounts that a fingerprint or an existing login can control, that gap is the whole problem. This is how I closed it.
+If you want smart accounts controlled by a fingerprint, or by an account someone already has, that gap is the whole problem. This is how I closed it.
 
-## Rule one: don't write the cryptography
+## The first attempt: writing it
 
-The instinct when a primitive is missing is to implement it. For signature verification that instinct is wrong. These algorithms have decades of subtle failure modes, and a bug doesn't produce a crash, it produces a contract that accepts signatures it shouldn't.
+The first attempt was to write it. Contracts on Koinos are written in AssemblyScript — a subset of TypeScript that compiles to WebAssembly — so the shortest road was to implement the verification there, in the same language as everything else.
 
-So the actual task is a sourcing problem: find implementations that are already reviewed, already used in anger, and — the constraint that narrows it fast — able to run in an environment with no operating system, no allocator to speak of, and a hard ceiling on code size.
+It worked, and it wasn't usable. There are no fees on this chain: every transaction consumes mana, a metered budget, and there's a ceiling on how much of it one can burn. Verifying a signature is arithmetic on enormous numbers — modular exponentiations, curve multiplications — and that arithmetic written in AssemblyScript cost too much. A single verification ate an amount of resources that made doing it on every operation impractical. And on every operation is exactly when it's needed.
 
-That environment description should sound familiar, because it isn't unique to blockchains. It's also a boot ROM.
+The problem wasn't correctness, it was cost. Which changes the question: not "how do I write this", but "where do I find an implementation already written to run where resources are scarce".
 
-- For P-256, [BearSSL](https://bearssl.org/)'s ECDSA verifier, taken through [oreparaz/p256](https://github.com/oreparaz/p256), which flattens it into a single generated header. BearSSL was written for embedded targets from the start.
-- For RSA, the implementation from **Chrome OS verified boot**. I [forked it](https://github.com/adrianofoschi/rsa-verify) to work through JWT verification before porting it.
+## Where to find cryptography that fits in a VM
 
-The verified-boot code is the better story of the two. A bootloader has exactly the same shape of problem as a chain contract: it only ever *verifies* signatures, never produces them; it runs before there's an OS to help; it can't allocate; and it has to be small. Someone had already solved verification under my constraints, for completely unrelated reasons, a decade earlier.
+There's a second reason not to write it, independent of cost. These algorithms have decades of subtle ways to go wrong, and a mistake doesn't crash anything: it makes the contract accept a signature it should have rejected. You find out when somebody takes advantage of it.
 
-## Rule two: make it work outside the chain first
+So I was looking for an implementation already written, already used in production, that could run under a contract's constraints: no operating system, no dynamic memory allocation, and compiled code that has to stay small.
 
-Debugging a contract inside a VM is slow and blind. Before any of this went on chain, I got a real Google ID token verifying in plain C on my laptop — because when it fails, you need to know whether the problem is your port or your inputs.
+Those are a bootloader's constraints.
 
-Getting a JWT into a form the verifier accepts is unglamorous and worth showing, because it's where the mistakes actually live:
+For P-256 I took [BearSSL](https://bearssl.org/)'s ECDSA verifier, by way of [`oreparaz/p256`](https://github.com/oreparaz/p256), which reduces it to a single header file; BearSSL is written for embedded systems. For RSA I took the implementation from Chrome OS verified boot — the code that checks the operating system's signature at startup — and [forked it](https://github.com/adrianofoschi/rsa-verify) to verify JWTs before porting it to the chain.
 
-```
-# the signed part is header.payload — the signature is the third segment
-tr '_-' '/+' < signature.b64 > sig_std.b64   # base64url is not base64
-base64 -d sig_std.b64 > sig.bin
-wc -c < sig.bin                              # must be exactly 256
-```
+Verified boot is the clearer case of the two. A bootloader verifies signatures and never produces one, runs before an operating system exists, doesn't allocate memory, and has to fit in very little space: the same four things a contract has to do. Someone had already solved the problem under my exact constraints, a decade earlier, for reasons that have nothing to do with any of this.
 
-Base64url isn't base64, the padding has to be restored by hand before decoding, and a 2048-bit RSA signature is 256 bytes exactly — if it isn't, stop, because everything after that point will fail for the wrong reason. Then `xxd -i` turns the bytes into a C array, a script converts the provider's JWK into a PEM, another converts the PEM into the key struct the verifier wants, `make`, and you get a yes or a no on your own machine in a second.
+The work was getting it into the chain: that C inside a C++ contract compiled to WebAssembly with the Koinos toolchain, and small enough to deploy.
 
-Only then is it worth compiling anything to WebAssembly.
+## Make it work off the chain first
+
+Debugging a contract inside a VM is slow and blind: you see that the verification answered no, and you don't know why. So before putting anything on chain, I got a real Google token verifying in C, on my laptop.
+
+Mostly it was there to separate two kinds of error. When a verification fails, the problem is either in the port or in the data being handed to it, and the data is the treacherous part. A JWT has to be taken apart into its three pieces, the signature is encoded in a variant of base64 that isn't base64, and it has to be decoded correctly before it's any use. A 2048-bit RSA signature is exactly 256 bytes long: if it isn't after decoding, there's no point going further, because everything after that will fail for the wrong reason.
+
+With the same code running on a laptop, that answer arrives in a second. Only then is it worth compiling anything to WebAssembly.
 
 ## The contract is almost nothing
 
-The final piece is the smallest. Each verifier is a C++ contract compiled to WASM, wrapping its vendored header in about a hundred lines. One entry point, three arguments, one boolean out. No storage, no state, no authority — a pure function that happens to live on a blockchain.
+The contract itself is the smallest part. Each of the two wraps its imported header in about a hundred lines: one entry point, three arguments — signature, public key, message — and a yes or a no coming out. No state, no stored data, no authority: a pure function that happens to live on a blockchain.
 
-The interesting part is the constants at the top, because each one is a decision:
+The interesting part is what goes in and what doesn't, because every choice is the same choice: take work away from the chain.
 
-```cpp
-constexpr std::size_t public_key_size = 520;   // RSA 2048 in rsa_verify format (rr, n, ...)
-constexpr std::size_t signature_size  = 256;   // RSA 2048-bit signature (PKCS1 v1.5)
-constexpr std::size_t msg_size        = 32;    // SHA-256
+The public key the RSA contract expects isn't the key the provider hands you. It's a prepared version, holding the modulus plus a constant computed in advance to make the multiplications fast. Verified boot has that computed by whoever prepares the key, rather than by the device doing the verifying — a decision made for bootloaders that is worth even more here. The sum is done once, outside, and what's left for the contract is only the part that can't be avoided. Same logic for the message: the contract receives a 32-byte digest, not the token, because hashing a few hundred bytes has no business happening on chain.
+
+```d2
+direction: down
+
+off: Off chain {
+  direction: right
+  key: Provider's RSA public key
+  prepared: "Prepared key:\nmodulus + precomputed constant"
+  token: ID token
+  digest: 32-byte digest
+  sig: Signature
+
+  key -> prepared: "once, when the\nkey is registered"
+  token -> digest: every verification
+}
+
+chain: On chain — all the contract does {
+  direction: right
+  exp: Modular exponentiation
+  check: "Rebuild the padded block,\ncheck it byte by byte"
+  out: true / false
+
+  exp -> check -> out
+}
+
+off.prepared -> chain.exp
+off.sig -> chain.exp
+off.digest -> chain.check
 ```
 
-That 520-byte "public key" isn't a public key in any format a provider will hand you. It's `size` and `n0inv` — four bytes each — plus the 256-byte modulus and 256 bytes of R², the Montgomery constant. The verified-boot implementation deliberately takes a *pre-processed* key so it never has to compute those on the device, and that decision, made for a bootloader, is even more valuable here: the arithmetic happens once, off chain, and the contract does only the modular exponentiation. Same for the message: the contract takes a 32-byte digest, not the token, because hashing a few hundred bytes is work that doesn't need to happen on chain either.
+_Everything that can be computed in advance is computed off the chain. What is left inside the box is the part that cannot be avoided._
 
-The RSA verifier still needs SHA-256 internally, though — not to hash the message, but because verifying PKCS#1 v1.5 means recovering the padded block and checking it byte by byte against the DER prefix for SHA-256 before comparing the digest. Reject the padding check and you accept forged signatures.
+One thing that can't be moved out is the padding check. Verifying an RSA signature doesn't just mean comparing two numbers: the signed block has to be rebuilt and checked byte by byte. That's where forged signatures hide, and skipping the check means accepting them.
 
-The P-256 verifier has its own tell:
-
-```cpp
-constexpr std::size_t public_key_size = 65;    // uncompressed point
-constexpr std::size_t signature_size  = 64;    // r ‖ s
-constexpr std::size_t msg_size        = 70;
-```
-
-Sixty-five bytes is an uncompressed elliptic curve point, sixty-four is `r` and `s` back to back — and the seventy-byte message is WebAuthn's own construction, the authenticator data concatenated with the hash of the client data. The contract doesn't parse a passkey response; it's handed the exact bytes the browser signed.
+The same idea holds on the P-256 side, and it shows in the arguments: the contract doesn't receive the passkey's response and doesn't parse it. It receives exactly the bytes the browser signed, assembled outside.
 
 ![A sequence diagram: the authenticator returns a signature, authenticator data and client data; the smart account authorizes the call and forwards p256_verify with the signature, the public key and a message built from authenticator data plus the hash of the client data; the verifier answers true](../../assets/blog/verifiers/p256-verify-flow.png)
 _The verifier's whole job, at the right-hand end of the flow: three arguments in, `true` out._
 
-Around that: fixed-size buffers, a static work buffer of three words per RSA word, and a protobuf interface generated at build time. No dynamic allocation anywhere. Both contracts are the same file with a different verifier inside.
+No dynamic allocation anywhere, fixed-size buffers throughout. The two contracts are the same file with a different verifier inside.
 
-## What it adds up to
+Two stateless contracts, each answering a single question, and from there on any smart account on the chain can be controlled by a passkey or by a token issued by an identity provider — with the check happening on the chain, instead of a server saying "trust me, I verified it".
 
-Two stateless contracts, each answering one question — signature, public key, message, valid or not — and suddenly any smart account on the chain can be controlled by a passkey, or by a token issued by an identity provider, with the check happening on chain rather than being asserted by a server.
-
-The chain is dormant now, along with everything I built on it. The transferable part isn't the code, it's where I found it. When you need a cryptographic primitive inside a constrained VM, the useful implementations aren't in the server-side libraries everyone reaches for first — they're in boot loaders, embedded TLS stacks, and firmware. Those authors were solving "verify this without an OS, without an allocator, in as few bytes as possible" long before anyone wanted to check a fingerprint on a blockchain.
+What I take away isn't the code, it's where I found it. When you need a cryptographic primitive inside a VM with few resources, the useful implementations aren't in the server-side libraries you reach for first: they're in bootloaders, in embedded TLS stacks, in firmware. The people who wrote them were already solving "verify this signature with no operating system, no memory allocation, and in very few bytes" long before it occurred to anyone to check a fingerprint on a blockchain.

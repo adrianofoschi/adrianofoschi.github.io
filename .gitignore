@@ -28,3 +28,6 @@ pnpm-debug.log*
 
 # generated-asset tooling cache (fonts)
 .cache/
+
+# D2 diagrams, rendered into public/ at build time from the ```d2 blocks in posts
+/public/d2/
