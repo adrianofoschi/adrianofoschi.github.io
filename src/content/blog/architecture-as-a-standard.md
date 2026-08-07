@@ -1,8 +1,7 @@
 ---
 title: "Architecture as a standard, not a suggestion"
 description: "Where AI-assisted coding actually fails isn't algorithms, it's architectural boundaries. So I stopped leaving structure to the model: hexagonal clean architecture on NestJS, with the dependency rule enforced on the import graph and a composition root that is the only place allowed to know every piece."
-pubDate: 'Aug 24 2026'
-updatedDate: 'Aug 6 2026'
+pubDate: 'Mar 3 2026'
 tags: ["architecture", "ai"]
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Same word, two different jobs: sysadmin before and after AWS"
 description: "I was a systems administrator twice, a decade apart — and the second time, on AWS, almost nothing from the first job carried over."
-pubDate: 'Aug 5 2026'
+pubDate: 'Jul 14 2026'
 tags: ["career"]
 ---
 

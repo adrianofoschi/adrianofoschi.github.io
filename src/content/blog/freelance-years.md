@@ -1,7 +1,7 @@
 ---
 title: "The freelance years: real clients, and a lesson school never taught me"
 description: "Freelancing was the first time nobody vouched for the work but me — and the first time I learned that technical skill alone isn't enough."
-pubDate: 'Aug 4 2026'
+pubDate: 'Dec 16 2024'
 tags: ["career"]
 ---
 

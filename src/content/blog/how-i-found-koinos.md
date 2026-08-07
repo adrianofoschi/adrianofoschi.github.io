@@ -1,7 +1,7 @@
 ---
 title: "I didn't want to trade crypto. I wanted to build on it."
 description: "In 2020 I bought crypto like everyone else. By the time I found DeFi, I realized what I actually wanted wasn't to trade it — it was to build on it, and Solidity's learning curve sent me looking for something else."
-pubDate: 'Aug 7 2026'
+pubDate: 'May 14 2023'
 tags: ["blockchain"]
 ---
 

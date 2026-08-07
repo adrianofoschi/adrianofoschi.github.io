@@ -1,7 +1,7 @@
 ---
 title: "My thesis: Hadoop vs. MySQL, and an honest result nobody expected"
 description: "For my computer science thesis I built the same data warehouse twice — once in Hive, once in MySQL — and benchmarked them head to head. The new technology didn't win by default."
-pubDate: 'Aug 6 2026'
+pubDate: 'Mar 12 2024'
 tags: ["early-projects"]
 ---
 

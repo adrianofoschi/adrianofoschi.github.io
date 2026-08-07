@@ -1,7 +1,7 @@
 ---
 title: "Graded by someone who didn't understand what I'd built"
 description: "A university exam graded on usability and security, a BlaBlaCar clone built with an early MVVM framework, and the grade that revealed the professor hadn't understood what he was looking at."
-pubDate: 'Aug 30 2026'
+pubDate: 'Oct 8 2024'
 tags: ["early-projects"]
 ---
 

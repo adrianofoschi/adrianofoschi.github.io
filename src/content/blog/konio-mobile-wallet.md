@@ -1,7 +1,7 @@
 ---
 title: "The blockchain that felt like web2, and the mobile wallet it was missing"
 description: "In 2023 I found a blockchain whose developer experience looked like ordinary web work, and no native mobile wallet for it. So I wrote one — and the hard part turned out to have nothing to do with cryptography."
-pubDate: 'Aug 8 2026'
+pubDate: 'Oct 3 2023'
 tags: ["blockchain", "wallets"]
 ---
 

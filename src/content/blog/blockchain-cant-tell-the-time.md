@@ -1,7 +1,7 @@
 ---
 title: "A blockchain can't tell the time: the off-chain half of an on-chain game"
 description: "I built a price-prediction game where the smart contract was the easy part. Everything that made it a game — knowing when a round ends, knowing what the price was — had to live on a server, and that server was the whole trust model."
-pubDate: 'Aug 18 2026'
+pubDate: 'Jun 11 2024'
 tags: ["blockchain"]
 ---
 

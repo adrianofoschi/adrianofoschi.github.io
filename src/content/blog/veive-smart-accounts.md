@@ -1,7 +1,7 @@
 ---
 title: "Veive: turning a blockchain account into something you can program"
 description: "In 2024 I built a modular smart account protocol for the Koinos blockchain. The absence of the piece everyone else builds on turned out to produce a stronger authorization model than the one I was copying."
-pubDate: 'Aug 12 2026'
+pubDate: 'Mar 11 2025'
 tags: ["blockchain", "architecture"]
 ---
 

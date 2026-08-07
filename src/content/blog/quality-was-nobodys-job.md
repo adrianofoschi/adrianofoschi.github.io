@@ -1,8 +1,7 @@
 ---
 title: "Quality was nobody's job, and then it was mine"
 description: "Eight years at a software house, half in consulting and half building the company's own product. What decided which years I thrived in wasn't the contract label — it was that I've never been someone who sits still."
-pubDate: 'Aug 22 2026'
-updatedDate: 'Sep 3 2026'
+pubDate: 'Oct 21 2025'
 tags: ["career"]
 ---
 

@@ -1,8 +1,7 @@
 ---
 title: "Building software my school needed"
 description: "Everyone expected me to choose the liceo. I picked a technical institute for computer science instead — and spent the first two years doing accounting."
-pubDate: 'Aug 1 2026'
-updatedDate: 'Aug 4 2026'
+pubDate: 'Jul 25 2023'
 tags: ["early-projects"]
 ---
 

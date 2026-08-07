@@ -1,7 +1,7 @@
 ---
 title: "A migration with no undo, and 2,000 users in three weeks"
 description: "In late 2023 I rewrote the data model of a crypto wallet that was already installed on real phones, redesigned its interface, and ran a giveaway that took it past 2,000 active users in three weeks."
-pubDate: 'Aug 10 2026'
+pubDate: 'Jan 9 2024'
 tags: ["blockchain", "wallets"]
 ---
 

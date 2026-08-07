@@ -1,8 +1,7 @@
 ---
 title: "The cost of writing collapsed. The cost of checking didn't"
 description: "Obrussa is an approach I'm trying right now: treating AI-assisted development as a system problem — explicit context, a blocking gate, durable state — because the bottleneck moved from producing code to verifying it."
-pubDate: 'Aug 26 2026'
-updatedDate: 'Aug 28 2026'
+pubDate: 'May 5 2026'
 tags: ["ai", "architecture"]
 ---
 

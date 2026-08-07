@@ -1,8 +1,7 @@
 ---
 title: 'Building was always the point'
 description: "From LEGO ziggurats and a 1998 Pentium to hex-editing FIFA files by hand: founding footballmatch.it, building a suite of import tools, and landing a Superpatch on an Italian magazine's cover."
-pubDate: 'Jul 31 2026'
-updatedDate: 'Aug 4 2026'
+pubDate: 'Apr 18 2023'
 tags: ["early-projects"]
 ---
 
