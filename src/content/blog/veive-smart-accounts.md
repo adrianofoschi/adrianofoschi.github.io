@@ -22,8 +22,29 @@ A Veive account is a contract that does very little by itself. It's a container.
 - **[Sign modules](https://veive-io.github.io/framework/module-types/sign-modules/)** define *how you prove it's you* — a seed phrase, a passkey, an identity provider.
 - **[Hook modules](https://veive-io.github.io/framework/module-types/hooks-modules/)** run before and after an operation. Pre-hooks can check conditions and block; post-hooks can log, notify, or trigger follow-up work.
 
-![Sequence diagram of a single operation flowing from a DApp into an Account, which calls a ValidationModule, then a pre-check HookModule, then an ExecutionModule, then a post-check HookModule, before returning a result](../../assets/blog/veive/module-execution-flow.png)
-_The flow of a single operation through validation, a pre-hook, execution, and a post-hook — straight from the protocol's own documentation._
+```d2
+shape: sequence_diagram
+
+dapp: DApp
+account: Account
+validation: Validation
+pre: Pre-hook
+execution: Execution
+post: Post-hook
+
+dapp -> account: execute(operation)
+account -> validation: validate_operation
+validation -> account: valid
+account -> pre: pre_check
+pre -> account: data
+account -> execution: execute
+execution -> account: result
+account -> post: post_check(data)
+post -> account: result
+account -> dapp: result
+```
+
+_The flow of a single operation through validation, a pre-hook, execution, and a post-hook — the account calls each module type in turn, and every one of them can stop it._
 
 It's tempting to read that list as four flavours of permission check. It isn't. Only the first one is about saying no.
 

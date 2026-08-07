@@ -84,7 +84,23 @@ One thing that can't be moved out is the padding check. Verifying an RSA signatu
 
 The same idea holds on the P-256 side, and it shows in the arguments: the contract doesn't receive the passkey's response and doesn't parse it. It receives exactly the bytes the browser signed, assembled outside.
 
-![A sequence diagram: the authenticator returns a signature, authenticator data and client data; the smart account authorizes the call and forwards p256_verify with the signature, the public key and a message built from authenticator data plus the hash of the client data; the verifier answers true](../../assets/blog/verifiers/p256-verify-flow.png)
+```d2
+shape: sequence_diagram
+
+dapp: DApp
+account: Account
+sign: Sign module
+verifier: P-256 verifier
+
+dapp -> account: execute(operation)
+account -> sign: is this signature valid?
+sign -> sign: look up the registered credential
+sign -> verifier: "p256_verify(signature,\npublic key,\nauthenticator_data +\nsha256(client_data))"
+verifier -> sign: true
+sign -> account: valid
+account -> dapp: operation executed
+```
+
 _The verifier's whole job, at the right-hand end of the flow: three arguments in, `true` out._
 
 No dynamic allocation anywhere, fixed-size buffers throughout. The two contracts are the same file with a different verifier inside.

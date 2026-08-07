@@ -18,6 +18,14 @@ export default defineConfig({
 			// and there is no dark variant to switch to.
 			theme: { default: '0', dark: false },
 			pad: 20,
+			// The whole site is IBM Plex Mono; diagrams would otherwise be the only
+			// sans-serif on the page. Vendored under fonts/ (OFL).
+			fonts: {
+				regular: 'fonts/IBMPlexMono-Regular.ttf',
+				bold: 'fonts/IBMPlexMono-Bold.ttf',
+				italic: 'fonts/IBMPlexMono-Italic.ttf',
+				semibold: 'fonts/IBMPlexMono-SemiBold.ttf',
+			},
 			// WebAssembly generation, so the build needs no `d2` binary — and the
 			// GitHub Pages workflow stays as it is.
 			experimental: { useD2js: true },

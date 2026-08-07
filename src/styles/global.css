@@ -23,11 +23,11 @@
 	}
 
 	/*
-	 * D2 diagrams. Left to scale freely they shrink to the column width, which on a
-	 * phone drops the labels below 6px. So they keep a legible minimum size and the
-	 * paragraph wrapping them scrolls sideways instead.
+	 * D2 diagrams fill the column, but stop shrinking once their labels would stop
+	 * being readable — on a phone they overflow and the article scrolls sideways
+	 * instead of the whole page.
 	 */
-	.prose p:has(> img[src^='/d2/']) {
+	.prose {
 		overflow-x: auto;
 	}
 	.prose img[src^='/d2/'] {
