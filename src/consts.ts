@@ -48,6 +48,11 @@ export const TAGS = {
 		description:
 			'What the working years taught that no course did — clients, consulting, product, and where quality does and does not come from.',
 	},
+	homelab: {
+		label: 'homelab',
+		description:
+			'Running my own infrastructure at home, for its own sake: hardware soldered by hand, devices freed from their manufacturer, and everything answering to a machine of mine.',
+	},
 	'early-projects': {
 		label: 'early projects',
 		description:
