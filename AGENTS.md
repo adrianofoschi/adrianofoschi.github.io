@@ -32,6 +32,10 @@ that's just one topic among many, not the blog's frame). Site language is Englis
 3. **Only real images in the body.** Recover real screenshots/diagrams/photos (Wayback
    Machine, personal archives, a project's own repo) — never stock photos, never a
    fabricated UI. If nothing real survives, the post simply has no inline images.
+   Explanatory **diagrams are the one thing you may author**, because a diagram claims to
+   explain rather than to be a recovered artifact — but only from something real (the
+   project's own docs or source), never from a mechanism you assumed. Write them as D2,
+   see Structure below.
 4. **No hero images.** Posts open on the title; the home page is a list of titles and
    descriptions. Generated 1200×630 hero frames existed until Aug 2026 and were removed
    entirely — code, assets and generator script — because they weren't earning their place.
@@ -48,6 +52,14 @@ next post; update it after publishing one.
 
 - `src/content/blog/*.md` — posts. Frontmatter: `title`, `description`, `pubDate`
   (coerced to Date, e.g. `'Aug 6 2026'`), `tags` (at least one), optional `updatedDate`.
+- **`pubDate` is not today's date.** The blog is backdated to read as an archive kept
+  regularly since 2023. A post written in the contemporaneous voice is pinned to the period
+  it narrates — that date is a fact, and the narrator may not know anything that happened
+  after it, including his own later job titles. A retrospective post can be placed anywhere,
+  and is placed to keep the cadence even. Decide the voice first, then the date, and check
+  the timeline table in `notes/content-plan.md` before picking one. `updatedDate` is only
+  for a genuine update *after* a post's own date, not for a rewrite — a "revised in 2026"
+  stamp on a post dated 2023 gives the backdating away.
 - **Tags are a closed vocabulary**, defined with their labels and descriptions in
   `src/consts.ts` (`TAGS`) and enforced by the content schema — an unknown tag fails the
   build. Every tag must cover **at least two posts**: a tag page with one post is a thin
@@ -70,8 +82,22 @@ next post; update it after publishing one.
 - `src/pages/[...page].astro` — paginated home page (post list).
 - `src/pages/about.astro` — About page.
 - `src/components/`, `src/layouts/BlogPost.astro` — shared header/footer/link/layout.
-- `src/styles/global.css` — theme: black background, IBM Plex Mono (Google font
-  provider, configured in `astro.config.mjs`), cyan accent. Dark-only, no light mode.
+- `src/styles/global.css` — theme: white background, IBM Plex Mono (Google font provider,
+  configured in `astro.config.mjs`), dark cyan accent. **Light-only, no dark mode** (it was
+  dark-only until Aug 2026). Six semantic tokens drive everything and components use them by
+  name (`text-fg`, `text-muted`, `border-border`, `text-accent`), so never hardcode a colour
+  in a component. The accent is `#0e7490`, not the brighter `#22d3ee`, which fails contrast
+  against white.
+- **Diagrams are D2, written inline in the post** as a ` ```d2 ` block and rendered to SVG at
+  build time by `astro-d2`. No PNG diagrams — the source belongs in the post, where it can be
+  edited. Mermaid was considered and rejected: it needs a browser to draw, so it costs either
+  ~1MB of JavaScript shipped to the reader or Chromium in CI. D2 runs as WebAssembly
+  (`experimental.useD2js`), which is why the deploy workflow needs no extra step — keep it
+  that way. Diagrams use IBM Plex Mono from the TTFs vendored in `fonts/` (OFL). Keep them
+  narrow: width comes from label length and participant count, and anything past ~1100px
+  reads small in the text column. Sizing is two CSS rules in `global.css`; a previous attempt
+  to wrap diagrams in a `<figure>` via a rehype plugin was rejected as over-engineering.
+  `public/d2/` is generated output and gitignored.
 - `.github/workflows/deploy.yml` — builds and deploys to GitHub Pages on every push to
   `main`.
 
