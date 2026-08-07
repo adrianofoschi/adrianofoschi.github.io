@@ -1,123 +1,113 @@
 ---
 title: "Architecture as a standard, not a suggestion"
-description: "A service template where the dependency rule is a lint rule and the conventions decide where code goes — which turns out to be exactly what makes a codebase workable with an AI agent."
+description: "Where AI-assisted coding actually fails isn't algorithms, it's architectural boundaries. So I stopped leaving structure to the model: hexagonal clean architecture on NestJS, with the dependency rule enforced on the import graph and a composition root that is the only place allowed to know every piece."
 pubDate: 'Aug 24 2026'
-updatedDate: 'Sep 1 2026'
+updatedDate: 'Aug 6 2026'
 tags: ["architecture", "ai"]
 ---
 
-In 2026 I built myself a service template: a NestJS skeleton I clone whenever I start a new backend, with all the cross-cutting plumbing already wired and zero business logic in it. Health probes, structured logging, exception filters, OIDC authentication, an event publisher. Nothing in it is clever. The interesting part isn't what it contains — it's that the architecture is not written down as advice. It's enforced.
+Since the AI era began, every one of us developers has watched our value as programmers depreciate: writing code was the skill the job rested on, and it has become the part a machine does in seconds. Ask for a feature and you instantly get hundreds of lines — the cost of writing is essentially gone. But that cost doesn't vanish, it moves to checking, and checking is more expensive than writing: reviewing code you didn't write is tiring, and reviewing mountains of it much more so. There's no escape in verifying step by step either, because you don't know up front where the model is heading — you're judging a move without knowing the game. That's where vibe-coding starts: not out of laziness, but because at some point genuinely verifying costs more than accepting and hoping.
 
-## The rule, and who owns it
+## Where AI actually fails
 
-The layout is the usual hexagonal one: four layers, dependencies pointing inward.
+There is one thing I've noticed with some consistency, though: the point where these tools fail isn't implementation. Ask for an algorithm, a transformation, a complicated query, and it comes out correct — that's exactly the kind of closed problem they're strong at. What comes out arbitrary are the architectural boundaries: where to put a file, which layer may know which other, how information should travel between layers, what belongs to the domain and what to infrastructure.
 
-| Layer | May import | Holds |
-|---|---|---|
-| `domain/` | nothing | entities, value objects, domain events, `DomainException` |
-| `application/` | `domain` | use cases and ports |
-| `infrastructure/` | `domain`, `application` | adapters, modules, filters, config |
-| `presentation/` | `domain`, `application` | controllers, DTOs, decorators |
+The framework alone doesn't fix it. A framework gives you bricks and a few conventions, but it isn't rigid enough: it leaves too many roads open, all equally plausible. And when every road is plausible, the choice becomes arbitrary — not wrong, random. Two similar features end up structured two different ways, and neither violates any rule, because the rule doesn't exist.
 
-Every project I've worked on has had a diagram like that. On most of them, by year three, the diagram described a building that no longer existed. Not through anybody's bad faith — through a hundred individually reasonable imports, each one a small exception made under deadline, none of them visible until you go looking.
+## Giving the AI a pattern to treat as scripture
 
-So in this template the table above isn't in a README. It's in `eslint.config.mjs`:
+The most effective lever I've found is removing that ambiguity up front: hand over a precisely documented design pattern and require it be treated as scripture, not as a suggestion. If the organization of the code is already decided, it isn't something the model has to invent — and the space in which it can go wrong shrinks to what it's actually good at.
 
-```js
-'boundaries/element-types': ['error', {
-  default: 'disallow',
-  rules: [
-    { from: 'domain', allow: ['domain'] },
-    { from: 'application', allow: ['domain', 'application'] },
-    { from: 'infrastructure', allow: ['domain', 'application', 'infrastructure'] },
-    { from: 'presentation', allow: ['domain', 'application', 'presentation'] },
-  ],
-}]
-```
+The catch is that this only works if you know that pattern, and know it well. I should be honest about my starting point: I've built a lot of experience on complex, highly scalable systems, but I built it in the field, almost never approaching the material theoretically. I knew how to make things work without always being able to name the principle I was applying — which is probably the norm among experienced developers rather than the exception. To have a model put a principle into practice, though, I need to know it with a precision I never needed before: I have to be able to write it down, justify it, and tell the case where it holds from the case where it doesn't. That's the unexpected gain of this period — the machine writes the code, I have to know the theory, and better than before.
 
-`default: 'disallow'` is the load-bearing line. Anything not explicitly permitted is an error, so a new kind of import doesn't get the benefit of the doubt — it has to be argued for by editing this file, which is a visible act in a diff rather than an invisible one inside a feature branch.
+## The choice: hexagonal clean architecture
 
-Two consequences worth stating plainly. First, `domain/` imports nothing at all — not even NestJS. Second, `presentation/` cannot import `infrastructure/`: a controller has no way to reach an adapter directly, only a use case and the domain. That one is stricter than most versions of this architecture, and it's the rule I'd expect someone to argue with. I keep it because the alternative — a controller reaching into a repository "just this once, it's a read" — is precisely the individually reasonable import that erases the boundary over time.
+The pattern I started studying most seriously is hexagonal clean architecture. Let me say it immediately: for many projects it's overkill, and I have no intention of arguing otherwise. The ceremony it demands — ports, adapters, a layer that isn't allowed to talk to another — is hard to justify on a small service that just needs to work.
 
-## The hole in the rule, on purpose
+But it's effective precisely where it's needed here, for three reasons. First: it doesn't leave the model any choice about how to organize the code, because the structure is decided before a line is written. Second: it states explicitly how information travels between layers, which is the other half of what goes arbitrary when a rule is missing. The third matters with no AI involved at all: separating the domain from technical details preserves the application's ability to evolve, and an application that can replace pieces without rewriting itself is an application that lasts.
 
-There is an exemption, and pretending otherwise would be dishonest:
+As a framework I picked NestJS, which comes with modules and dependency injection out of the box: the layers have something to rest on instead of having to be simulated. Everything that follows is the rigidity I added on top.
 
-```js
-'boundaries/ignore': ['src/main.ts', 'src/app.module.ts', 'src/**/*.spec.ts'],
-```
+## Four layers, and the dependency rule
 
-Somewhere, something has to know about everything: which adapter implements which port, which module imports which. That's the composition root, and its whole job is to be the one place where the layers are allowed to meet. Making it exempt isn't a loophole in the rule — it's the rule admitting where wiring lives, so that wiring doesn't have to spread out and hide.
+There are four layers and the dependencies all point inward. At the centre, the **domain**: entities, value objects, events, and zero framework imports — no decorators, no database driver, no notion that HTTP exists. Around it the **application**, which depends only on the domain, orchestrates the use cases and declares the **ports**, the interfaces describing what it needs from outside. At the edge, two families of adapters: **infrastructure** implements those ports against the real world — repositories, HTTP clients, providers — and **presentation** is the way in: controllers, DTOs, CLI, translating the outside world into use-case calls.
 
-## Conventions that decide, so people don't
+The hard rule is that inner layers never import outer ones. The domain stays testable with no database and no framework, and database, framework and entry channel become replaceable details — that's the invariant of all clean architecture, not a preference of mine.
 
-A dependency rule tells you what you may not do. Most of the day-to-day questions in a codebase are the other kind: where does this go, what do I call it, what does it return. The template answers those by convention rather than by discussion.
+There is one part of that rule I care about more than the rest, because it's the part most often forgotten: **infrastructure and presentation do not import each other**. They're siblings at the edge, not one stacked on the other, and whoever composes them is what puts them in touch. A controller that could import a repository directly would have a road around the use case — and that road would get taken, if not by me then by an agent looking for the shortest path from request to database. Forbidding it in both directions is what makes the use case the only way through instead of the recommended way through.
 
-A port is an interface plus a `Symbol` token, framework-free, in `application/ports/`:
+## Ports owned by the consumer, and the composition root
 
-```ts
-export interface ClockPort {
-  now(): Date;
-}
-export const CLOCK = Symbol('CLOCK');
-```
+The piece that took me longest to genuinely understand isn't the pyramid of layers, it's where ports and their adapters live.
 
-The adapter lives in `infrastructure/`, is `@Injectable()`, and gets bound in a module with `{ provide: CLOCK, useClass: SystemClock }`. Consumers inject the Symbol and depend on the interface. Files carry their role in the name — `*.port.ts`, `*.adapter.ts`, `*.use-case.ts`, `*.module.ts`, `*.controller.ts` — one use case per file, tests co-located.
+A port is always declared **where it is consumed**, never where it is implemented. The consumer states what it needs — an interface saying "I need to be able to save a subscriber", written in the application layer of the module that has to save one — rather than the provider announcing what it offers. It looks like a detail about where files go, and it's actually the direction of the dependency: if the port belonged to whoever implements it, the centre would have to know the edge, and the inversion the whole pattern rests on wouldn't be there.
 
-The part I like most is error handling, because it removes a decision that gets made inconsistently on every team I've been on: which status code is this. In the template, nothing chooses. A use case throws a domain exception and never catches it, and a global filter reads the class name:
+Where the adapter lives, on the other hand, depends on which boundary it crosses. In the normal case it sits in the infrastructure of the same module, wired by that module: ordinary clean architecture, entirely internal. But when an adapter would cross a boundary between modules it can't sit there, because to implement that port it would have to import the other module — and that import is exactly what the boundary forbids. So the port stays with the consumer, and the adapter is provided and wired by the **composition root**: the application that composes the modules.
 
-```ts
-private mapToHttpStatus(exception: DomainException): HttpStatus {
-  const name = exception.constructor.name;
-  if (name.endsWith('NotFoundException')) return HttpStatus.NOT_FOUND;
-  if (name.endsWith('AlreadyExistsException')) return HttpStatus.CONFLICT;
-  if (name.endsWith('ConstraintException')) return HttpStatus.CONFLICT;
-  if (name.endsWith('PermissionsException')) return HttpStatus.FORBIDDEN;
-  return HttpStatus.UNPROCESSABLE_ENTITY;
-}
-```
+This was the thing I understood worst at the beginning, and I mistook it for a loophole — a place where the rules count for less. It's the opposite. The composition root is the only point in the system with the right to know every piece, and it exists precisely so that everything else can avoid knowing each other: a module declares *what* it needs without knowing *who* will give it, and therefore stays compilable, testable and shippable on its own. Different deployment shapes become different roots composing the same modules with different adapters wired in, without a line inside the modules changing.
 
-Name the exception `OrderNotFoundException` and it is a 404 everywhere, forever, without anyone typing `404`. Infrastructure exceptions map to 500 with the detail logged and never returned to the caller.
+## Who enforces all this
 
-Domain events work the same way. Each event carries its own bus channel and serializes its own payload, so the publisher is generic and never needs editing when a new event appears:
+So far this is a drawing, and a drawing doesn't hold on its own. The difference between a real architecture and a diagram in a README is whether something fails when the rule is broken.
 
-```ts
-export class OrderPlacedEvent implements DomainEvent {
-  readonly occurredOn = new Date();
-  readonly eventType = 'orders.order.placed';   // {domain}.{entity}.{verb}, past tense
-  constructor(private readonly orderId: string) {}
-  payload() { return { orderId: this.orderId }; }
-}
-```
+The import graph is checked on every change by a dedicated tool — `dependency-cruiser`, in my case — which is the single source of truth about boundaries and fails the build in CI. An inner layer importing an outer one, an inbound adapter importing an outbound one, a cycle between modules: all blocking errors, not observations left to a code review. And the constraint is declared in one place, instead of scattered across conventions each person remembers their own way.
 
-The adapter wraps whatever it's given in one envelope — `{ eventId, type, occurredAt, data }` — and emits on the channel. Adding an event is writing a class. It is not also editing a switch statement in a publisher, which is the thing that always rots.
+Two reinforcements matter as much as the main rule. The first is strict dependency resolution: a package a module hasn't declared doesn't even resolve, so the wrong import dies at build time and never reaches the linter. The second is that every module must be able to compile **on its own**: it's the most honest test of independence, because a hidden dependency doesn't survive compiling in isolation — there's no way to "nearly" pass it.
+
+This is the part that changes character when the other side is a model rather than a person. You explain a convention to a colleague and count on them remembering it, and if they forget you find out in review. An agent needs something that tells it no mechanically, immediately, every time — and that says it before hundreds of plausible lines have been written in the wrong place. A rule that lives only in a document is, to an agent, a suggestion.
+
+## The conventions inside the layers
+
+Boundaries say where a thing may live; they don't say how it's written. That part is conventions, and their usefulness isn't being clever — it's being **already decided**.
+
+The first is the role suffix in the filename: `*.use-case.ts`, `*.port.ts`, `*.adapter.ts`, `*.repository.ts`, `*.vo.ts`, `*.controller.ts`, `*.dto.ts`. The role — and therefore the layer that file belongs in — reads at a glance, and that isn't only a human benefit: it makes it immediately obvious, to an automated reviewer too, that a file named `*.repository.ts` sitting in the application layer is in the wrong place.
+
+Then there's how domain objects are constructed, which is the convention I care about most. A value object is immutable and validates on construction, through a static factory with a private constructor: from outside you cannot call `new`, and the only available entrance validates and normalizes. The consequence is stronger than a recommendation — invalid state isn't discouraged, it's **unrepresentable**: a malformed email never becomes a value object, so there is no point in the system it could reach. Entities follow the same logic with two distinct factories, one to create a new instance, which emits a domain event, and one to rebuild it from the database, which doesn't — because re-reading a row isn't something that just happened.
+
+Above the domain, the use cases: one per operation, one file each, flat, and **zero business logic**. They orchestrate — call ports, build entities, use value objects — but the business rule lives in the domain, not there. Controllers are the mirror image: validate the DTO, map to a command, call the use case, map the response. No logic, ever.
+
+One practical detail worth stating because it's specific to this stack: NestJS can't inject a TypeScript interface, which doesn't exist at runtime. So every port is an interface plus a `Symbol` acting as its injection token. It's the one place where the pattern has to bend to the language, and I'd rather say so than pretend the abstraction is free.
+
+## Two-layer validation, and the error model
+
+There are two validations and they don't duplicate each other, because they answer different questions. At the edge, on the DTO, you validate **shape**: types, required fields, formats, body size. A malformed input is rejected immediately, before touching any logic, and it's a security surface too. In the domain you validate **business**, on construction, so that an invalid domain object doesn't exist. The reason the domain doesn't trust the DTO is concrete: not every entry point comes through a DTO. A CLI command, an event handler, a test build domain objects directly — if the business rules lived in the DTO validator, each of those roads would be an open door.
+
+Errors follow the same separation. There are two hierarchies, both framework-independent: one for business rule violations, one for technical faults. Persistence adapters wrap driver errors in the second, so a database error never reaches the user raw. And nothing is caught in the core: domain, use cases and controllers let it propagate. Exactly two points catch — the persistence adapter, translating the technical inward, and the inbound adapter, translating outward. Two points of translation instead of one scattered through every function.
+
+How it renders outward is by naming convention, not a hand-written map: an exception whose name ends in `NotFoundException` becomes a 404, `AlreadyExistsException` or `ConstraintException` a 409, `PermissionsException` a 403, any other domain violation a 422, and any technical fault a generic 500. The core stays entirely unaware of the protocol — which genuinely matters, because the same set of exceptions has to render on a channel that isn't HTTP: from the CLI those same exceptions become exit codes and messages on stderr, not a mirror of HTTP statuses.
+
+One detail I learned the hard way and consider non-negotiable: every error carries a **stable `code`, decoupled from the class name**. If the code exposed to consumers were the class name, renaming a class — an internal refactor, invisible from outside — would break whoever relies on that code. The class name classifies the status; the `code` is public contract, and the two need keeping apart.
+
+## Persistence: a typed query builder, no ORM
+
+For persistence I moved to a typed query builder — Kysely — and dropped the ORM. The reason isn't stylistic, and it follows entirely from the pattern described so far.
+
+Aggregates, in this model, are **detached**: the repository reads rows and translates them with a mapper, and the domain object that comes out isn't "managed" by anything. Between aggregates there are no relations and no foreign keys — integrity is application-level and cascades are orchestrated by the use cases. Which means every convenience an ORM offers is inapplicable: nothing to track, nothing to lazy-load, nothing to synchronize. And an inapplicable but available convenience isn't neutral: it's implicit state sitting there for whoever uses it by mistake, with effects that surface far from where it was used. On a managed object model an ORM is the right call; here it would be an engine left running under the floor.
+
+The consequence that convinced me most, though, is about declaring the schema. **The migration is the only declaration of the schema**: the types describe the *shape* of the rows — column names, types, what can be omitted on insert — while the *structures*, meaning primary keys, unique constraints and indexes, live only in the migration that creates them. From which follows something worth stating in full: there is no schema-versus-types drift check, because there is no second declaration to reconcile. An ORM requires that check *because* it forces you to declare twice — the entity metadata and the migration SQL — so the check solves a problem the tool itself introduced. Here that class of error isn't caught better: it isn't representable.
+
+I have to state the reverse too, because it appears to contradict what I just wrote. Columns — name, type, nullability — are described twice, in the migration and in the row type, and nothing verifies it mechanically. That's a choice, not an oversight: a mismatch between types and schema isn't a catastrophic or irreversible invariant, so it doesn't warrant a blocking check, and the burden stays with whoever writes it. In practice the immediate effects police it: column names go straight into the SQL, so a wrong one fails the integration tests against a real Postgres right away; a column declared and absent breaks the query selecting it. What's genuinely left uncovered is nullability on a path no test exercises — and I'd rather know that and say it than believe I'm covered.
+
+One last detail that strikes me as the most elegant part of all this: each migration is typed against the world it was born in, not the current schema. Otherwise code that is immutable by definition — an applied migration is never touched — would depend on something that evolves, and an old migration would stop compiling at the first schema change.
 
 ## Why this suits working with an AI
 
-Here's what changed my mind about how much of this is worth the effort.
+The benefit is narrower than the topic suggests, and I want to calibrate it precisely: an explicit standard plus a check that actually runs does not make generated code **correct**. It makes it **placeable**, and it makes boundary errors visible early and mechanically. Those are two different things, and only the second is what architecture buys you.
 
-An agent writing code in your repository needs roughly what a new colleague needs: to know where things go, what the constraints are, and how to tell whether what it just wrote is acceptable. The difference is that a colleague absorbs the unwritten half. They notice that nobody here puts logic in controllers, they get told in review, they remember. A model doesn't accumulate that. Every session starts from what it can read.
+Placeable means the question "where does this piece go" already has an answer before the model starts. It doesn't have to invent a structure, and therefore can't invent a different one next week for a similar feature: the arbitrary part — the thing I said at the start is the real point of failure — has been removed from the problem, not delegated more skilfully. And there's a side effect I appreciated more than I expected: the architecture doesn't have to live in the prompt. It lives in the repository, in normative files the model reads, and it doesn't need repeating every conversation or remembering by me.
 
-Which means the tacit standard — the one that lives in the team's habits and in reviewers' heads — is worth nearly nothing to it, and the explicit one is worth a great deal. This template is the explicit one, in three forms that reinforce each other:
+Then there's a division of verification labour that turned out to be the most useful part. **Structural** violations — a layer importing outward, an inbound adapter touching an outbound one, a module that won't compile alone — aren't matters of judgement: a machine catches those, always, and they block. What's left over are the shades of intent: whether that's really orchestration or business logic in disguise, whether the port is declared on the right side. Those are judgements, and they can be made by a reviewer — human or model — reading **the standard itself** as its rubric, not a checklist derived from it. That detail matters: a checklist summarized from a document drifts away from the document; if the reviewer reads the document, there's nothing that can diverge.
 
-**A rule that runs.** The boundary check isn't a paragraph asking nicely; it's `npm run lint`, and it fails. That gives a generated change a verdict that doesn't depend on anybody's attention. If a model reaches from a controller into an adapter — a very natural thing to do, since it works — the build says no before a human ever reads it. Documentation cannot do that. A check can.
+The final accounting is this, and it returns to where I started. The cost had moved to checking, and checking mountains of code I didn't write is the expensive part. I haven't eliminated it. I've made one entire class of it — boundaries, which is precisely where these tools go wrong — either impossible or immediately obvious, so that the attention I have left can go to what a machine can't judge.
 
-**Placement without judgement.** Because roles are in filenames and each kind of thing has exactly one home, "where does this go" has an answer that can be derived rather than guessed. Most of the incoherence I've seen in generated code isn't wrong logic — it's a right thing put in the wrong place, or the fourth slightly different way of doing something the codebase already does three ways.
+## What it deliberately leaves open
 
-**Behaviour from naming.** The suffix-to-status mapping and the event channel convention mean the model isn't inventing status codes or channel names. It is naming a class, and the naming is the interface. Fewer free choices means fewer places to be arbitrary, and arbitrary is what you're actually fighting.
+It's worth saying where this standard is silent, because the silence is designed as much as the rules.
 
-The template also carries a `CLAUDE.md` next to its `README.md` — the same architecture, compressed for something that will read it in full every time and has no memory of yesterday. Writing it made the standard better, because the questions you have to answer for a machine ("which layer may import which, exactly?") are the ones that stay comfortably vague between humans.
+It fixes **structure**, not style. It says where a piece of code goes and who may know whom; it doesn't say how you write inside a layer, how to decompose an algorithm, how to name a local variable, which library to pick for a contained job. Inside a use case or inside an adapter there's all the freedom there ever was. That's a choice about proportion, and it matches this article's thesis: rigidity should be spent where these tools fail, on the boundaries, and not spent where they're already reliable. Constraining implementation too would cost review attention and buy nothing — and a standard that constrains everything is a standard nobody keeps for long.
 
-None of this makes generated code correct. It makes it *placeable*, and it makes wrongness visible early and mechanically. That's a smaller claim than the one usually being sold, and it's the one I'd defend.
+## What actually moved
 
-## What it deliberately doesn't decide
+The value that seemed to be depreciating wasn't mine: it was one particular form I used to put it in. Writing code was the visible part of the job, but it wasn't the part the expertise lived in — and now that the visible part costs almost nothing, what's left making the difference is knowing where the lines go, and knowing it precisely enough to write it as a rule a machine can check.
 
-A standard that decides everything is a framework, and I didn't want a framework. So the baseline is stateless: no ORM, no database. Services that need persistence add it — repository ports in `application/`, ORM entities in `infrastructure/` where the decorators can't contaminate the domain, adapters mapping between the two shapes. The event bus ships as a producer only; consuming is a commented stub in `main.ts` you uncomment when you need it.
-
-And where the design has a real limit, it says so instead of glossing: Redis pub/sub is at-most-once, so if a service needs at-least-once delivery it pairs the publisher with an outbox table and a re-publisher. That's a sentence in the template's own docs. I'd rather inherit an honest limitation I can see than a guarantee I've assumed.
-
-The cost of all of this is real: more files, more indirection, and a `Symbol` for a thing that could have been a class import. On a script it would be absurd. On a service that will be maintained for years, by people who weren't there at the start — and increasingly by tools that were never there at all — I'll take the ceremony in exchange for a rule that can't quietly stop being true.
-
-## What I'd change now
-
-Since I built this template, the way I apply these same principles has moved in three specific spots. First: I would no longer make the class name the interface — today I use a stable `code` field, decoupled from the name, because renaming a class shouldn't break whoever consumes it. Second: I would no longer use `eslint-plugin-boundaries` for the layer boundary — today I prefer `dependency-cruiser`, because the former is blind to cycles and to cross-module imports that don't go through a direct import. Third: I wouldn't even leave the door open to a decorator-based ORM — today the baseline is "no ORM," with a typed query builder in its place. None of these three things makes what I wrote above wrong — it was my best answer at the time. But it's also proof that an enforced architecture isn't the same thing as a finished one — it keeps moving, and an honest standard has to admit that instead of pretending to be final.
+That's the paradox of this period, for me: a tool that writes code in my place has made me a more theoretical engineer than I was. I had to properly study what I had only ever practised, because to demand that a model respect a boundary, I have to be able to define it myself first.
