@@ -35,6 +35,22 @@ The hard rule is that inner layers never import outer ones. The domain stays tes
 
 There is one part of that rule I care about more than the rest, because it's the part most often forgotten: **infrastructure and presentation do not import each other**. They're siblings at the edge, not one stacked on the other, and whoever composes them is what puts them in touch. A controller that could import a repository directly would have a road around the use case — and that road would get taken, if not by me then by an agent looking for the shortest path from request to database. Forbidding it in both directions is what makes the use case the only way through instead of the recommended way through.
 
+```d2 title="The four layers with every dependency pointing inward: presentation and infrastructure sit side by side at the edge, both depending on the application, which depends on the domain, and with no connection of any kind between the two edge layers"
+direction: down
+
+presentation: "presentation\ncontrollers, DTOs"
+infrastructure: "infrastructure\nrepositories, clients"
+application: "application\nuse cases, ports"
+domain: "domain\nentities, events"
+
+presentation -> application: calls a use case
+infrastructure -> application: implements a port
+application -> domain
+```
+
+*Dependencies point inward, and the two edge layers are siblings: a controller reaching a
+repository directly would be a road around the use case.*
+
 ## Ports owned by the consumer, and the composition root
 
 The piece that took me longest to genuinely understand isn't the pyramid of layers, it's where ports and their adapters live.
@@ -44,6 +60,28 @@ A port is always declared **where it is consumed**, never where it is implemente
 Where the adapter lives, on the other hand, depends on which boundary it crosses. In the normal case it sits in the infrastructure of the same module, wired by that module: ordinary clean architecture, entirely internal. But when an adapter would cross a boundary between modules it can't sit there, because to implement that port it would have to import the other module — and that import is exactly what the boundary forbids. So the port stays with the consumer, and the adapter is provided and wired by the **composition root**: the application that composes the modules.
 
 This was the thing I understood worst at the beginning, and I mistook it for a loophole — a place where the rules count for less. It's the opposite. The composition root is the only point in the system with the right to know every piece, and it exists precisely so that everything else can avoid knowing each other: a module declares *what* it needs without knowing *who* will give it, and therefore stays compilable, testable and shippable on its own. Different deployment shapes become different roots composing the same modules with different adapters wired in, without a line inside the modules changing.
+
+```d2 title="A port that crosses a module boundary: module A declares the port in its own application layer, and the composition root supplies and wires the adapter that implements it against module B, so neither module ever imports the other"
+direction: down
+
+root: "composition root\nthe only piece that knows every module"
+adapter: "adapter\nimplements A's port using B"
+
+a: "module A" {
+  port: "application\ndeclares the port"
+}
+
+b: "module B" {
+  api: application
+}
+
+root -> adapter: supplies and wires
+adapter -> a.port: satisfies
+adapter -> b.api: calls
+```
+
+*The port stays with the consumer that needs it. Only the root is allowed to know both
+modules, which is what lets each of them compile and ship on its own.*
 
 ## Who enforces the dependency rule?
 
