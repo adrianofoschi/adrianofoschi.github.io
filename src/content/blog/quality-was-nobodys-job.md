@@ -3,6 +3,8 @@ title: "Quality was nobody's job, and then it was mine"
 description: "Eight years at a software house, half in consulting and half building the company's own product. What decided which years I thrived in wasn't the contract label — it was that I've never been someone who sits still."
 pubDate: 'Oct 21 2025'
 tags: ["career"]
+heroImage: "../../assets/blog/quality-loops/hero.png"
+heroAlt: "Two loops: on someone else’s system a flagged risk is filed rather than rejected and the cost lands on whoever comes after, while on your own product code written badly comes back to you six months later"
 ---
 
 From 2015 to 2023 I worked as a full-stack developer at a software house: consulting until 2019, on clients in banking, insurance and e-learning; the company's own product, a B2B SaaS, from 2019 on. For years I told these eight years as consulting-versus-product. But what I actually learned isn't about the contract label — it's about me: I'm not someone who sits still on a system that's already built. I like to learn, to build, to experiment. And it's that instinct, not the kind of contract, that decided which of those years actually felt right.

@@ -3,6 +3,8 @@ title: "An air conditioner on my own network, and nobody else's"
 description: "The boxes you can buy to control an air conditioner remotely route the command through the manufacturer's data centre. I soldered my own instead: an ESP8266, an infrared LED and a receiver, running Tasmota — and it ended up inside the machine it controls."
 pubDate: 'Dec 9 2025'
 tags: ["homelab"]
+heroImage: "../../assets/blog/ac-ir/hero-installed.png"
+heroAlt: "The wall-mounted air conditioner indoor unit with its Cooling, Heating and Preheating indicators, and the small white enclosure holding the board fitted underneath it"
 ---
 
 The air conditioner at home is controlled by its remote, and by nothing else. It has no network socket, it talks to nothing, and if the remote is in the other room you get up.
@@ -78,8 +80,6 @@ Finding the right protocol was the long part. The library knows several LG varia
 
 For a while the box stayed where it's natural to put it: on the wall under the split, white on white, its cable running down to the socket.
 
-![A white wall-mounted air conditioner indoor unit with Cooling, Heating and Preheating indicators, and a small white box with a ventilation grille fixed just below it, a thin cable running down the wall](../../assets/blog/ac-ir/installed.jpg)
-_The intermediate arrangement, and the last one there is a photograph of._
 
 Then I took the last step. There is already power inside the air conditioner, and the module I'd put in the box starts from mains voltage anyway, so it only had to be connected there. The device ended up inside the casing of the indoor unit, powered by the machine it controls, with the LED aimed where it needs to be and the sensor kept as far from the motor as possible. From outside there's nothing to see: there's an air conditioner, exactly as before.
 

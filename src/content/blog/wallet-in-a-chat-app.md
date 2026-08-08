@@ -3,6 +3,8 @@ title: "A wallet inside a chat app that holds no keys"
 description: "Putting a self-custody wallet in Telegram means putting it somewhere that must never be allowed to sign anything. The way out was to stop treating the bot as a wallet and start treating it as a remote control."
 pubDate: 'Jul 22 2025'
 tags: ["blockchain", "wallets"]
+heroImage: "../../assets/blog/chat-wallet/hero.png"
+heroAlt: "A Telegram bot that holds nothing, handing out a single-use link to an approval page in the browser where the passkey or social login happens and the key never leaves"
 ---
 
 The hardest part of a wallet has never been the wallet. It's that using one starts with installing something, and most people won't.

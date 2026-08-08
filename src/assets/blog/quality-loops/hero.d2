@@ -1,0 +1,15 @@
+# The difference the post identifies: whether the consequence comes back to you.
+direction: right
+vendor: "on someone else's system" {
+  direction: right
+  flag: "you flag\na risk"
+  filed: "it is filed.\nNot rejected — filed."
+  next: "the cost lands on\nwhoever comes after"
+  flag -> filed -> next
+}
+own: "on your own product" {
+  direction: right
+  bad: "you write it\nbadly"
+  again: "you meet it again\nsix months later"
+  bad -> again
+}

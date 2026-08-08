@@ -21,10 +21,9 @@ const blog = defineCollection({
 			// Required, so a post cannot ship without one. It must be about *this* post —
 			// a recovered artefact or a diagram of something the post describes, never a
 			// decorative image. See editorial rule 4.
-			// TODO: drop `.optional()` once all twenty posts have one.
-			heroImage: image().optional(),
+			heroImage: image(),
 			// Alt text for the hero, which is content and not decoration, so it is never empty.
-			heroAlt: z.string().min(1).optional(),
+			heroAlt: z.string().min(1),
 		}),
 });
 

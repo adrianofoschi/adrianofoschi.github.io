@@ -3,6 +3,8 @@ title: "Graded by someone who didn't understand what I'd built"
 description: "A university exam graded on usability and security, a BlaBlaCar clone built with an early MVVM framework, and the grade that revealed the professor hadn't understood what he was looking at."
 pubDate: 'Oct 8 2024'
 tags: ["early-projects"]
+heroImage: "../../assets/blog/mvvm/hero.png"
+heroAlt: "The MVVM pattern: a Model feeding a ViewModel, bound automatically to the View and back again, with no DOM updated by hand"
 ---
 
 I started a Computer Science degree in 2009 with a very weak background in mathematics. It had never been my subject, and the degree's math courses made that clear immediately: I ended up repeating several of them, struggling to keep pace while other students seemed to move through without much effort. For a couple of years I felt like I was always one step behind — not from lack of effort, but because I was missing foundations other people already had.

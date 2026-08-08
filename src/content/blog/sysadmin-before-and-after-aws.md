@@ -3,6 +3,8 @@ title: "Same word, two different jobs: sysadmin before and after AWS"
 description: "I was a systems administrator twice, a decade apart — and the second time, on AWS, almost nothing from the first job carried over."
 pubDate: 'Jul 14 2026'
 tags: ["career"]
+heroImage: "../../assets/blog/sysadmin/hero.png"
+heroAlt: "The two jobs a decade apart: installing packages and configuring Apache and MySQL on one specific box to keep a machine alive, against declaring an RDS instance, orchestrating containers and designing the VPC to compose managed services that keep themselves alive"
 ---
 
 During my last years at university, and for a while after graduating, I worked as a systems administrator for a small hosting company, to pay for my studies. The job was simple enough to describe in full: I managed the customer control panel, answered support tickets, and whenever a client needed a new environment I set one up — almost always a LAMP(P) stack, Linux/Apache/MySQL/PHP, sometimes with something on top for managing the database. I configured small Linux boxes, one at a time, following more or less the same pattern every time. None of it was complex. I never really thought of myself as "a systems administrator" for that job — it was closer to running through a checklist than designing anything.

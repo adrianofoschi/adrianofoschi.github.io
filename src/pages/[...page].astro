@@ -83,32 +83,34 @@ const itemListSchema = {
 				<ul class="flex flex-col gap-14">
 					{
 						page.data.map((post) => (
-							<li>
-								<a
-									href={`/blog/${post.id}/`}
-									class="group flex flex-col gap-4 no-underline sm:flex-row sm:items-start sm:gap-5"
-								>
-									{post.data.heroImage && (
-										<Image
-											src={post.data.heroImage}
-											alt=""
-											widths={[220, 440]}
-											sizes="(min-width: 640px) 220px, 100vw"
-											class="aspect-[2/1] w-full rounded-md border border-border object-cover sm:w-[220px] sm:shrink-0"
-										/>
-									)}
-									<div>
-									<p class="mb-1 text-muted">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-									<h2 class="text-xl font-bold leading-tight text-fg transition-colors group-hover:text-accent">
-										{post.data.title}
-									</h2>
-									<p class="mt-2 text-muted">{post.data.description}</p>
-									</div>
+							<li class="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-5">
+								{/*
+								 * The thumbnail sits outside the link's text column so the tags,
+								 * which are their own links and cannot nest inside it, still line
+								 * up with the title rather than with the image.
+								 */}
+								<a href={`/blog/${post.id}/`} class="group shrink-0 no-underline">
+									<Image
+										src={post.data.heroImage}
+										alt=""
+										widths={[260, 520]}
+										sizes="(min-width: 640px) 260px, 100vw"
+										class="aspect-[2/1] w-full rounded-md border border-border object-cover transition-colors group-hover:border-accent sm:w-[260px]"
+									/>
 								</a>
-								<div class="mt-3">
-									<TagList tags={post.data.tags} size="sm" />
+								<div>
+									<a href={`/blog/${post.id}/`} class="group block no-underline">
+										<p class="mb-1 text-muted">
+											<FormattedDate date={post.data.pubDate} />
+										</p>
+										<h2 class="text-xl font-bold leading-tight text-fg transition-colors group-hover:text-accent">
+											{post.data.title}
+										</h2>
+										<p class="mt-2 text-muted">{post.data.description}</p>
+									</a>
+									<div class="mt-3">
+										<TagList tags={post.data.tags} size="sm" />
+									</div>
 								</div>
 							</li>
 						))

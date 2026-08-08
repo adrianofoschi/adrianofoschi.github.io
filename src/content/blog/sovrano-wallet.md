@@ -3,6 +3,8 @@ title: "Sovrano: a self-custody wallet you open with a fingerprint"
 description: "A wallet where creating a blockchain account means touching a fingerprint sensor or signing in with Google — no seed phrase, no extension, no tokens to buy first. Built on modular smart accounts, so the rules live in the account itself."
 pubDate: 'Jun 17 2025'
 tags: ["blockchain", "wallets"]
+heroImage: "../../assets/blog/sovrano/hero.png"
+heroAlt: "Three ways into a self-custody account — a fingerprint or passkey, a social login with Google, Discord, X or Telegram, and a hardware key — none of which is a seed phrase"
 ---
 
 Self-custody is presented as freedom, and it is, but the fine print is that you become your own bank's entire security department. Write down twelve words. Store them somewhere a fire won't reach and a guest won't find. Never type them into anything. Lose them and your money is gone, with no one to appeal to.

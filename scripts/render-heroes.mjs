@@ -57,25 +57,34 @@ if (!chrome) {
 }
 
 const d2 = new D2();
+const failures = [];
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'heroes-'));
 
 for (const source of sources) {
 	const out = source.replace(/\.d2$/, '.png');
 	// The request form, matching how astro-d2 drives the same WebAssembly build. The string
 	// overload silently drops the font options and renders the diagram in a fallback sans.
-	const compiled = await d2.compile({
-		fs: { index: fs.readFileSync(source, 'utf-8') },
-		inputPath: 'index',
-		options: {
-			layout: 'dagre',
-			themeID: 0,
-			pad: 40,
-			fontRegular: font('IBMPlexMono-Regular.ttf'),
-			fontBold: font('IBMPlexMono-Bold.ttf'),
-			fontItalic: font('IBMPlexMono-Italic.ttf'),
-			fontSemibold: font('IBMPlexMono-SemiBold.ttf'),
-		},
-	});
+	let compiled;
+	try {
+		compiled = await d2.compile({
+			fs: { index: fs.readFileSync(source, 'utf-8') },
+			inputPath: 'index',
+			options: {
+				layout: 'dagre',
+				themeID: 0,
+				pad: 40,
+				fontRegular: font('IBMPlexMono-Regular.ttf'),
+				fontBold: font('IBMPlexMono-Bold.ttf'),
+				fontItalic: font('IBMPlexMono-Italic.ttf'),
+				fontSemibold: font('IBMPlexMono-SemiBold.ttf'),
+			},
+		});
+	} catch (error) {
+		// One unparseable source must not take the whole run down with it.
+		console.error(`FAILED ${source}: ${error.message}`);
+		failures.push(source);
+		continue;
+	}
 	const svg = await d2.render(compiled.diagram, compiled.renderOptions);
 
 	// The diagram is fitted inside the frame rather than cropped to it, so a source doesn't
@@ -106,6 +115,11 @@ ${svg}`,
 }
 
 fs.rmSync(tmp, { recursive: true, force: true });
+
+if (failures.length) {
+	console.error(`\n${failures.length} hero source(s) failed to render`);
+	process.exit(1);
+}
 
 // The D2 WebAssembly worker keeps the event loop alive, so the process needs telling.
 process.exit(0);

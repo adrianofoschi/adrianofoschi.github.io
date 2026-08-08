@@ -1,0 +1,7 @@
+# The problem the post sets up: two signature formats a constrained VM knows nothing about.
+direction: right
+passkey: "a passkey\nP-256 signature"
+jwt: "a Google login\nRSA-signed ID token"
+chain: "a smart contract\n\nno system call for either,\nand a budget it cannot exceed"
+passkey -> chain
+jwt -> chain

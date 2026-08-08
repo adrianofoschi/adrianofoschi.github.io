@@ -3,6 +3,8 @@ title: "No system call for that: getting passkey and JWT signatures verified on 
 description: "A smart contract that wants to accept a fingerprint or a Google login has to verify signature formats the blockchain knows nothing about. Writing that verification myself cost too much to run, so the answer turned out to be knowing where to look for code that already fits inside a constrained VM."
 pubDate: 'Apr 15 2025'
 tags: ["blockchain"]
+heroImage: "../../assets/blog/onchain/hero.png"
+heroAlt: "A passkey P-256 signature and an RSA-signed Google ID token both arriving at a smart contract that has no system call for either format and a budget it cannot exceed"
 ---
 
 Every blockchain hands contracts a short, fixed menu of cryptography. Usually it's exactly one curve: the one the chain's own accounts are built on, wired in as a system call, and nothing else.

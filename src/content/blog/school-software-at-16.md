@@ -3,6 +3,8 @@ title: "Building software my school needed"
 description: "Everyone expected me to choose the liceo. I picked a technical institute for computer science instead — and spent the first two years doing accounting."
 pubDate: 'Jul 25 2023'
 tags: ["early-projects"]
+heroImage: "../../assets/blog/school-software/hero.png"
+heroAlt: "Three projects in order: Scrutini in 2006, in Access and Visual Basic, printing every report card; GeCo, generating and checking double-entry bookkeeping exercises; and Ambito5, a portal five municipalities ran their social services on"
 ---
 
 In 2003, right after middle school, for someone with my grades the path seemed already decided: a liceo. A technical or industrial institute, in the mind of everyone around me, was the choice you made when you couldn't handle something more demanding — not something a good student did.

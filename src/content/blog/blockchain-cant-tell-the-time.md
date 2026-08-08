@@ -4,6 +4,8 @@ description: "A prediction game only works if a one-dollar bet is worth placing,
 pubDate: 'Jun 11 2024'
 updatedDate: 'Feb 18 2025'
 tags: ["blockchain"]
+heroImage: "../../assets/blog/kuku/hero.png"
+heroAlt: "A blockchain that reacts but never acts, with no scheduler and no network access, needing two things from outside: the time, so somebody closes the round, and the facts, so the price is handed in"
 ---
 
 Prediction games have been popular for a while now. The format is always the same: you bet on how something will turn out, and whoever gets it right splits the money of whoever got it wrong. It works because it asks you to know nothing about finance, only to have an opinion about where a price is going over the next few hours.

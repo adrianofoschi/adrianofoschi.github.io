@@ -38,11 +38,20 @@ that's just one topic among many, not the blog's frame). Site language is Englis
    where the post stops**: if the text doesn't say who broadcasts the transaction, the
    diagram doesn't either — the gap is the honest output, not something to fill in. Write
    them as D2, see Structure below.
-4. **No hero images.** Posts open on the title; the home page is a list of titles and
-   descriptions. Generated 1200×630 hero frames existed until Aug 2026 and were removed
-   entirely — code, assets and generator script — because they weren't earning their place.
-   Don't add a `heroImage` field back, and don't reintroduce a per-post header image
-   without asking. Real images belong in the body, under rule 3.
+4. **Every post has a hero, and the hero is about that post.** Generated 1200×630 frames
+   existed until Aug 2026 and were removed for being generic; heroes came back later the
+   same month on the opposite terms. A hero is a recovered artefact or a diagram of
+   something the post describes — the same bar rule 3 sets for the body. Never a stock
+   image, never something decorative that could sit on any post. `heroImage` and `heroAlt`
+   are **required by the schema**, so a post cannot ship without one, and the alt text is
+   never empty because a hero is content. The frame is 2:1 and the image is cropped to
+   fill, so compose for that shape. The hero is also the post's social card and its
+   thumbnail in the listings.
+   - **Diagram heroes** are written as `src/assets/blog/<dir>/hero.d2` and rendered with
+     `npm run heroes`. Both the source and the PNG are committed. Author them **wide**:
+     the frame is 2:1, and a diagram laid out tall is fitted with large empty margins.
+   - Where the only candidate is an image already used in the body, promote it and remove
+     the inline copy rather than showing the same picture twice.
 5. **A cluster (topic) is not capped at one post.** Any topic can get more posts later as
    more material surfaces — don't treat a topic as "done" after one article.
 6. **Every post has section headings, and a heading says what its section establishes.**
