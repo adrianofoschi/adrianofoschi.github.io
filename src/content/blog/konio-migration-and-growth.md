@@ -3,6 +3,8 @@ title: "A migration with no undo, and 2,000 users in three weeks"
 description: "In late 2023 I rewrote the data model of a crypto wallet that was already installed on real phones, redesigned its interface, and ran a giveaway that took it past 2,000 active users in three weeks."
 pubDate: 'Jan 9 2024'
 tags: ["blockchain", "wallets"]
+heroImage: "../../assets/blog/konio-growth/nft-autotracking-cover.png"
+heroAlt: "A Konio release card for the NFT autotracking upgrade, showing the wallet's NFT screen on a phone with the Gamblers Genesis, Koinos Punks and KoinosGarden collections listed by token id"
 ---
 
 By autumn I had a mobile wallet in production. Konio was a native iOS and Android wallet for [Koinos](https://koinos.io/), a blockchain with no transaction fees, and I had written it alone: create or import a wallet from a seed phrase, hold tokens and NFTs, sign for dApps over WalletConnect, in eleven languages.

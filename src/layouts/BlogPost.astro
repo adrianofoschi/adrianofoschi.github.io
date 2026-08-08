@@ -1,4 +1,6 @@
 ---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
@@ -19,9 +21,13 @@ interface Props {
 	type?: 'website' | 'article' | 'profile';
 	/** Slug of the post, used to pick related reading. Absent on the About page. */
 	id?: string;
+	/** Every post has one; the About page does not. */
+	heroImage?: ImageMetadata;
+	heroAlt?: string;
 }
 
-const { title, description, pubDate, updatedDate, tags = [], type, id } = Astro.props;
+const { title, description, pubDate, updatedDate, tags = [], type, id, heroImage, heroAlt } =
+	Astro.props;
 ---
 
 <html lang="en">
@@ -33,6 +39,7 @@ const { title, description, pubDate, updatedDate, tags = [], type, id } = Astro.
 			pubDate={pubDate}
 			updatedDate={updatedDate}
 			tags={tags}
+			image={heroImage}
 		/>
 	</head>
 
@@ -40,6 +47,25 @@ const { title, description, pubDate, updatedDate, tags = [], type, id } = Astro.
 		<Header />
 		<main class="w-full">
 			<article>
+				{
+					/*
+					 * The hero is fixed at 2:1 and cropped to fill, so every post opens on the
+					 * same shape. It is content, not decoration — a recovered artefact or a
+					 * diagram of something the post describes — which is why its alt text is
+					 * required by the schema rather than left empty.
+					 */
+					heroImage && (
+						<div class="mx-auto w-full max-w-[760px] px-4 pt-8">
+							<Image
+								src={heroImage}
+								alt={heroAlt ?? ''}
+								widths={[760, 1520]}
+								sizes="(min-width: 800px) 760px, 100vw"
+								class="aspect-[2/1] w-full rounded-md border border-border bg-bg object-cover"
+							/>
+						</div>
+					)
+				}
 				<div class="mx-auto w-full max-w-[760px] px-4 py-8">
 					<div class="mb-8 text-center">
 						<p class="mb-2 text-muted">
