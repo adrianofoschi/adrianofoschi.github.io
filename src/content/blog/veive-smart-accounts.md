@@ -11,7 +11,7 @@ Almost every complaint about using a blockchain follows from that one fact. Ther
 
 Ethereum's answer is account abstraction: make the account a smart contract, so it can decide for itself what a valid signature is and what an operation is allowed to do. [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) established the pattern, and [ERC-7579](https://eips.ethereum.org/EIPS/eip-7579) standardized *modular* smart accounts — accounts you extend by installing modules.
 
-Koinos, a blockchain with no transaction fees, had none of this. I set out to build it, and called it [Veive](https://github.com/veive-io).
+Koinos, a blockchain with no transaction fees, had no account abstraction at all. I set out to build it, and called it [Veive](https://github.com/veive-io).
 
 ## An account made of parts
 
@@ -58,7 +58,7 @@ Being concrete there is what makes fine-grained policy expressible at all. "Requ
 
 ## The missing chokepoint
 
-This is the part where the port stopped being a port.
+The one piece of ERC-4337 I could not copy was its EntryPoint — and not copying it is what made the result stronger.
 
 ERC-4337 routes everything through a singleton EntryPoint contract. Every user operation goes in there, gets validated, and comes out the other side. It's a chokepoint, and chokepoints are convenient: one place to stand and check things.
 
