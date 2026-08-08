@@ -34,8 +34,10 @@ that's just one topic among many, not the blog's frame). Site language is Englis
    fabricated UI. If nothing real survives, the post simply has no inline images.
    Explanatory **diagrams are the one thing you may author**, because a diagram claims to
    explain rather than to be a recovered artifact — but only from something real (the
-   project's own docs or source), never from a mechanism you assumed. Write them as D2,
-   see Structure below.
+   project's own docs or source), never from a mechanism you assumed. **A diagram stops
+   where the post stops**: if the text doesn't say who broadcasts the transaction, the
+   diagram doesn't either — the gap is the honest output, not something to fill in. Write
+   them as D2, see Structure below.
 4. **No hero images.** Posts open on the title; the home page is a list of titles and
    descriptions. Generated 1200×630 hero frames existed until Aug 2026 and were removed
    entirely — code, assets and generator script — because they weren't earning their place.
@@ -43,10 +45,33 @@ that's just one topic among many, not the blog's frame). Site language is Englis
    without asking. Real images belong in the body, under rule 3.
 5. **A cluster (topic) is not capped at one post.** Any topic can get more posts later as
    more material surfaces — don't treat a topic as "done" after one article.
+6. **Every post has section headings, and a heading says what its section establishes.**
+   No post is a wall of text; two were until Aug 2026 and it was the worst structural
+   defect on the site. A bare noun is not a heading — "Tasmota", "Mana", "GeCo" tell a
+   reader who hasn't already read the paragraph nothing at all. Phrase a heading as a
+   **question only where the section genuinely answers that question**; converting them
+   wholesale reads as SEO filler, which is the failure this rule exists to avoid.
+   Narrative beats may stay declarative.
+7. **Keep a section under ~350 words**, ideally 100–250. Long sections aren't bad writing
+   — they happen when an argument is continuous — but they are the unit a reader scans and
+   an extractive system lifts. Split with an `###` at a turn the argument already makes,
+   and **don't rewrite the prose to fit**: if there's no genuine turn, leave it long.
+8. **Name a source, link the source.** Any product, paper, tool or service a post names
+   gets a link on first mention — Zanzibar, OpenFGA, `dependency-cruiser`, Hive. **Check
+   the URL resolves before adding it.** This is the cheapest attribution there is and five
+   posts were missing it until Aug 2026.
+9. **A definition must survive being lifted out of the paragraph around it.** Where a post
+   defines something, name the term and state what it is, without a pronoun reaching back
+   into the sentence before: "Obrussa is a public repository of standards…", not "Obrussa
+   is what I call the repository where all of this lives".
+10. **Tables only for comparisons that are measured, not argued.** A benchmark or two
+    things set side by side belongs in a table. A contrast that is being *reasoned about*
+    doesn't — a table there duplicates the prose instead of condensing it.
 
 The full editorial backlog, career timeline, and per-post sourcing notes live in
 `notes/content-plan.md` — **gitignored, never published**. Read it before planning the
-next post; update it after publishing one.
+next post; update it after publishing one. `notes/GEO-ANALYSIS.md`, also gitignored, is
+the standing SEO/GEO audit with the current score and what was deliberately not done.
 
 ## Structure
 
@@ -94,6 +119,11 @@ next post; update it after publishing one.
   because being an `<h2>` put an out-of-order heading ahead of every post's `<h1>`. The home
   page's `<h1>` is `sr-only` — it's a bare list by design — and post titles in the list are
   `<h2>`.
+- **Umami is the only third-party request the site makes**, declared in `BaseHead.astro` and
+  therefore present on every page. It needs `is:inline`, or Astro tries to bundle a script that
+  has to stay a request to `cloud.umami.is` to work. It is cookieless, which is why there is no
+  consent banner; adding anything else that phones out is a decision worth taking deliberately,
+  on a site whose posts are partly about not routing through other people's clouds.
 - Machine-readable dates use `isoDate()` from `src/utils/date.ts`, never `toISOString()`:
   frontmatter dates are calendar days parsed as local midnight, so an instant shifts them a
   day backwards in any timezone east of UTC.

@@ -180,3 +180,14 @@ const structuredData = {
 <meta name="twitter:image" content={ogImageURL} />
 
 <script type="application/ld+json" set:html={JSON.stringify(structuredData)} is:inline />
+
+<!--
+	Umami, the only third-party request the site makes. `is:inline` keeps Astro from trying to
+	bundle it — it has to stay a request to their host to work at all. Cookieless, so there is
+	nothing here for a consent banner to ask about.
+-->
+<script
+	is:inline
+	defer
+	src="https://cloud.umami.is/script.js"
+	data-website-id="6ff44bb0-20f4-4e53-b4dc-ba6b3a5eadf9"></script>
