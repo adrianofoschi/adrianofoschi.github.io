@@ -11,7 +11,7 @@ Then, before you can do anything at all, install a browser extension, and acquir
 
 I built Sovrano to find out how much of that could simply be deleted.
 
-## What it is
+## What Sovrano is: a wallet you open with a fingerprint
 
 Sovrano is a self-custody wallet on [Koinos](https://koinos.io/), a blockchain with no transaction fees. It's built on [Veive](https://github.com/veive-io), a modular smart-account protocol I'd written for the same chain, where an account isn't a key pair but a contract, and its behaviour — how a signature is checked, what an operation is allowed to do — comes from modules installed into it.
 

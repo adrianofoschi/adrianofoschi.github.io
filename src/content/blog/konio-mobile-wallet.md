@@ -11,7 +11,7 @@ Smart contracts were written in [AssemblyScript](https://www.assemblyscript.org/
 
 Once I joined the community — small, but already a few years old — I noticed something I hadn't expected: Koinos had been around for a while, and yet there was no way to use it from a phone. Just browser extensions. Nothing native on mobile. It was a well-shaped gap: the problem was obvious, the scope was finite, and I'd find out quickly whether I could actually pull it off.
 
-## What I built
+## What Konio is: a native wallet for iOS and Android
 
 I started writing Konio on 22 June, and by autumn it was already on both app stores: a native wallet for iOS and Android, built with [React Native](https://reactnative.dev/) and [Expo](https://expo.dev/), using `koilib` to talk to the chain.
 

@@ -43,7 +43,7 @@ The correct solution is an oracle network: several independent reporters, staked
 
 What does fit is making sure that when something goes wrong, the money comes back. That's why a round has two failure states next to the successful one: if the server doesn't return, if one side has no players, if something doesn't add up, the round is marked skipped or suspended rather than closed, and the refund opens. Nobody loses a stake to an event that didn't happen properly.
 
-## Mana
+## Mana: measuring the limit rather than guessing it
 
 Koinos charges no fees: it meters transactions with mana, a regenerating budget, and before sending one you have to declare how much it may consume. Estimate too low and the transaction fails, too high and you tie up more than you need.
 

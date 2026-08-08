@@ -11,11 +11,19 @@ DeFi pulled me in almost immediately, and not just for the yields. There was an 
 
 There was something familiar in all of this, even if I didn't quite see it at the time. In 2001, still a kid, I'd gone from playing a video game to building tools that modified it — from consumer to someone building what other consumers would use. Twenty years later it was happening to me again, just with a different object in my hands: I'd entered the crypto world as a small investor, someone who buys and watches, and I was realizing that the part I actually cared about wasn't buying — it was understanding how these things get built.
 
+## What does it take to build on a blockchain?
+
 So I started studying what it actually meant to build on a blockchain. It was complex, but less than reverse-engineering a video game with no documentation and no organized community to help — here at least there was documentation, fragmented as it often was. I learned the basics: what a blockchain is, what a smart contract is, how a piece of code can live on a distributed network and enforce rules that nobody can unilaterally change once published. Things that forced me to unlearn a few habits from traditional web development, more than I expected going in.
+
+## Why Solidity is hard to approach from web2
 
 But the moment I actually tried to get hands-on, I ran into an obstacle I hadn't expected: Solidity, the language most smart contracts are written in, is not easy to approach coming from web2. It's not just the syntax. It's a different way of thinking: every operation has a computational cost you have to calculate and manage — gas, the unit of measure of the Ethereum Virtual Machine — and around that model sit rigid, very specific concepts that a JavaScript developer simply never had to consider. I realized this wasn't just my own personal struggle: it was a real barrier to entry, one keeping an entire generation of web2 developers, used to a completely different paradigm, out of web3.
 
+## Finding Koinos: no ICO, no pre-mine
+
 It was while looking for an alternative that I found Koinos, and it struck me right away as an ethically flawless project. No ICO, no pre-mine: the founding team — coming off an earlier project in another blockchain, which they'd left after a hostile attack on the network — had chosen to build by working for equity, without raising outside capital. A philosophy that felt close to Bitcoin's original one: using available computational resources without needing dedicated hardware, with a Proof-of-Burn consensus designed to combine the economics of proof-of-work with the efficiency of proof-of-stake. And then there was governance: protocol upgrades happen through a network vote, not a hard fork — Koinos calls itself the most upgradeable blockchain there is, and the fact that it could evolve without splitting in two won me over.
+
+## The stack that made me stay
 
 But what actually made me fall for it was the application stack: smart contracts are written in AssemblyScript, a syntax very close to TypeScript, familiar as I already was with JavaScript. The APIs are REST, not the usual opaque RPC endpoints of the blockchain world, and `koilib` made client-side integration as immediate as working with any other web API. Even the fee model followed the same philosophy of accessibility: no gas to pay on every transaction, but "mana," a resource that regenerates and that a "payer" can even front on the end user's behalf. Koinos wasn't just solving a technical problem — it was deliberately lowering the exact barrier I'd just run into, giving web2 developers immediate access to web3.
 

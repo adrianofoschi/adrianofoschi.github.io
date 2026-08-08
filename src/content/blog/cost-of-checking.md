@@ -9,7 +9,7 @@ This is an approach I started building in 2026 and am still in the middle of. It
 
 The short version: getting an AI agent to write code well is not mainly a prompting problem. The leverage isn't in the prompt. It's in the system that decides what the agent works on, what gate verifies the result, and what state survives between one run and the next. So instead of collecting prompting tricks, I've been building the system.
 
-## The asymmetry that motivates all of it
+## Why checking, not writing, is now the bottleneck
 
 Producing code has become dramatically cheap. Checking it has not.
 

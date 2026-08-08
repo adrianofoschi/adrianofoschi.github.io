@@ -7,23 +7,23 @@ tags: ["career"]
 
 From 2015 to 2023 I worked as a full-stack developer at a software house: consulting until 2019, on clients in banking, insurance and e-learning; the company's own product, a B2B SaaS, from 2019 on. For years I told these eight years as consulting-versus-product. But what I actually learned isn't about the contract label — it's about me: I'm not someone who sits still on a system that's already built. I like to learn, to build, to experiment. And it's that instinct, not the kind of contract, that decided which of those years actually felt right.
 
-## Being the vendor
+## What consulting actually is: being the vendor
 
 Consulting has a precise shape: you're the vendor. You work on a system that isn't yours, inside decisions made by other people before you arrived. You're paid to deliver an agreed scope by an agreed date — that's, literally, the definition of "done." Almost all of it was work on software that already existed, at banks and insurers with their own architects and their own standards, settled years before I showed up. The work often came through subcontracting — a detail of my situation, not what mattered. You're not brought in to have opinions; you're brought in because there's more work than there are people. Inside that edge the work was real: Scrum, environments you can't touch directly, deployments with a window and a sign-off, documentation written for an auditor more than for a developer. I got good at it, and it's a skill I still carry.
 
-## Nothing moved
+## Why quality wasn't a requirement, and nobody said so
 
 What I remember most, though, is how little anything moved. Technology choices were effectively closed — not defended, closed: a thing was done a certain way because it had always been done that way, and proposing otherwise had nowhere to land. Those questions belonged to the client's own architects, answered years earlier. You could flag a risk and watch it get filed. Not rejected. Filed. I don't think that was bad luck: when the software is already there and belongs to someone else, resisting change is the default state, and low quality is what years of that default leave behind. And nobody talked about it — not cynicism, closer to a tacit agreement: if something shipped and nothing caught fire, it was fine. Quality wasn't a requirement traded away against cost. It simply wasn't a requirement.
 
-## It wasn't all like that
+## The small clients, where I owned every decision
 
 Alongside the large engagements there was a steady stream of smaller projects, for clients who came once. On those I ran everything myself — from the first conversation to delivery, technical choices included, with the responsibility that comes attached. They were solutions built from zero, with no architecture to inherit and no one to ask permission from: an idea could be tried on Tuesday and be in production by Thursday. On paper it was consulting, same as the large accounts; in substance I was building a product for a client, from scratch — and that, not the contract label, is why I learned more there. On the large accounts, instead, the goal was delivering the agreed scope by the date, full stop. I understand the real pressures of a legacy system and a regulated release — but I wouldn't use them as an excuse for what I saw: in an environment handling other people's money and data, quality and security should matter more, not less. Instead, shipping without real care wasn't a problem for whoever was in the room at the time: it would be a problem for whoever came after — often another vendor, not me. That comfort, not the system's complexity, is the part I don't buy.
 
-## Same building, different job
+## What changed when the product became ours
 
 Moving onto the company's own product in 2019 changed three things, and none of them was the technology. First: technical decisions became available — not automatically won, but arguable: proposing a better approach turned into a normal part of the job instead of a category error. Second: consequences came back. Code I wrote badly, I met again six months later, and so did everyone around me — quality stops being a line item in someone else's signed-off estimate and becomes something you personally pay for or benefit from. Third: the time horizon. A project ends. A product continues — refactoring, debt carried on purpose, migrations, maintenance with no final release. You start thinking in years, because the system will still be there in years, and so, probably, will you. And it's exactly this terrain — where a proposal has somewhere to land, where you get it wrong and learn again, where you build something that lasts — that suits me: not because it was "product" instead of "consulting," but because it's where I could keep learning, building, experimenting.
 
-## The other risk
+## The risk on the product side: losing the compass
 
 There's a risk on this side too, and it's honest to admit it: on an internal product the roadmap bends constantly — a customer asks, an opportunity opens up this quarter — and every single bend is defensible. What's at risk is the medium and long term: the direction you set when you were thinking clearly, which nobody ever cancels, just keeps getting deferred one reasonable decision at a time. Losing the compass never feels like a decision, which is exactly what makes it hard to notice and even harder to argue against.
 

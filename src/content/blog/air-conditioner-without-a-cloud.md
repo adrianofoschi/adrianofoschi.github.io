@@ -57,7 +57,7 @@ There's a practical reason too. The air conditioner measures temperature with it
 
 Then the installation got in the way. With the box ending up inside the air conditioner, a sensor in there measures the machine's air, not the room's. It sits inside, but as far from the motor as it can be, almost looking out. It's a compromise, and it may as well be said plainly: it isn't the same as a sensor standing free in the middle of the room, but it's a far closer reading of the room than the one the split gives.
 
-## Tasmota
+## Tasmota: replacing the firmware instead of writing one
 
 I didn't write any firmware for the microcontroller. I put [Tasmota](https://tasmota.github.io/docs/) on it — free firmware born to free smart plugs from the manufacturer's cloud. You install it in place of the factory one, and the device starts speaking MQTT on the home network, with a configuration page and nothing else around it.
 

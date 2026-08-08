@@ -15,7 +15,7 @@ From 2019, the work changed completely. I started building product — an initia
 
 Then, after years of purely product-focused work, I found myself doing — in small doses — what I would have called "sysadmin work" a decade earlier. Only this time the terrain was completely different: EC2, ECS, Docker containers, CloudFront, RDS, S3, Lambda, CloudWatch. Same label as the first job — "I handle the infrastructure" — but almost no real overlap with what I used to do at the hosting company.
 
-## Why these were never the same job
+## Why were these never the same job?
 
 The core of the difference isn't scale, it's the nature of the work itself. At the hosting company, "being a systems administrator" meant keeping a machine alive: installing packages one by one, configuring Apache and MySQL by hand on that specific box, and when something broke, opening a ticket and fixing it right there, on that instance. I didn't declare the database, I installed and maintained it myself. I didn't design the network, I inherited whatever was already there. On AWS, that same kind of responsibility is almost an entirely different exercise: I don't install a database, I declare an RDS instance and let it be managed; the application doesn't run on a machine I maintain package by package, it runs in a Docker container orchestrated by ECS; I don't inherit the network, I design it — VPCs, security groups, who's allowed to talk to whom. The job isn't "keep a machine alive" anymore, it's "compose managed services that keep themselves alive." It's the same word, systems administrator, applied to two jobs that barely touch.
 

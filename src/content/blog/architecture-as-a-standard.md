@@ -7,7 +7,7 @@ tags: ["architecture", "ai"]
 
 Since the AI era began, every one of us developers has watched our value as programmers depreciate: writing code was the skill the job rested on, and it has become the part a machine does in seconds. Ask for a feature and you instantly get hundreds of lines — the cost of writing is essentially gone. But that cost doesn't vanish, it moves to checking, and checking is more expensive than writing: reviewing code you didn't write is tiring, and reviewing mountains of it much more so. There's no escape in verifying step by step either, because you don't know up front where the model is heading — you're judging a move without knowing the game. That's where vibe-coding starts: not out of laziness, but because at some point genuinely verifying costs more than accepting and hoping.
 
-## Where AI actually fails
+## Where does AI-assisted coding actually fail?
 
 There is one thing I've noticed with some consistency, though: the point where these tools fail isn't implementation. Ask for an algorithm, a transformation, a complicated query, and it comes out correct — that's exactly the kind of closed problem they're strong at. What comes out arbitrary are the architectural boundaries: where to put a file, which layer may know which other, how information should travel between layers, what belongs to the domain and what to infrastructure.
 
@@ -45,7 +45,7 @@ Where the adapter lives, on the other hand, depends on which boundary it crosses
 
 This was the thing I understood worst at the beginning, and I mistook it for a loophole — a place where the rules count for less. It's the opposite. The composition root is the only point in the system with the right to know every piece, and it exists precisely so that everything else can avoid knowing each other: a module declares *what* it needs without knowing *who* will give it, and therefore stays compilable, testable and shippable on its own. Different deployment shapes become different roots composing the same modules with different adapters wired in, without a line inside the modules changing.
 
-## Who enforces all this
+## Who enforces the dependency rule?
 
 So far this is a drawing, and a drawing doesn't hold on its own. The difference between a real architecture and a diagram in a README is whether something fails when the rule is broken.
 
