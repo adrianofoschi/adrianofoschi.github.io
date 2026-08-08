@@ -76,6 +76,16 @@ next post; update it after publishing one.
   generates `/llms.txt` from the collection, so it can't go stale. The `Person` entity's
   `sameAs` comes from `AUTHOR_PROFILES` in `src/consts.ts` — add real, maintained profiles
   there and nowhere else; off-site presence is what lets an answer engine resolve the entity.
+- **The content licence is CC BY 4.0, and it is stated in four places that must agree**:
+  the footer (for people), `license` in the JSON-LD and `<link rel="license">` (for search),
+  and `public/license.xml` in RSL 1.0 form for AI crawlers, found through the global
+  `License:` directive at the top of `public/robots.txt`. `LICENSE` in `src/consts.ts` is the
+  source for the first three. The footer said "All rights reserved" until Aug 2026 — do not
+  put that back, it contradicts the terms a crawler now reads.
+- **The RSS feed carries the full post**, rendered through the container API in
+  `src/pages/rss.xml.js`. Do not "simplify" it to `entry.rendered.html`: that string still
+  holds unresolved `__ASTRO_IMAGE_` placeholders and would publish them into the feed. Feed
+  URLs are rewritten to absolute, because a feed is read on someone else's host.
 - **The sitemap's `lastmod` is built in `astro.config.mjs`**, not from the content collection:
   an integration is configured before `astro:content` exists, so the frontmatter is read off
   disk there. Posts get their own `updatedDate ?? pubDate`; listing pages get the newest post's.

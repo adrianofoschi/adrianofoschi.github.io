@@ -1,5 +1,9 @@
 # adrianofoschi.com — everything here is meant to be read, by people and by machines.
 
+# RSL 1.0 licensing terms. The directive is global, not tied to a user agent, and so must sit
+# ahead of every User-agent block: use is free, the price is attribution (CC BY 4.0).
+License: https://adrianofoschi.com/license.xml
+
 User-agent: *
 Allow: /
 

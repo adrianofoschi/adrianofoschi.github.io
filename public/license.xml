@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Really Simple Licensing (RSL) 1.0 — https://rslstandard.org/rsl
+
+  Machine-readable form of the terms this site already states in prose: everything here is
+  meant to be read, by people and by machines, and being quoted with attribution is the point
+  of publishing it. `usage=all` covers every automated category, AI training and AI search
+  included; the price is credit and a working link back, per CC BY 4.0.
+
+  Discovered through the `License:` directive at the top of /robots.txt.
+-->
+<rsl xmlns="https://rslstandard.org/rsl">
+  <content url="/">
+    <license>
+      <permits type="usage">all</permits>
+      <payment type="attribution">
+        <standard>https://creativecommons.org/licenses/by/4.0/</standard>
+      </payment>
+    </license>
+    <copyright type="person" contactUrl="https://adrianofoschi.com/about">Adriano Foschi</copyright>
+  </content>
+</rsl>

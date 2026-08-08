@@ -1,14 +1,22 @@
 ---
+import { AUTHOR, LICENSE } from '../consts';
 import SocialLinks from './SocialLinks.astro';
 
 const today = new Date();
 ---
 
-<footer
-	class="mt-16 border-t border-border bg-bg px-4 py-10 text-center text-sm text-muted"
->
+<footer class="mt-16 border-t border-border bg-bg px-4 py-10 text-center text-sm text-muted">
 	<div class="mb-4 flex justify-center gap-5">
 		<SocialLinks />
 	</div>
-	&copy; {today.getFullYear()} Adriano Foschi. All rights reserved.
+	{/*
+	 * Says the same thing as public/license.xml. "All rights reserved" used to stand here,
+	 * which would now contradict the RSL terms a crawler reads.
+	 */}
+	&copy; {today.getFullYear()} {AUTHOR.name}. Text licensed <a
+		href={LICENSE.url}
+		rel="license noopener"
+		target="_blank"
+		class="text-accent hover:underline">{LICENSE.label}</a
+	>.
 </footer>

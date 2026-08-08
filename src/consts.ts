@@ -36,6 +36,16 @@ export const AUTHOR_PROFILES = [
 export const OG_IMAGE = '/og.png';
 
 /**
+ * Content licence. Stated in three places that must agree: the footer (for people), the
+ * `license` property in the structured data, and `public/license.xml` in RSL form (for
+ * crawlers, discovered via the `License:` directive in `public/robots.txt`).
+ */
+export const LICENSE = {
+	url: 'https://creativecommons.org/licenses/by/4.0/',
+	label: 'CC BY 4.0',
+} as const;
+
+/**
  * Closed tag vocabulary, with the label and the description used on the tag pages.
  *
  * Deliberately small: every tag must cover at least two posts, because a tag page with a

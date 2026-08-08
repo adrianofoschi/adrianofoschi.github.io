@@ -3,7 +3,15 @@
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
 import { Font } from 'astro:assets';
-import { AUTHOR, AUTHOR_PROFILES, OG_IMAGE, SITE_TITLE, TAGS, type TagName } from '../consts';
+import {
+	AUTHOR,
+	AUTHOR_PROFILES,
+	LICENSE,
+	OG_IMAGE,
+	SITE_TITLE,
+	TAGS,
+	type TagName,
+} from '../consts';
 import { isoDate } from '../utils/date';
 
 interface Props {
@@ -71,6 +79,7 @@ const mainEntity =
 				keywords: tags.map((tag) => TAGS[tag].label).join(', '),
 				articleSection: tags.map((tag) => TAGS[tag].label),
 				inLanguage: 'en',
+				license: LICENSE.url,
 				image: ogImageURL.href,
 				author: { '@id': person['@id'] },
 				publisher: { '@id': person['@id'] },
@@ -127,6 +136,7 @@ const structuredData = {
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
+<link rel="license" href={LICENSE.url} />
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>
