@@ -3,6 +3,8 @@ title: "My space, my challenges, my memories"
 description: "I build, I experiment, I learn — and from here on I'm writing it down, instead of leaving it in my head or in a conversation I had once."
 pubDate: 'Mar 21 2023'
 tags: ["career"]
+heroImage: "../../assets/blog/about-me/portrait.png"
+heroAlt: "A black and white portrait of Adriano Foschi"
 ---
 
 I'm someone who needs to build. I like experimenting, getting my hands on things I don't know, learning something new and seeing how far I can take it — and that's as true of my work as it is of what I do when nobody asks me to.
