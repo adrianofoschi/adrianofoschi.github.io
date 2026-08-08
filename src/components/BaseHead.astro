@@ -161,8 +161,10 @@ const structuredData = {
 	)
 }
 
-<!-- Twitter -->
+<!-- Twitter: `site` and `creator` are the same account — this is a personal site. -->
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content={AUTHOR.xHandle} />
+<meta name="twitter:creator" content={AUTHOR.xHandle} />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImageURL} />

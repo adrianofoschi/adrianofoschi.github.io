@@ -11,6 +11,10 @@ export const AUTHOR = {
 	url: 'https://adrianofoschi.com/about',
 	github: 'https://github.com/adrianofoschi',
 	cv: 'https://rxresu.me/adrianofoschi/cv',
+	linkedin: 'https://www.linkedin.com/in/adrianofoschi/',
+	x: 'https://x.com/adrihoke',
+	/** Handle form, for the `twitter:` card attribution meta. */
+	xHandle: '@adrihoke',
 } as const;
 
 /**
@@ -21,7 +25,12 @@ export const AUTHOR = {
  * Only list accounts that are real and maintained: a `sameAs` pointing at an abandoned
  * profile weakens the entity instead of strengthening it.
  */
-export const AUTHOR_PROFILES = [AUTHOR.github, AUTHOR.cv] as const;
+export const AUTHOR_PROFILES = [
+	AUTHOR.github,
+	AUTHOR.linkedin,
+	AUTHOR.x,
+	AUTHOR.cv,
+] as const;
 
 /** Social preview image (never rendered on the page — only for link unfurls and crawlers). */
 export const OG_IMAGE = '/og.png';
