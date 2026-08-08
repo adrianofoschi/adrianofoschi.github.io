@@ -35,6 +35,24 @@ The second is facts. A contract can't go and read the price of Bitcoin: it has n
 
 On bigger chains this service already exists as infrastructure in its own right, shared by whoever needs it. On Koinos it doesn't. So I implemented it: an external server that reads the state of the current round, works out which transition is due, asks Coinbase's public API for the pair's rate, and sends the transaction that moves the round forward, carrying the price along as an argument.
 
+```d2 title="One round transition: the server reads the contract state, works out which transition is due, asks Coinbase for the pair's rate, and sends the transaction that moves the round on with the price carried as an argument"
+shape: sequence_diagram
+
+server: "my server"
+contract: "the game contract"
+coinbase: "Coinbase public API"
+
+server -> contract: read the current round
+contract -> server: state
+server -> server: which transition is due?
+server -> coinbase: the pair's rate
+coinbase -> server: price
+server -> contract: "open / close / settle,\nprice as an argument"
+```
+
+*The rules sit in the contract and nobody can change them. The clock and the price arrive from
+one process, one key and one exchange's endpoint — which is where the trust actually sits.*
+
 ## The server is a point of trust
 
 The rules of the game are on chain and nobody can change them. The clock and the price are not. If the server stops, rounds hang; if it gets the price wrong, or lies about it, the round closes badly and the chain records the result without asking questions. This isn't trustless: the stakes are held by a contract nobody can rewrite, but settlement depends on one process, one key, and one exchange's public endpoint.

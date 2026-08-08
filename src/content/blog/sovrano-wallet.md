@@ -50,6 +50,22 @@ So I wrote an identity broker: a small [Passport](https://www.passportjs.org/) s
 
 _Telegram is one of the providers that isn’t OpenID at all — the broker is what makes it verifiable on chain._
 
+```d2 title="The identity broker: providers that are OpenID and providers that are not both arrive at one small service, which normalizes the subject and mints a single RS256 ID token, so the on-chain module only ever verifies one token shape against one public key"
+direction: down
+
+google: "Google\nan OpenID provider"
+others: "X, Discord, Telegram\nnot OpenID at all"
+broker: "identity broker\nspeaks each dialect, normalizes to\ngoogle|1234, mints an RS256 token"
+onchain: "on-chain sign module\none token shape, one key"
+
+google -> broker
+others -> broker
+broker -> onchain: published with a JWK
+```
+
+*Downstream of the broker every provider looks identical, which is what the contract needs.
+The cost is that the broker signs those tokens, so it can mint an identity for anyone.*
+
 I want to be straight about the cost of that. The broker signs those tokens, so the broker is a trusted issuer, and whoever holds its private key can mint an identity for anyone. In a wallet whose whole premise is self-custody, that's a real centralization point sitting next to the front door. The honest framing is that it was a deliberate trade — reach now, decentralize the issuer later — and "later" is doing a lot of work in that sentence.
 
 ## What you install into the account
