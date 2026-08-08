@@ -8,6 +8,7 @@ import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 import TagList from '../../components/TagList.astro';
 import { SITE_TITLE, TAGS, TAG_NAMES, type TagName } from '../../consts';
+import { heroPosterURL } from '../../utils/hero';
 
 export const getStaticPaths = (async () => {
 	const posts = await getCollection('blog');
@@ -27,6 +28,16 @@ type Props = { tag: TagName; posts: CollectionEntry<'blog'>[] };
 const { tag, posts } = Astro.props;
 const { label, description } = TAGS[tag];
 const title = `${label} — ${SITE_TITLE}`;
+
+// See [...page].astro: getImage() is async, so video posters are resolved once up front
+// rather than inline in the list below.
+const posterURLs = new Map(
+	await Promise.all(
+		posts
+			.filter((post) => post.data.heroVideo)
+			.map(async (post) => [post.id, await heroPosterURL(post.data.heroPoster!)] as const),
+	),
+);
 ---
 
 <html lang="en">
@@ -50,13 +61,27 @@ const title = `${label} — ${SITE_TITLE}`;
 						<li>
 							{/* Same shape as the home list: the hero opens the entry. */}
 							<a href={`/blog/${post.id}/`} class="group block no-underline">
-								<Image
-									src={post.data.heroImage}
-									alt=""
-									widths={[720, 1440]}
-									sizes="(min-width: 760px) 720px, 100vw"
-									class="mb-4 aspect-[2/1] w-full rounded-md border border-border object-cover transition-colors group-hover:border-accent"
-								/>
+								{
+									post.data.heroVideo ? (
+										<video
+											poster={posterURLs.get(post.id)}
+											muted
+											loop
+											playsinline
+											preload="none"
+											aria-label={post.data.heroAlt}
+											class="mb-4 aspect-[2/1] w-full rounded-md border border-border object-cover transition-colors group-hover:border-accent"
+										/>
+									) : (
+										<Image
+											src={post.data.heroImage!}
+											alt=""
+											widths={[720, 1440]}
+											sizes="(min-width: 760px) 720px, 100vw"
+											class="mb-4 aspect-[2/1] w-full rounded-md border border-border object-cover transition-colors group-hover:border-accent"
+										/>
+									)
+								}
 								<p class="mb-1 text-muted">
 									<FormattedDate date={post.data.pubDate} />
 								</p>

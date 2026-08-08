@@ -40,16 +40,32 @@ that's just one topic among many, not the blog's frame). Site language is Englis
    them as D2, see Structure below.
 4. **Every post has a hero, and the hero is about that post.** Generated 1200×630 frames
    existed until Aug 2026 and were removed for being generic; heroes came back later the
-   same month on the opposite terms. A hero is a recovered artefact or a diagram of
-   something the post describes — the same bar rule 3 sets for the body. Never a stock
-   image, never something decorative that could sit on any post. `heroImage` and `heroAlt`
-   are **required by the schema**, so a post cannot ship without one, and the alt text is
-   never empty because a hero is content. The frame is 2:1 and the image is cropped to
-   fill, so compose for that shape. The hero is also the post's social card and its
-   thumbnail in the listings.
+   same month on the opposite terms. A hero is a recovered artefact, a diagram of
+   something the post describes, or a video of the thing itself — the same bar rule 3 sets
+   for the body. Never a stock image, never something decorative that could sit on any
+   post, and **not too many diagrams**: fifteen of the first twenty heroes were diagrams,
+   which read as the fallback whenever no photograph existed rather than a real choice —
+   reach for a diagram only once a real photo or video has been ruled out. The frame is 2:1
+   and the image is cropped to fill, so compose for that shape. `heroAlt` is **required by
+   the schema** because a hero is content, so it is never empty. The hero is also the
+   post's social card and its thumbnail in the listings.
+   - **A still image**: `heroImage`, an `image()` field, cropped or composed to 2:1.
+   - **A video**: `heroVideo` (a root-relative path into `public/videos/blog/`, since
+     video is served as a plain static file rather than run through the image pipeline)
+     together with `heroPoster` (an `image()` field — a representative still, needed
+     because a video cannot serve as the social card, the JSON-LD `image`, or an RSS
+     enclosure). On the post page the video plays, with controls and no autoplay, the same
+     restraint already used for the YouTube embeds inline in some posts. In the listings
+     and tag pages it renders as a `<video>` too, muted/loop/no-controls/`preload="none"` —
+     which behaves exactly like a still (the browser shows the poster and fetches nothing
+     else) while remaining literally a video. Exactly one of `heroImage` or
+     `heroVideo`+`heroPoster` must be set; the schema's `.refine()` enforces it.
    - **Diagram heroes** are written as `src/assets/blog/<dir>/hero.d2` and rendered with
-     `npm run heroes`. Both the source and the PNG are committed. Author them **wide**:
-     the frame is 2:1, and a diagram laid out tall is fitted with large empty margins.
+     `npm run heroes` (Chrome headless, not `sharp` — see the script's own comment for why).
+     Both the source and the PNG are committed. Author them **wide**: the frame is 2:1, and
+     a diagram laid out tall is fitted with large empty margins either side. Don't fight
+     for every diagram to fill the frame exactly — a wide, short diagram centred in the 2:1
+     frame with margin top and bottom is fine as it is.
    - Where the only candidate is an image already used in the body, promote it and remove
      the inline copy rather than showing the same picture twice.
 5. **A cluster (topic) is not capped at one post.** Any topic can get more posts later as

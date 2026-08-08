@@ -3,8 +3,9 @@ title: "Veive: turning a blockchain account into something you can program"
 description: "In 2024 I built a modular smart account protocol for the Koinos blockchain. The absence of the piece everyone else builds on turned out to produce a stronger authorization model than the one I was copying."
 pubDate: 'Mar 11 2025'
 tags: ["blockchain", "architecture"]
-heroImage: "../../assets/blog/veive/hero-banner.png"
-heroAlt: "The Veive banner: the project's stacked-layers mark beside the name, over the line \"Instant, web3 modular accounts\", on a pale isometric pattern"
+heroVideo: "/videos/blog/veive-smart-accounts.mp4"
+heroPoster: "../../assets/blog/veive/poster.png"
+heroAlt: "A product demo: Authentication (self-custodial, passkeys, social accounts) plus Authorization (multisig, fine-grained pre-authorization) plus Control (daily spending limit, piggybank, extensions) — the layered capabilities a Veive account can be given"
 ---
 
 On most blockchains, an account is a key pair. Not a record, not an object with rules — a public key you can be paid at, and a private key that can do absolutely anything with what's there.

@@ -8,6 +8,7 @@ import Header from '../components/Header.astro';
 import RelatedPosts from '../components/RelatedPosts.astro';
 import TagList from '../components/TagList.astro';
 import type { TagName } from '../consts';
+import { heroPosterURL } from '../utils/hero';
 
 // Used by blog posts and by the standalone About page, which passes no tags — hence the
 // optional `tags`, and hence a page without them being a `website` rather than an `article`.
@@ -21,13 +22,30 @@ interface Props {
 	type?: 'website' | 'article' | 'profile';
 	/** Slug of the post, used to pick related reading. Absent on the About page. */
 	id?: string;
-	/** Every post has one; the About page does not. */
+	/** Every post has one of these two; the About page has neither. */
 	heroImage?: ImageMetadata;
+	heroVideo?: string;
+	heroPoster?: ImageMetadata;
 	heroAlt?: string;
 }
 
-const { title, description, pubDate, updatedDate, tags = [], type, id, heroImage, heroAlt } =
-	Astro.props;
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	tags = [],
+	type,
+	id,
+	heroImage,
+	heroVideo,
+	heroPoster,
+	heroAlt,
+} = Astro.props;
+
+// The video itself plays only on the post page. Everywhere else that needs one flat image —
+// the social card here, and the listings — gets the poster.
+const posterURL = heroVideo && heroPoster ? await heroPosterURL(heroPoster) : undefined;
 ---
 
 <html lang="en">
@@ -39,7 +57,7 @@ const { title, description, pubDate, updatedDate, tags = [], type, id, heroImage
 			pubDate={pubDate}
 			updatedDate={updatedDate}
 			tags={tags}
-			image={heroImage}
+			image={heroImage ?? heroPoster}
 		/>
 	</head>
 
@@ -49,21 +67,36 @@ const { title, description, pubDate, updatedDate, tags = [], type, id, heroImage
 			<article>
 				{
 					/*
-					 * The hero is fixed at 2:1 and cropped to fill, so every post opens on the
-					 * same shape. It is content, not decoration — a recovered artefact or a
-					 * diagram of something the post describes — which is why its alt text is
-					 * required by the schema rather than left empty.
+					 * The hero is fixed at 2:1 and filled, so every post opens on the same shape.
+					 * It is content, not decoration — a recovered artefact, a diagram of something
+					 * the post describes, or a video of the thing itself — which is why its alt
+					 * text is required by the schema rather than left empty. A video hero doesn't
+					 * autoplay: like the YouTube embeds already used inline elsewhere, it plays on
+					 * request rather than costing bandwidth to everyone who opens the post.
 					 */
-					heroImage && (
+					heroVideo ? (
 						<div class="mx-auto w-full max-w-[760px] px-4 pt-8">
-							<Image
-								src={heroImage}
-								alt={heroAlt ?? ''}
-								widths={[760, 1520]}
-								sizes="(min-width: 800px) 760px, 100vw"
+							<video
+								src={heroVideo}
+								poster={posterURL}
+								controls
+								preload="metadata"
+								aria-label={heroAlt}
 								class="aspect-[2/1] w-full rounded-md border border-border bg-bg object-cover"
 							/>
 						</div>
+					) : (
+						heroImage && (
+							<div class="mx-auto w-full max-w-[760px] px-4 pt-8">
+								<Image
+									src={heroImage}
+									alt={heroAlt ?? ''}
+									widths={[760, 1520]}
+									sizes="(min-width: 800px) 760px, 100vw"
+									class="aspect-[2/1] w-full rounded-md border border-border bg-bg object-cover"
+								/>
+							</div>
+						)
 					)
 				}
 				<div class="mx-auto w-full max-w-[760px] px-4 py-8">

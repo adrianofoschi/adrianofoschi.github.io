@@ -9,6 +9,7 @@ import Header from '../components/Header.astro';
 import TagList from '../components/TagList.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { isoDate } from '../utils/date';
+import { heroPosterURL } from '../utils/hero';
 
 export const getStaticPaths = (async ({ paginate }) => {
 	const posts = (await getCollection('blog')).sort(
@@ -22,6 +23,17 @@ interface Props {
 }
 
 const { page } = Astro.props;
+
+// getImage() is async and can't be awaited inline inside the list below, so video posters are
+// resolved once up front. Posts with a plain heroImage need nothing here — <Image> takes care
+// of them directly in the template.
+const posterURLs = new Map(
+	await Promise.all(
+		page.data
+			.filter((post) => post.data.heroVideo)
+			.map(async (post) => [post.id, await heroPosterURL(post.data.heroPoster!)] as const),
+	),
+);
 
 const siteURL = new URL('/', Astro.site).href;
 const postURL = (id: string) => new URL(`/blog/${id}/`, Astro.site).href;
@@ -90,13 +102,31 @@ const itemListSchema = {
 								 * text, a diagram was an illegible smudge.
 								 */}
 								<a href={`/blog/${post.id}/`} class="group block no-underline">
-									<Image
-										src={post.data.heroImage}
-										alt=""
-										widths={[720, 1440]}
-										sizes="(min-width: 760px) 720px, 100vw"
-										class="mb-4 aspect-[2/1] w-full rounded-md border border-border object-cover transition-colors group-hover:border-accent"
-									/>
+									{
+										post.data.heroVideo ? (
+											// No autoplay, no controls: in a list this behaves exactly
+											// like a still image — the browser shows the poster and
+											// fetches nothing else — while still literally being the
+											// video, per Adriano.
+											<video
+												poster={posterURLs.get(post.id)}
+												muted
+												loop
+												playsinline
+												preload="none"
+												aria-label={post.data.heroAlt}
+												class="mb-4 aspect-[2/1] w-full rounded-md border border-border object-cover transition-colors group-hover:border-accent"
+											/>
+										) : (
+											<Image
+												src={post.data.heroImage!}
+												alt=""
+												widths={[720, 1440]}
+												sizes="(min-width: 760px) 720px, 100vw"
+												class="mb-4 aspect-[2/1] w-full rounded-md border border-border object-cover transition-colors group-hover:border-accent"
+											/>
+										)
+									}
 									<p class="mb-1 text-muted">
 										<FormattedDate date={post.data.pubDate} />
 									</p>
