@@ -49,7 +49,7 @@ The interesting part is what goes in and what doesn't, because every choice is t
 
 The public key the RSA contract expects isn't the key the provider hands you. It's a prepared version, holding the modulus plus a constant computed in advance to make the multiplications fast. Verified boot has that computed by whoever prepares the key, rather than by the device doing the verifying — a decision made for bootloaders that is worth even more here. The sum is done once, outside, and what's left for the contract is only the part that can't be avoided. Same logic for the message: the contract receives a 32-byte digest, not the token, because hashing a few hundred bytes has no business happening on chain.
 
-```d2
+```d2 title="Split of RSA verification work: the public key is prepared and the token hashed off chain, leaving the contract only a modular exponentiation and a byte-by-byte check of the rebuilt padded block"
 direction: down
 
 off: Off chain {
@@ -84,7 +84,7 @@ One thing that can't be moved out is the padding check. Verifying an RSA signatu
 
 The same idea holds on the P-256 side, and it shows in the arguments: the contract doesn't receive the passkey's response and doesn't parse it. It receives exactly the bytes the browser signed, assembled outside.
 
-```d2
+```d2 title="Sequence diagram of a passkey signature check: the account asks the sign module, which looks up the registered credential and delegates the maths to a P-256 verifier before answering valid"
 shape: sequence_diagram
 
 dapp: DApp

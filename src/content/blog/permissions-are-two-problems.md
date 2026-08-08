@@ -59,7 +59,7 @@ Permify has the better API on this front — a reverse lookup starting from the 
 
 Permit.io is the only one attacking the problem at the root: partial evaluation of the policy, which instead of a list of identifiers hands you a clause to drop into a `WHERE`. That's exactly the right thing. Only, for Postgres it's in early access, it works for attribute-based policies rather than relationship-based ones — that is, not for the model I have — and it requires writing the rules in a separate language. Mature materialization does exist, but as commercial products in early access, or on stacks that aren't mine.
 
-```d2
+```d2 title="Four independent paths by which a user can reach a repository: organization membership granting a base permission, a grant to a team, inheritance from a parent team, and a direct collaborator grant on a single repo"
 direction: down
 
 user: "@user"

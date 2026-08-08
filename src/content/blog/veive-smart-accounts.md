@@ -22,7 +22,7 @@ A Veive account is a contract that does very little by itself. It's a container.
 - **[Sign modules](https://veive-io.github.io/framework/module-types/sign-modules/)** define *how you prove it's you* — a seed phrase, a passkey, an identity provider.
 - **[Hook modules](https://veive-io.github.io/framework/module-types/hooks-modules/)** run before and after an operation. Pre-hooks can check conditions and block; post-hooks can log, notify, or trigger follow-up work.
 
-```d2
+```d2 title="Sequence diagram of one operation passing through the account: validation, then a pre-hook, then execution, then a post-hook, with the account calling each module in turn"
 shape: sequence_diagram
 
 dapp: DApp

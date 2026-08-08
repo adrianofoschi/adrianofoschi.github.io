@@ -3,7 +3,7 @@
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
 import { Font } from 'astro:assets';
-import { AUTHOR, OG_IMAGE, SITE_TITLE, TAGS, type TagName } from '../consts';
+import { AUTHOR, AUTHOR_PROFILES, OG_IMAGE, SITE_TITLE, TAGS, type TagName } from '../consts';
 import { isoDate } from '../utils/date';
 
 interface Props {
@@ -38,7 +38,7 @@ const author = {
 	'@type': 'Person',
 	name: AUTHOR.name,
 	url: AUTHOR.url,
-	sameAs: [AUTHOR.github],
+	sameAs: [...AUTHOR_PROFILES],
 };
 
 const person = {
@@ -140,13 +140,20 @@ const structuredData = {
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImageURL} />
 <meta property="og:site_name" content={SITE_TITLE} />
-<meta property="og:locale" content="en" />
+<!-- Open Graph wants language_TERRITORY here, not a bare language code. -->
+<meta property="og:locale" content="en_US" />
 {
 	type === 'article' && (
 		<Fragment>
 			<meta property="article:author" content={AUTHOR.name} />
 			{pubDate && <meta property="article:published_time" content={isoDate(pubDate)} />}
-			{updatedDate && <meta property="article:modified_time" content={isoDate(updatedDate)} />}
+			{
+				/* Falls back to the publication date, matching `dateModified` in the JSON-LD:
+				   a post with no later edit was last modified when it was published. */
+				(updatedDate ?? pubDate) && (
+					<meta property="article:modified_time" content={isoDate(updatedDate ?? pubDate!)} />
+				)
+			}
 			{tags.map((tag) => (
 				<meta property="article:tag" content={TAGS[tag].label} />
 			))}

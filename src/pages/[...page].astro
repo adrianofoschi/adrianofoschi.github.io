@@ -68,6 +68,15 @@ const itemListSchema = {
 		<Header />
 		<main class="mx-auto w-full max-w-[720px] px-4 py-12">
 			<section>
+				{/*
+				 * The home page is a bare list by design, so its <h1> is there for machines
+				 * and screen readers rather than for the layout. It says what the page is —
+				 * no keywords it does not otherwise earn.
+				 */}
+				<h1 class="sr-only">
+					{SITE_TITLE} — {SITE_DESCRIPTION}
+					{page.currentPage > 1 && ` (page ${page.currentPage})`}
+				</h1>
 				{/* No rules between entries — the gap alone separates them, so it has
 				    to be wider than it was when a border was doing half the work. */}
 				<ul class="flex flex-col gap-14">
@@ -78,9 +87,9 @@ const itemListSchema = {
 									<p class="mb-1 text-muted">
 										<FormattedDate date={post.data.pubDate} />
 									</p>
-									<h4 class="text-xl font-bold leading-tight text-fg transition-colors group-hover:text-accent">
+									<h2 class="text-xl font-bold leading-tight text-fg transition-colors group-hover:text-accent">
 										{post.data.title}
-									</h4>
+									</h2>
 									<p class="mt-2 text-muted">{post.data.description}</p>
 								</a>
 								<div class="mt-3">

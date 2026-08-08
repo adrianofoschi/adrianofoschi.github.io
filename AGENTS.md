@@ -73,7 +73,17 @@ next post; update it after publishing one.
   (`BlogPosting` with author/dates/keywords on posts, `WebSite` elsewhere). The social image
   is `public/og.png`, a single generated card — it never appears on a page. `public/robots.txt`
   allows the AI search crawlers explicitly and points at the sitemap; `src/pages/llms.txt.ts`
-  generates `/llms.txt` from the collection, so it can't go stale.
+  generates `/llms.txt` from the collection, so it can't go stale. The `Person` entity's
+  `sameAs` comes from `AUTHOR_PROFILES` in `src/consts.ts` — add real, maintained profiles
+  there and nowhere else; off-site presence is what lets an answer engine resolve the entity.
+- **The sitemap's `lastmod` is built in `astro.config.mjs`**, not from the content collection:
+  an integration is configured before `astro:content` exists, so the frontmatter is read off
+  disk there. Posts get their own `updatedDate ?? pubDate`; listing pages get the newest post's.
+- **Heading structure is part of the SEO surface, not just styling.** Exactly one `<h1>` per
+  page, and no heading above it: the site brand in `Header.astro` is a `<span>` precisely
+  because being an `<h2>` put an out-of-order heading ahead of every post's `<h1>`. The home
+  page's `<h1>` is `sr-only` — it's a bare list by design — and post titles in the list are
+  `<h2>`.
 - Machine-readable dates use `isoDate()` from `src/utils/date.ts`, never `toISOString()`:
   frontmatter dates are calendar days parsed as local midnight, so an instant shifts them a
   day backwards in any timezone east of UTC.
@@ -103,7 +113,10 @@ next post; update it after publishing one.
   edited. Mermaid was considered and rejected: it needs a browser to draw, so it costs either
   ~1MB of JavaScript shipped to the reader or Chromium in CI. D2 runs as WebAssembly
   (`experimental.useD2js`), which is why the deploy workflow needs no extra step — keep it
-  that way. Diagrams stay in the site's monospace voice, using the IBM Plex Mono TTFs vendored
+  that way. **Always give the fence a `title="…"`** — `astro-d2` uses it as the image's `alt`,
+  and it defaults to the useless `"Diagram"`. Describe what the diagram shows, since for a
+  screen reader or an extractive crawler that sentence *is* the diagram. Diagrams stay in the
+  site's monospace voice, using the IBM Plex Mono TTFs vendored
   in `fonts/` (OFL) — they are machine output, not prose, so they don't follow the body sans.
   Keep them
   narrow: width comes from label length and participant count, and anything past ~1100px

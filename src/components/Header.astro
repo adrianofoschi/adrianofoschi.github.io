@@ -5,9 +5,13 @@ import HeaderLink from './HeaderLink.astro';
 
 <header class="border-b border-border bg-bg px-4">
 	<nav class="mx-auto flex max-w-[720px] items-center justify-between">
-		<h2 class="text-base font-bold">
+		{/*
+		 * Not a heading: the brand is navigation, and wrapping it in one put an
+		 * out-of-order <h2> ahead of the <h1> on every post in the site.
+		 */}
+		<span class="text-base font-bold">
 			<a href="/" class="text-fg no-underline">{SITE_TITLE}</a>
-		</h2>
+		</span>
 		<div class="flex items-center">
 			<HeaderLink href="/">home</HeaderLink>
 			<HeaderLink href="/tags">topics</HeaderLink>

@@ -10,7 +10,18 @@ export const AUTHOR = {
 	// Used for the Person entity in structured data.
 	url: 'https://adrianofoschi.com/about',
 	github: 'https://github.com/adrianofoschi',
+	cv: 'https://rxresu.me/adrianofoschi/cv',
 } as const;
+
+/**
+ * `sameAs` for the Person entity — the profiles that let a search or answer engine resolve
+ * this site to the same person it has seen elsewhere. Off-site presence is what that
+ * resolution rests on, so every genuine profile added here helps.
+ *
+ * Only list accounts that are real and maintained: a `sameAs` pointing at an abandoned
+ * profile weakens the entity instead of strengthening it.
+ */
+export const AUTHOR_PROFILES = [AUTHOR.github, AUTHOR.cv] as const;
 
 /** Social preview image (never rendered on the page — only for link unfurls and crawlers). */
 export const OG_IMAGE = '/og.png';
