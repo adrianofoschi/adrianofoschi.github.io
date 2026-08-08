@@ -68,10 +68,12 @@ const itemListSchema = {
 		<Header />
 		<main class="mx-auto w-full max-w-[720px] px-4 py-12">
 			<section>
-				<ul class="flex flex-col gap-10">
+				{/* No rules between entries — the gap alone separates them, so it has
+				    to be wider than it was when a border was doing half the work. */}
+				<ul class="flex flex-col gap-14">
 					{
 						page.data.map((post) => (
-							<li class="border-b border-border pb-10 last:border-0 last:pb-0">
+							<li>
 								<a href={`/blog/${post.id}/`} class="group block no-underline">
 									<p class="mb-1 text-muted">
 										<FormattedDate date={post.data.pubDate} />

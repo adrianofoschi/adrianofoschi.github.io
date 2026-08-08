@@ -87,14 +87,17 @@ next post; update it after publishing one.
   use them by name (`text-fg`, `text-muted`, `border-border`, `text-accent`), so never hardcode
   a colour in a component. The accent is `#0e7490`, not the brighter `#22d3ee`, which fails
   contrast against white.
-- **Two typefaces, and the split carries meaning.** Prose is IBM Plex Sans; IBM Plex Mono is
-  reserved for what is machine output rather than writing — header/nav, dates, tags, footer,
-  inline code and code blocks, D2 diagrams. Same superfamily, so they never read as a pairing
-  of strangers. Both come from the Google font provider, configured in `astro.config.mjs` and
-  preloaded in `BaseHead.astro`; components pick the mono with Tailwind's `font-mono`, never a
-  hardcoded family. The site was monospace throughout until Aug 2026 — that change is why
-  `BlogPost.astro` caps the prose measure at `68ch`: the sans fits far more characters per line,
-  and the full column ran to nearly 90.
+- **Two typefaces, and the split carries meaning.** IBM Plex Sans is the site's voice —
+  prose, titles, and the chrome around them (header, nav, footer). IBM Plex Mono is reserved
+  for **data and labels**: dates, tags, inline code and code blocks, D2 diagrams. The rule is
+  not "chrome vs content", it's "written by a person vs emitted by a machine" — the nav is
+  writing, a timestamp is not. Same superfamily, so they never read as a pairing of strangers.
+  Both come from the Google font provider, configured in `astro.config.mjs`; components pick
+  the mono with Tailwind's `font-mono`, never a hardcoded family. Only the sans is preloaded
+  in `BaseHead.astro` — `preload` emits a link per generated face, so preloading both families
+  put sixteen font requests on the critical path. The site was monospace throughout until
+  Aug 2026, and that change is why `BlogPost.astro` caps the prose measure at `68ch`: the sans
+  fits far more characters per line, and the full column ran to nearly 90.
 - **Diagrams are D2, written inline in the post** as a ` ```d2 ` block and rendered to SVG at
   build time by `astro-d2`. No PNG diagrams — the source belongs in the post, where it can be
   edited. Mermaid was considered and rejected: it needs a browser to draw, so it costs either

@@ -43,10 +43,10 @@ const title = `${label} — ${SITE_TITLE}`;
 					class="text-accent">all topics</a
 				>
 			</p>
-			<ul class="flex flex-col gap-10">
+			<ul class="flex flex-col gap-14">
 				{
 					posts.map((post) => (
-						<li class="border-b border-border pb-10 last:border-0 last:pb-0">
+						<li>
 							<a href={`/blog/${post.id}/`} class="group block no-underline">
 								<p class="mb-1 text-muted">
 									<FormattedDate date={post.data.pubDate} />
