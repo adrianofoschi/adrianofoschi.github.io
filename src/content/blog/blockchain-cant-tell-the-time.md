@@ -33,7 +33,7 @@ The first is time. Nothing happens on a blockchain unless someone sends a transa
 
 The second is facts. A contract can't go and read the price of Bitcoin: it has no network access, and it must not have any. Every node executing that transaction has to arrive at an identical result, and two nodes calling an API a second apart would not. Determinism is the basis of consensus, and reaching outside is how you break it. So the price has to be handed to the contract from outside.
 
-On bigger chains this service already exists as infrastructure in its own right, shared by whoever needs it. On Koinos it doesn't. So I implemented it: an external server that reads the state of the current round, works out which transition is due, asks Coinbase's public API for the pair's rate, and sends the transaction that moves the round forward, carrying the price along as an argument.
+On bigger chains this service already exists as infrastructure in its own right, shared by whoever needs it. On Koinos it doesn't. So I implemented it: an external server that reads the state of the current round, works out which transition is due, asks [Coinbase's public API](https://docs.cdp.coinbase.com/exchange/reference/exchangerestapi_getproductticker) for the pair's rate, and sends the transaction that moves the round forward, carrying the price along as an argument.
 
 ```d2 title="One round transition: the server reads the contract state, works out which transition is due, asks Coinbase for the pair's rate, and sends the transaction that moves the round on with the price carried as an argument"
 shape: sequence_diagram

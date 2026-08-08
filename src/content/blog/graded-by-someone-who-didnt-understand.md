@@ -15,7 +15,7 @@ One exam I was looking forward to more than most, near the end of the degree, wa
 
 ## What I built: an MVVM frontend and a BlaBlaCar clone
 
-I decided to do things differently. On the server side I chose a PHP micro-framework designed specifically to guarantee a high level of security by default, instead of hand-writing queries and routing the way almost everyone else did. On the frontend I used Knockout.js — an MVVM (Model-View-ViewModel) framework that predated Angular and React by a few years, one of the first to bring automatic binding between data and interface to the web without updating the DOM by hand, line by line. With those two pieces I built a working clone of BlaBlaCar: ride search, bookings, user management, and a modern, responsive interface — far from a given at the time, when most university projects stopped at a fixed layout designed only for the lab monitor.
+I decided to do things differently. On the server side I chose a PHP micro-framework designed specifically to guarantee a high level of security by default, instead of hand-writing queries and routing the way almost everyone else did. On the frontend I used [Knockout.js](https://knockoutjs.com/) — an MVVM (Model-View-ViewModel) framework that predated Angular and React by a few years, one of the first to bring automatic binding between data and interface to the web without updating the DOM by hand, line by line. With those two pieces I built a working clone of BlaBlaCar: ride search, bookings, user management, and a modern, responsive interface — far from a given at the time, when most university projects stopped at a fixed layout designed only for the lab monitor.
 
 ## A 20, and a professor who didn't know what MVVM was
 

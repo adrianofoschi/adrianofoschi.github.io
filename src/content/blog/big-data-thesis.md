@@ -5,7 +5,7 @@ pubDate: 'Mar 12 2024'
 tags: ["early-projects"]
 ---
 
-I started a computer science degree in 2009. By the time I got to my thesis in 2012, Big Data was becoming a real word, not just a buzzword yet, and I wanted my thesis to be about actually building one of these systems rather than just reading about them — a data warehouse that pulled together data from different web sources using the emerging Hadoop/Hive stack, instead of a traditional relational database.
+I started a computer science degree in 2009. By the time I got to my thesis in 2012, Big Data was becoming a real word, not just a buzzword yet, and I wanted my thesis to be about actually building one of these systems rather than just reading about them — a data warehouse that pulled together data from different web sources using the emerging [Hadoop](https://hadoop.apache.org/)/[Hive](https://hive.apache.org/) stack, instead of a traditional relational database.
 
 ## What I actually built
 
@@ -23,6 +23,12 @@ Building the warehouse in Hive wasn't the actual thesis question. The real quest
 Two of the three results were exactly what you'd expect from the pitch. Hive's storage came out smaller — about 8MB against MySQL's 13.5MB for the same data — because a schema-less format doesn't waste space on padding or null columns the way a rigid relational schema does. Import time wasn't close: Hive loaded the entire dataset in just over 2 seconds, MySQL took over 5 minutes, because Hive is essentially writing files while MySQL is doing per-row inserts with constraint checking.
 
 Then came the query benchmarks, and the results weren't what the pitch promised. On two of the four analytical queries — the ones combining a join with heavier aggregation and sorting — Hive was actually *slower* than plain MySQL, not faster.
+
+| Measured on ~103,000 records | Hive | MySQL |
+| --- | --- | --- |
+| Storage for the same data | ~8 MB | 13.5 MB |
+| Import time, whole dataset | just over 2 seconds | over 5 minutes |
+| The four analytical queries | slower on two of them | faster on those same two |
 
 ## Why, and why it mattered more than the speedup did
 

@@ -87,7 +87,7 @@ modules, which is what lets each of them compile and ship on its own.*
 
 So far this is a drawing, and a drawing doesn't hold on its own. The difference between a real architecture and a diagram in a README is whether something fails when the rule is broken.
 
-The import graph is checked on every change by a dedicated tool — `dependency-cruiser`, in my case — which is the single source of truth about boundaries and fails the build in CI. An inner layer importing an outer one, an inbound adapter importing an outbound one, a cycle between modules: all blocking errors, not observations left to a code review. And the constraint is declared in one place, instead of scattered across conventions each person remembers their own way.
+The import graph is checked on every change by a dedicated tool — [`dependency-cruiser`](https://github.com/sverweij/dependency-cruiser), in my case — which is the single source of truth about boundaries and fails the build in CI. An inner layer importing an outer one, an inbound adapter importing an outbound one, a cycle between modules: all blocking errors, not observations left to a code review. And the constraint is declared in one place, instead of scattered across conventions each person remembers their own way.
 
 Two reinforcements matter as much as the main rule. The first is strict dependency resolution: a package a module hasn't declared doesn't even resolve, so the wrong import dies at build time and never reaches the linter. The second is that every module must be able to compile **on its own**: it's the most honest test of independence, because a hidden dependency doesn't survive compiling in isolation — there's no way to "nearly" pass it.
 
