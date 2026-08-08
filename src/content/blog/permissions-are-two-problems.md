@@ -31,6 +31,8 @@ The second system is a new prototype I'm building from scratch. There I wanted t
 
 I looked at [Permify](https://permify.co/), [Permit.io](https://www.permit.io/) and [OpenFGA](https://openfga.dev/). The serious experiments I ran on OpenFGA, because it's the reference open-source implementation of the model Google described in [Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/) — the system that decides access inside Google, and the paper this entire category of products grew out of. If the pattern makes sense, that's where you'll see it.
 
+### What the declarative model gets right
+
 And for a good stretch of the way it makes a great deal of sense. The authorization model is a declarative file: you write the entity types, the relationships between them, and the permissions as expressions over those relationships. The inheritance that in a homegrown engine is code scattered around is a single line there — whoever owns the container has that permission on everything the container holds, written once and true everywhere. That file lives in a repository of its own, with its tests beside it: YAML scenarios saying "this user, this permission, this entity, expected true", running offline, with no database and no application, in a couple of seconds. I wrote sixteen of them, a hundred and twenty assertions, covering the cases nobody in the older system ever dared verify systematically: isolation between separate units, a user with no role at all, an unknown user. I didn't even have to host it: there's a managed service with a free tier, and for a prototype that's enough.
 
 There's also a discipline this separation imposes, and I think it's the right one. Roles stay domain facts in my own database, with their invariants and their events; the external service is a projection, updated by an event handler. Which forces you to decide the order of writes. If the relationship is a domain fact, database first and service second: if the second step fails, the fact exists and the permissions arrive late, and that's an annoyance. In the reverse order, if the database fails, you're left with granted permissions that no longer have any fact behind them — and that isn't an annoyance, it's a hole.
@@ -43,6 +45,8 @@ Then comes the moment you have to build the page that lists things. It isn't an 
 
 There are two routes, and I tried both. The first is to filter afterwards: you query the database with your normal filters and your normal pagination, take the identifiers of the page you got back, send them to the service in bulk asking which of these the user can see, and throw the rest away. It works, in the sense that the result is correct. Except that the total count you show at the bottom of the list is the one from before the filter, so it's a lie; and a page of twenty-five items reaches the user holding whatever survived. For someone with access to nearly everything the difference doesn't show. For a user with access to a small slice — which is the common case, not the exception — two or three of the twenty-five remain, and pagination simply stops working: you'd have to keep asking for pages until you managed to fill one.
 
+### Filtering first, and the list that arrives whole
+
 The second route is to filter first: you ask the service for the list of objects the user holds that permission on, and hand it to the database. Here the problem is that the list arrives whole. There's no real pagination to draw twenty-five from: it gives you all of them, and you have to feed them into a clause enumerating thousands of identifiers, then sort and paginate downstream. At small numbers it's a solution. At real numbers it's a query nobody wants in production.
 
 Against this objection there's an encouraging figure in circulation, a public case study reporting a page that went from ten seconds to four hundred milliseconds with this approach. I read it carefully because I wanted it to be true, and it doesn't say what it appears to say: the bulk filter accounts for a factor of two, eight seconds to four. The big jump comes from something else — moving the database into the same region as the service. That's a networking fix, not an answer to the problem.
@@ -54,6 +58,8 @@ At this point there's only one obvious move, and it's the one everybody makes: i
 The problem is how you fill that table. What you need are the *computed* permissions — "this user can see this object" — and the external service doesn't give you those. It has an API for following changes, but it returns relationships, that is, the facts you wrote into it: that you're a member of that team, that the team has access to that repository. That's data you already have. The interesting part is what the engine derives by walking the graph, and that part it keeps to itself: it computes it to answer one question, then discards it.
 
 To get it out you have to ask, and asking means one question per object. Thousands of questions per user, to be redone every time anything changes anywhere along the chain. It's the same wall as before, moved inside the synchronization process.
+
+### Where each service stops
 
 Permify has the better API on this front — a reverse lookup starting from the subject's relationships, with cursor pagination and a streaming variant — and for a moment it looks like the answer. But it returns the objects of one type at a time, and a complete index wants all of them: the organizations, then the repositories of those organizations, then what lives inside those repositories. The cardinality explodes the same way. The mechanism changes, the bottleneck doesn't.
 
@@ -114,6 +120,8 @@ The move cost less than expected, for a reason worth stating: the application ha
 
 And what convinces me most is how it grows. If tomorrow I need a permission that doesn't flow through the structure but is granted directly on a single entity, you add an assignment table, an `OR` clause in the check function and the same clause in the filtering one. One more level of granularity costs three changes, always the same three, and they're SQL. Linear growth, rather than an engine that gets a little more expressive every time.
 
+### Three open problems, and the last one is serious
+
 That said, I don't want to make it look like a clean solution, because it has three open problems and I consider the last one serious.
 
 The first is that I don't know how far it holds. The functions run, and on the prototype they're instant — but a prototype doesn't carry a real customer's data volume, and I haven't measured anything under load yet. At some point a filter recomputed on every query will stop being free, and I don't know where that point is. Finding it is the next thing to do: until I have, everything above is a decision made on reasonable grounds, not on measurements.
@@ -129,6 +137,8 @@ Then there's a third possibility, one I haven't taken all the way yet but that I
 Seen from the outside, the screen that lists *everything* a user can see doesn't exist, in any product. GitHub shows you an account's repositories, or an organization's; search works within a scope. There is no page promising the complete set of what you have access to, sorted by date. If that page doesn't exist, maybe it's because nobody ever wanted it enough to pay for it — and I was treating it as a requirement only because it's easy to state.
 
 Technically this changes one thing, but it changes all of it. If every query carries a mandatory scope — this organization, this owner, this period — the candidate set stops being "everything that exists" and becomes a number I can bound contractually. And if that number is small enough, downstream filtering becomes viable again: I don't filter a page, I filter the whole set and paginate *after*. The count is computed over the survivors, so it's true, and the pages are full. What didn't work in the earlier section wasn't filtering afterwards: it was filtering after having already paginated.
+
+### What the scope constraint costs
 
 The price is honest and worth stating. It's a product constraint dressed as a technical decision, and it holds only as long as I control the surface: a generic query API is something I couldn't afford. I lose exactly the questions that have no scope — global search, exporting everything a user can see, cross-cutting counters of the "you have forty-seven items expiring" sort. The bound on candidates has to be guaranteed rather than hoped for, because the customer with the twenty-thousand-object organization does eventually turn up, and you need a hard limit with defined behaviour for when it's crossed. And on every request I pay for a bulk check across the whole scope: latency, and on a metered service a line item too.
 
