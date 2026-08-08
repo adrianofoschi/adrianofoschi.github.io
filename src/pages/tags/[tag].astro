@@ -1,5 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
+import { Image } from 'astro:assets';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
@@ -47,7 +48,15 @@ const title = `${label} — ${SITE_TITLE}`;
 				{
 					posts.map((post) => (
 						<li>
+							{/* Same shape as the home list: the hero opens the entry. */}
 							<a href={`/blog/${post.id}/`} class="group block no-underline">
+								<Image
+									src={post.data.heroImage}
+									alt=""
+									widths={[720, 1440]}
+									sizes="(min-width: 760px) 720px, 100vw"
+									class="mb-4 aspect-[2/1] w-full rounded-md border border-border object-cover transition-colors group-hover:border-accent"
+								/>
 								<p class="mb-1 text-muted">
 									<FormattedDate date={post.data.pubDate} />
 								</p>
