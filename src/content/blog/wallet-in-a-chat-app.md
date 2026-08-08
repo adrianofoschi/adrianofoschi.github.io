@@ -31,6 +31,25 @@ That the signature has to happen outside the chat isn't an inconvenience to engi
 
 There's a case that makes it obvious: you can sign with Telegram itself, with the same identity you're using to talk to the bot. The authorization still leaves the chat, and the bot still stays outside it.
 
+```d2 title="A payment through the bot: the bot prepares the operation and hands back a single-use link, the signature happens on an approval page outside the chat using a passkey or a social login, and only the signed result returns to the bot"
+shape: sequence_diagram
+
+user: You
+bot: "the bot\n(a remote server)"
+approve: "approval page\n(your browser)"
+
+user -> bot: token, nickname, amount
+bot -> bot: prepare the operation
+bot -> user: "a link, good once"
+user -> approve: open it
+approve -> approve: passkey or social login
+approve -> bot: the signed result
+bot -> user: back to the chat
+```
+
+*The bot sees an intention going out and a signed result coming back. At no point in the
+sequence is there a step where it holds a key.*
+
 ## Chat turns out to be a good interface
 
 The rest was more fun than I expected. Bots are bad at dashboards and unusually good at asking one question at a time — which happens to be the right shape for sending money.

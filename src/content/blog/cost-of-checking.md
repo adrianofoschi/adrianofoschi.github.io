@@ -47,6 +47,24 @@ So the gate has two tiers, and an invariant is assigned to one by the consequenc
 
 **Tier two is an LLM reading the standards as its rubric**, and it covers everything that resists codification: architectural intent, whether a write really goes through a properly scoped use case, naming coherence, replay safety. A different model from the one that wrote the change.
 
+```d2 title="How an invariant is assigned to a tier: if a false negative would be catastrophic and irreversible it goes to the deterministic tier, and everything else goes to the tier where a model reads the standards as its rubric"
+direction: down
+
+invariant: an invariant to enforce
+q: "false negative catastrophic\nand irreversible?" {
+  shape: diamond
+}
+t1: "tier one — deterministic\nfitness functions, isolation tests,\nsecret and licence scanning\nnever an LLM alone"
+t2: "tier two — a model reading\nthe standards as its rubric\nintent, scoping, replay safety"
+
+invariant -> q
+q -> t1: yes
+q -> t2: no
+```
+
+*The cut is by consequence, not by subject. The first attempt sorted checks by what they
+looked at, which left the only question that decides where to spend unanswered.*
+
 The rule fits on one line:
 
 > Catastrophic and irreversible → deterministic. Everything else → the rubric.
