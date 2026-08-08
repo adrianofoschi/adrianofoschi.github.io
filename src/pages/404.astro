@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+// A dead link is usually a stale post URL, so the most useful thing to offer is the posts
+// themselves rather than a bare apology and a link home.
+const recent = (await getCollection('blog'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 5);
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={`Page not found — ${SITE_TITLE}`} description="That page doesn't exist." />
+		{/* Nothing here is worth indexing, and the URL that led here no longer resolves. */}
+		<meta name="robots" content="noindex, follow" />
+	</head>
+	<body>
+		<Header />
+		<main class="mx-auto w-full max-w-[720px] px-4 py-12">
+			<h1 class="mb-2 text-3xl font-bold leading-tight text-fg">Page not found</h1>
+			<p class="mb-10 text-muted">
+				Nothing lives at this address. It may have moved, or it may never have existed. The
+				most recent posts are below, and every topic is listed under <a
+					href="/tags"
+					class="text-accent hover:underline">topics</a
+				>.
+			</p>
+			<ul class="flex flex-col gap-10">
+				{
+					recent.map((post) => (
+						<li>
+							<a href={`/blog/${post.id}/`} class="group block no-underline">
+								<p class="mb-1 text-muted">
+									<FormattedDate date={post.data.pubDate} />
+								</p>
+								<h2 class="text-xl font-bold leading-tight text-fg transition-colors group-hover:text-accent">
+									{post.data.title}
+								</h2>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>
