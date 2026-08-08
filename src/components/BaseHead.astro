@@ -117,7 +117,13 @@ const structuredData = {
 />
 <meta name="generator" content={Astro.generator} />
 
-<Font cssVariable="--font-mono" preload />
+<!--
+	Only the sans is preloaded. `preload` emits a link per emitted face, so preloading
+	both families put sixteen font requests on the critical path — for the mono, which
+	only dresses the nav, the dateline and the tags, a brief swap costs less than that.
+-->
+<Font cssVariable="--font-sans" preload />
+<Font cssVariable="--font-mono" />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />

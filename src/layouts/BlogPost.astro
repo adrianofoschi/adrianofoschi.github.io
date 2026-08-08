@@ -62,8 +62,13 @@ const { title, description, pubDate, updatedDate, tags = [], type, id } = Astro.
 						}
 						<hr class="border-border" />
 					</div>
+					{/*
+					 * The measure is capped in `ch` rather than left to fill the column:
+					 * the sans fits far more characters per line than the monospace it
+					 * replaced, and the full 760px ran to nearly 90 characters a line.
+					 */}
 					<div
-						class="prose prose-lg max-w-none prose-p:text-fg prose-headings:text-fg prose-strong:text-fg prose-a:text-accent prose-blockquote:border-accent prose-blockquote:text-muted prose-code:text-accent prose-hr:border-border prose-img:rounded-md prose-img:border prose-img:border-border prose-figcaption:text-muted"
+						class="prose prose-lg mx-auto max-w-[68ch] prose-p:text-fg prose-headings:text-fg prose-strong:text-fg prose-a:text-accent prose-blockquote:border-accent prose-blockquote:text-muted prose-code:text-accent prose-hr:border-border prose-img:rounded-md prose-img:border prose-img:border-border prose-figcaption:text-muted"
 					>
 						<slot />
 					</div>

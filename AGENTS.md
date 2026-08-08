@@ -82,18 +82,27 @@ next post; update it after publishing one.
 - `src/pages/[...page].astro` — paginated home page (post list).
 - `src/pages/about.astro` — About page.
 - `src/components/`, `src/layouts/BlogPost.astro` — shared header/footer/link/layout.
-- `src/styles/global.css` — theme: white background, IBM Plex Mono (Google font provider,
-  configured in `astro.config.mjs`), dark cyan accent. **Light-only, no dark mode** (it was
-  dark-only until Aug 2026). Six semantic tokens drive everything and components use them by
-  name (`text-fg`, `text-muted`, `border-border`, `text-accent`), so never hardcode a colour
-  in a component. The accent is `#0e7490`, not the brighter `#22d3ee`, which fails contrast
-  against white.
+- `src/styles/global.css` — theme: white background, dark cyan accent. **Light-only, no dark
+  mode** (it was dark-only until Aug 2026). Six semantic tokens drive everything and components
+  use them by name (`text-fg`, `text-muted`, `border-border`, `text-accent`), so never hardcode
+  a colour in a component. The accent is `#0e7490`, not the brighter `#22d3ee`, which fails
+  contrast against white.
+- **Two typefaces, and the split carries meaning.** Prose is IBM Plex Sans; IBM Plex Mono is
+  reserved for what is machine output rather than writing — header/nav, dates, tags, footer,
+  inline code and code blocks, D2 diagrams. Same superfamily, so they never read as a pairing
+  of strangers. Both come from the Google font provider, configured in `astro.config.mjs` and
+  preloaded in `BaseHead.astro`; components pick the mono with Tailwind's `font-mono`, never a
+  hardcoded family. The site was monospace throughout until Aug 2026 — that change is why
+  `BlogPost.astro` caps the prose measure at `68ch`: the sans fits far more characters per line,
+  and the full column ran to nearly 90.
 - **Diagrams are D2, written inline in the post** as a ` ```d2 ` block and rendered to SVG at
   build time by `astro-d2`. No PNG diagrams — the source belongs in the post, where it can be
   edited. Mermaid was considered and rejected: it needs a browser to draw, so it costs either
   ~1MB of JavaScript shipped to the reader or Chromium in CI. D2 runs as WebAssembly
   (`experimental.useD2js`), which is why the deploy workflow needs no extra step — keep it
-  that way. Diagrams use IBM Plex Mono from the TTFs vendored in `fonts/` (OFL). Keep them
+  that way. Diagrams stay in the site's monospace voice, using the IBM Plex Mono TTFs vendored
+  in `fonts/` (OFL) — they are machine output, not prose, so they don't follow the body sans.
+  Keep them
   narrow: width comes from label length and participant count, and anything past ~1100px
   reads small in the text column. Sizing is two CSS rules in `global.css`; a previous attempt
   to wrap diagrams in a `<figure>` via a rehype plugin was rejected as over-engineering.

@@ -18,8 +18,8 @@ export default defineConfig({
 			// and there is no dark variant to switch to.
 			theme: { default: '0', dark: false },
 			pad: 20,
-			// The whole site is IBM Plex Mono; diagrams would otherwise be the only
-			// sans-serif on the page. Vendored under fonts/ (OFL).
+			// Diagrams belong to the site's monospace voice, alongside code and
+			// metadata — not to the sans used for prose. Vendored under fonts/ (OFL).
 			fonts: {
 				regular: 'fonts/IBMPlexMono-Regular.ttf',
 				bold: 'fonts/IBMPlexMono-Bold.ttf',
@@ -38,6 +38,17 @@ export default defineConfig({
 	},
 
 	fonts: [
+		// Prose is IBM Plex Sans and everything that reads as machine output —
+		// nav, dates, tags, code, diagrams — is IBM Plex Mono. Same superfamily,
+		// so the two never look like a pairing of strangers.
+		{
+			provider: fontProviders.google(),
+			name: 'IBM Plex Sans',
+			cssVariable: '--font-sans',
+			weights: [400, 600, 700],
+			styles: ['normal', 'italic'],
+			fallbacks: ['ui-sans-serif', 'system-ui', 'sans-serif'],
+		},
 		{
 			provider: fontProviders.google(),
 			name: 'IBM Plex Mono',
