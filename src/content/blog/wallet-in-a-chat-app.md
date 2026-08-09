@@ -4,7 +4,7 @@ description: "Putting a self-custody wallet in Telegram means putting it somewhe
 pubDate: 'Jul 22 2025'
 tags: ["blockchain", "wallets"]
 heroImage: "../../assets/blog/chat-wallet/hero.png"
-heroAlt: "A Telegram bot that holds nothing, handing out a single-use link to an approval page in the browser where the passkey or social login happens and the key never leaves"
+heroAlt: "The Sovry Telegram bot's chat screen, with the /start command and a menu of Signup, Accounts, Tokens, NFTs, Withdraw and Deposit buttons"
 ---
 
 The hardest part of a wallet has never been the wallet. It's that using one starts with installing something, and most people won't.
@@ -51,6 +51,12 @@ bot -> user: back to the chat
 
 *The bot sees an intention going out and a signed result coming back. At no point in the
 sequence is there a step where it holds a key.*
+
+<video controls preload="metadata" poster="/videos/blog/wallet-in-a-chat-app-poster.jpg" aria-label="The actual flow in Telegram: /start in the bot, an auth.sovrano.app page opening to register a nickname and a passkey, choosing a sign-in method, and the bot confirming the account was added" style="width:100%;max-width:320px;margin:0 auto;display:block;aspect-ratio:9/20;border:1px solid var(--color-border);border-radius:0.375rem">
+	<source src="/videos/blog/wallet-in-a-chat-app.mp4" type="video/mp4" />
+</video>
+
+_The same handoff, recorded: `/start`, the bot hands off to `auth.sovrano.app`, a passkey is registered, and the bot confirms the account without ever seeing it._
 
 ## Chat turns out to be a good interface
 
