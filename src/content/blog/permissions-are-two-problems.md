@@ -4,7 +4,7 @@ description: "Every authorization engine I've tried answers \"can this user see 
 pubDate: 'Aug 8 2026'
 tags: ["architecture"]
 heroImage: "../../assets/blog/permissions/hero.png"
-heroAlt: "Two questions side by side: \"can this user see this repository?\", with two things in hand and a yes-or-no answer, and \"which repositories can this user see?\", where the set of possible answers is everything that exists"
+heroAlt: "The logos of the three authorization services discussed in the post: OpenFGA, Permify and Permit.io"
 ---
 
 Open GitHub and the first thing in front of you is a list of repositories: the ones you can see. It looks like the most ordinary screen in the product, and it's actually the point where the permission system has to do the hardest thing you can ask of it.

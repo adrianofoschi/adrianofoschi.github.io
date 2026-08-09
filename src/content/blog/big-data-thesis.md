@@ -4,7 +4,7 @@ description: "For my computer science thesis I built the same data warehouse twi
 pubDate: 'Mar 12 2024'
 tags: ["early-projects"]
 heroImage: "../../assets/blog/uniba-thesis/hero.png"
-heroAlt: "The benchmark result: Hive at about 8 MB stored and 2 seconds to import but slower on two of the four queries, against MySQL at 13.5 MB and over 5 minutes to import but faster on those same two"
+heroAlt: "The Hadoop elephant and the Hive bee mascots, on Hadoop's honeycomb-patterned blue background"
 ---
 
 I started a computer science degree in 2009. By the time I got to my thesis in 2012, Big Data was becoming a real word, not just a buzzword yet, and I wanted my thesis to be about actually building one of these systems rather than just reading about them — a data warehouse that pulled together data from different web sources using the emerging [Hadoop](https://hadoop.apache.org/)/[Hive](https://hive.apache.org/) stack, instead of a traditional relational database.
