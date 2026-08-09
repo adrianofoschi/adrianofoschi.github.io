@@ -4,7 +4,7 @@ description: "Obrussa is an approach I'm trying right now: treating AI-assisted 
 pubDate: 'May 5 2026'
 tags: ["ai", "architecture"]
 heroImage: "../../assets/blog/cost-of-checking/hero.png"
-heroAlt: "Producing code, now dramatically cheap, against checking it, which costs exactly what it did before — the bottleneck moving from one to the other"
+heroAlt: "A balance scale: the light pan, raised, holds code generation with the Claude, ChatGPT and Gemini logos; the heavy pan, lowered, holds code checking"
 ---
 
 This is an approach I started building in 2026 and am still in the middle of. It has no results to report yet — no before-and-after numbers, no verdict. I'm writing it down because the reasoning behind it is the part I'd want to read from someone else, and because committing to it in public makes it harder for me to quietly move the goalposts later.
