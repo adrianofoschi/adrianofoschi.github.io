@@ -4,7 +4,7 @@ description: "A wallet where creating a blockchain account means touching a fing
 pubDate: 'Jun 17 2025'
 tags: ["blockchain", "wallets"]
 heroImage: "../../assets/blog/sovrano/hero.png"
-heroAlt: "Three ways into a self-custody account — a fingerprint or passkey, a social login with Google, Discord, X or Telegram, and a hardware key — none of which is a seed phrase"
+heroAlt: "The Sovrano sign-up screen: a Passkey button for passwordless signup with a fingerprint, FaceID or USB key, and a row of Google, Apple, Microsoft, X and Facebook buttons to continue with an account you already have"
 ---
 
 Self-custody is presented as freedom, and it is, but the fine print is that you become your own bank's entire security department. Write down twelve words. Store them somewhere a fire won't reach and a guest won't find. Never type them into anything. Lose them and your money is gone, with no one to appeal to.
@@ -28,7 +28,9 @@ _Sign-up. Note the last line: the seed phrase survives as a discouraged fallback
 
 A passkey, an account you already have, or — if you insist — twelve words. Inverting that default was the entire point. No extension to install, no tokens to acquire before you start, and nothing to write on paper.
 
-<iframe src="https://www.youtube-nocookie.com/embed/DHXAwzcrW5w" title="Sign up to Sovrano Wallet using your Twitter (X) account" loading="lazy" allowfullscreen style="width:100%;aspect-ratio:16/9;border:1px solid var(--color-border);border-radius:0.375rem"></iframe>
+<video controls preload="metadata" poster="/videos/blog/sovrano-signup-x-poster.jpg" aria-label="Signing up to Sovrano Wallet using an X (Twitter) account" style="width:100%;aspect-ratio:16/9;border:1px solid var(--color-border);border-radius:0.375rem">
+	<source src="/videos/blog/sovrano-signup-x.mp4" type="video/mp4" />
+</video>
 
 _Signing up with an account you already have: pick a nickname, authorize with X, done._
 
@@ -38,7 +40,9 @@ Passkeys were the straightforward half: [WebAuthn](https://www.w3.org/TR/webauth
 
 What I like most about that approach is what it opens up as a consequence. A passkey doesn't have to live in a phone: WebAuthn also talks to FIDO2 security keys — a YubiKey, a SoloKey, or any cheap USB key. Plug it in, enter the PIN, touch it to confirm, and you have the security of a hardware wallet without buying one: the keys never leave the device, physical presence is required to approve a transaction, and there's no seed phrase in existence to be stolen or intercepted.
 
-<iframe src="https://www.youtube-nocookie.com/embed/RtzJBV4XWTQ" title="Sign in to Sovrano Wallet using a hardware passkey" loading="lazy" allowfullscreen style="width:100%;aspect-ratio:16/9;border:1px solid var(--color-border);border-radius:0.375rem"></iframe>
+<video controls preload="metadata" poster="/videos/blog/sovrano-hardware-passkey-poster.jpg" aria-label="Signing in to Sovrano Wallet using a hardware passkey" style="width:100%;aspect-ratio:16/9;border:1px solid var(--color-border);border-radius:0.375rem">
+	<source src="/videos/blog/sovrano-hardware-passkey.mp4" type="video/mp4" />
+</video>
 
 _Signing in with a hardware passkey: the PIN, then a physical touch on the key._
 
@@ -48,9 +52,11 @@ Social login was the awkward half. [OpenID Connect](https://openid.net/developer
 
 So I wrote an identity broker: a small [Passport](https://www.passportjs.org/) service that speaks each provider's own dialect — OAuth for Google, whatever Discord and X and Telegram want — normalizes the result into a subject like `google|1234`, and mints an RS256-signed ID token of its own, published with a JWK so anything can verify it. Downstream, every provider looks identical: one token shape, one signature algorithm, one public key. The on-chain module doesn't need to know which one you used.
 
-<iframe src="https://www.youtube-nocookie.com/embed/R3yglDDOwio" title="Sign in to Sovrano Wallet using a Telegram account" loading="lazy" allowfullscreen style="width:100%;aspect-ratio:16/9;border:1px solid var(--color-border);border-radius:0.375rem"></iframe>
+<video controls preload="metadata" poster="/videos/blog/sovrano-social-login-poster.jpg" aria-label="Signing up with any of several identity providers, then approving an operation through the same screen regardless of which one was used" style="width:100%;aspect-ratio:16/9;border:1px solid var(--color-border);border-radius:0.375rem">
+	<source src="/videos/blog/sovrano-social-login.mp4" type="video/mp4" />
+</video>
 
-_Telegram is one of the providers that isn’t OpenID at all — the broker is what makes it verifiable on chain._
+_Google, Apple, Microsoft, X, Facebook: whichever one you picked, the broker is what makes the result verifiable on chain._
 
 ```d2 title="The identity broker: providers that are OpenID and providers that are not both arrive at one small service, which normalizes the subject and mints a single RS256 ID token, so the on-chain module only ever verifies one token shape against one public key"
 direction: down
@@ -101,6 +107,12 @@ So the wallet backend carries a resolver per operation type it understands. The 
 And then there's the default resolver, for operations nothing recognises. That fallback is the honest bit: a wallet cannot decode a contract it has never heard of, and the right response is to say so plainly rather than dress an unknown call up in reassuring language.
 
 The rest of the app follows from having nicknames: pay `@someone`, request money from `@someone`, a list of activity, somewhere to put idle funds. Ordinary shapes, which was the ambition.
+
+<video controls preload="metadata" poster="/videos/blog/sovrano-requested-operations-poster.jpg" aria-label="Authorizing X access from the native app, then paying a nickname: searching, picking the recipient, and the Requested operations screen that follows" style="width:100%;aspect-ratio:16/9;border:1px solid var(--color-border);border-radius:0.375rem">
+	<source src="/videos/blog/sovrano-requested-operations.mp4" type="video/mp4" />
+</video>
+
+_Paying `@adrianofoschi`: search the nickname, and the same "Requested operations" screen resolves it before you sign._
 
 ## What holds
 
