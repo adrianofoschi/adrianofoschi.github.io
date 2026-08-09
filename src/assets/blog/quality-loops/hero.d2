@@ -1,15 +1,19 @@
-# The difference the post identifies: whether the consequence comes back to you.
-direction: right
-vendor: "on someone else's system" {
+# "A project ends. A product continues" — quoted directly from the post. A bounded line
+# against an open one, rather than another pair of feedback loops.
+direction: down
+
+consulting: Consulting {
   direction: right
-  flag: "you flag\na risk"
-  filed: "it is filed.\nNot rejected — filed."
-  next: "the cost lands on\nwhoever comes after"
-  flag -> filed -> next
+  start1: ""  { shape: circle; width: 24 }
+  mid1: "agreed scope,\nagreed date"
+  end1: "a project ends" { shape: rectangle; style.fill: "#171717"; style.font-color: "#ffffff" }
+  start1 -> mid1 -> end1
 }
-own: "on your own product" {
+
+product: Product {
   direction: right
-  bad: "you write it\nbadly"
-  again: "you meet it again\nsix months later"
-  bad -> again
+  start2: "" { shape: circle; width: 24 }
+  mid2: "refactoring,\ndebt, migrations"
+  cont: "a product continues …" { shape: rectangle; style.stroke-dash: 4 }
+  start2 -> mid2 -> cont
 }
