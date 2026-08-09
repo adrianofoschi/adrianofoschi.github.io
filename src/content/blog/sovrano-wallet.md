@@ -4,7 +4,7 @@ description: "A wallet where creating a blockchain account means touching a fing
 pubDate: 'Jun 17 2025'
 tags: ["blockchain", "wallets"]
 heroImage: "../../assets/blog/sovrano/hero.png"
-heroAlt: "The Sovrano sign-up screen: a Passkey button for passwordless signup with a fingerprint, FaceID or USB key, and a row of Google, Apple, Microsoft, X and Facebook buttons to continue with an account you already have"
+heroAlt: "The Sovrano Wallet app's home screen: total balance, Pay and Require buttons, a spent daily limit bar at 99%, and Latest Activities below"
 ---
 
 Self-custody is presented as freedom, and it is, but the fine print is that you become your own bank's entire security department. Write down twelve words. Store them somewhere a fire won't reach and a guest won't find. Never type them into anything. Lose them and your money is gone, with no one to appeal to.
