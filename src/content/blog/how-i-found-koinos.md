@@ -4,7 +4,7 @@ description: "In 2020 I bought crypto like everyone else. By the time I found De
 pubDate: 'May 14 2023'
 tags: ["blockchain"]
 heroImage: "../../assets/blog/koinos-door/hero.png"
-heroAlt: "Solidity on the EVM, with gas to calculate and manage and a different way of thinking, set against AssemblyScript on Koinos, with mana that regenerates and REST APIs"
+heroAlt: "The Koinos logo and wordmark: a purple circle with a white wireframe cube, on black"
 ---
 
 In 2020 I got into cryptocurrencies, not blockchain in any technical sense yet. It was a world I'd always wanted to explore, but for years it had stayed in the background — something I heard about without ever really stepping in. I started the way most people do: buying small amounts on one of the big centralized exchanges, more out of curiosity than conviction. It was there, browsing through the assets on offer, that I kept running into a name that came up more and more often: DeFi.
