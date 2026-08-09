@@ -4,7 +4,7 @@ description: "In 2023 I found a blockchain whose developer experience looked lik
 pubDate: 'Oct 3 2023'
 tags: ["blockchain", "wallets"]
 heroImage: "../../assets/blog/konio-wallet/hero.png"
-heroAlt: "Every store saving and reloading through one common interface, with ordinary data going to the phone’s normal storage and keys and password to the operating system’s encrypted keystore"
+heroAlt: "The Konio banner: the wallet's mark beside the name over \"native Koinos wallet\", with three phone screens showing the dApps list, the main coin balance, and the NFT collection, next to App Store and Google Play badges"
 ---
 
 I was drawn to web3, and I was looking for a blockchain that would let me build with the mindset and tools of a web2 developer — smart contracts in AssemblyScript, close to TypeScript, REST APIs instead of the usual opaque RPC endpoints. [Koinos](https://koinos.io/) stood out for the rest of it too: no ICO, no pre-mine, a Proof-of-Burn consensus designed to combine proof-of-stake efficiency with proof-of-work economics, and on-chain governance that upgrades the protocol by vote instead of by hard fork. But what actually convinced me was that the developer experience looked like ordinary web development.
