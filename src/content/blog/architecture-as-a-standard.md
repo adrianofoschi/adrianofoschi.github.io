@@ -4,7 +4,7 @@ description: "Where AI-assisted coding actually fails isn't algorithms, it's arc
 pubDate: 'Mar 3 2026'
 tags: ["architecture", "ai"]
 heroImage: "../../assets/blog/architecture/hero.png"
-heroAlt: "A framework, which leaves every road plausible so the choice comes out random, set against an explicit standard, which leaves one road and fails the build when it is left"
+heroAlt: "The hexagonal architecture diagram: entities at the centre inside the domain, use cases and ports around it forming the application, and adapters at the outer edge connecting to the outside world on both sides"
 ---
 
 Since the AI era began, every one of us developers has watched our value as programmers depreciate: writing code was the skill the job rested on, and it has become the part a machine does in seconds. Ask for a feature and you instantly get hundreds of lines — the cost of writing is essentially gone. But that cost doesn't vanish, it moves to checking, and checking is more expensive than writing: reviewing code you didn't write is tiring, and reviewing mountains of it much more so. There's no escape in verifying step by step either, because you don't know up front where the model is heading — you're judging a move without knowing the game. That's where vibe-coding starts: not out of laziness, but because at some point genuinely verifying costs more than accepting and hoping.
