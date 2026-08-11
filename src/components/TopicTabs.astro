@@ -1,0 +1,46 @@
+---
+import { TAGS, TAG_NAMES, type TagName } from '../consts';
+
+interface Props {
+	/** Which tab is the page being rendered — the full archive, or one topic. */
+	active: 'all' | TagName;
+}
+
+const { active } = Astro.props;
+
+/*
+ * Tabs, but plain links: each one is a page that already exists, so switching topic is a
+ * navigation rather than client-side filtering. That keeps the site scriptless and keeps
+ * every topic a crawlable URL of its own. Tags are the site's only internal linking — posts
+ * never cross-reference each other — so putting the whole vocabulary here is what that
+ * linking is for.
+ */
+const tabs = [
+	{ key: 'all' as const, label: 'all', href: '/' },
+	...TAG_NAMES.map((tag) => ({ key: tag, label: TAGS[tag].label, href: `/tags/${tag}/` })),
+];
+---
+
+{/* Scrolls sideways rather than wrapping: eight topics do not fit one line on a phone. */}
+<nav aria-label="Topics" class="mb-8 overflow-x-auto border-b border-border">
+	<ul class="m-0 flex list-none flex-nowrap gap-6 p-0">
+		{
+			tabs.map((tab) => (
+				<li class="m-0 shrink-0 p-0">
+					<a
+						href={tab.href}
+						aria-current={tab.key === active ? 'page' : undefined}
+						class:list={[
+							'-mb-px inline-block border-b-2 pb-3 text-sm no-underline transition-colors',
+							tab.key === active
+								? 'border-accent text-fg'
+								: 'border-transparent text-muted hover:text-accent',
+						]}
+					>
+						{tab.label}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>

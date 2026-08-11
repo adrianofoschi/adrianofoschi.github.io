@@ -1,11 +1,13 @@
 ---
-import { AUTHOR, SITE_TITLE } from '../consts';
+import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 import SocialLinks from './SocialLinks.astro';
 ---
 
 <header class="border-b border-border bg-bg px-4">
-	<nav class="mx-auto flex max-w-[720px] items-center justify-between">
+	{/* Wide enough for the listing pages' two columns, so the brand lines up with the left
+	    edge of the post list rather than sitting inside it. */}
+	<nav class="mx-auto flex max-w-[1040px] items-center justify-between">
 		{/*
 		 * Not a heading: the brand is navigation, and wrapping it in one put an
 		 * out-of-order <h2> ahead of the <h1> on every post in the site.
@@ -13,14 +15,14 @@ import SocialLinks from './SocialLinks.astro';
 		<span class="text-base font-bold">
 			<a href="/" class="text-fg no-underline">{SITE_TITLE}</a>
 		</span>
+		{/*
+		 * One nav link. Every topic is a tab on the listing pages, which is where a reader
+		 * looking for one now goes; the CV sits with the other off-site profiles on the right.
+		 */}
 		<div class="flex items-center">
-			<HeaderLink href="/tags">topics</HeaderLink>
 			<HeaderLink href="/about">about</HeaderLink>
-			<HeaderLink href={AUTHOR.cv} target="_blank" rel="me noopener">
-				cv
-			</HeaderLink>
 		</div>
-		<div class="hidden items-center gap-3 sm:flex">
+		<div class="flex items-center gap-3">
 			<SocialLinks />
 		</div>
 	</nav>

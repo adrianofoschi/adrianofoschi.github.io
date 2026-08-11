@@ -2,7 +2,7 @@
 title: "A migration with no undo, and 2,000 users in three weeks"
 description: "In late 2023 I rewrote the data model of a crypto wallet that was already installed on real phones, redesigned its interface, and ran a giveaway that took it past 2,000 active users in three weeks."
 pubDate: 'Jan 9 2024'
-tags: ["blockchain", "wallets"]
+tags: ["blockchain"]
 heroImage: "../../assets/blog/konio-growth/hero-milestone.png"
 heroAlt: "The Konio 2.0.0 milestone release card: coin prices, NFT tracker, nickname support, transaction history and a dapps browser listed beside the coins and NFTs screens"
 ---

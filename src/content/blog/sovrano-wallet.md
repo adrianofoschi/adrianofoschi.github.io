@@ -2,7 +2,7 @@
 title: "Sovrano: a self-custody wallet you open with a fingerprint"
 description: "A wallet where creating a blockchain account means touching a fingerprint sensor or signing in with Google — no seed phrase, no extension, no tokens to buy first. Built on modular smart accounts, so the rules live in the account itself."
 pubDate: 'Jun 17 2025'
-tags: ["blockchain", "wallets"]
+tags: ["blockchain"]
 heroImage: "../../assets/blog/sovrano/hero.png"
 heroAlt: "The Sovrano Wallet app's home screen: total balance, Pay and Require buttons, a spent daily limit bar at 99%, and Latest Activities below"
 ---

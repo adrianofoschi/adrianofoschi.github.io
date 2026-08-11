@@ -2,7 +2,7 @@
 title: "The blockchain that felt like web2, and the mobile wallet it was missing"
 description: "In 2023 I found a blockchain whose developer experience looked like ordinary web work, and no native mobile wallet for it. So I wrote one — and the hard part turned out to have nothing to do with cryptography."
 pubDate: 'Oct 3 2023'
-tags: ["blockchain", "wallets"]
+tags: ["blockchain"]
 heroImage: "../../assets/blog/konio-wallet/hero.png"
 heroAlt: "The Konio banner: the wallet's mark beside the name over \"native Koinos wallet\", with three phone screens showing the dApps list, the main coin balance, and the NFT collection, next to App Store and Google Play badges"
 ---

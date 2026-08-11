@@ -56,12 +56,7 @@ export const TAGS = {
 	blockchain: {
 		label: 'blockchain',
 		description:
-			'Smart contracts, wallets and protocol work, all of it on the Koinos chain: what the platform made easy, and what it made hard.',
-	},
-	wallets: {
-		label: 'wallets',
-		description:
-			'Building wallets people actually hold money in — local state, migrations with no undo, seed phrases and the attempts to get rid of them.',
+			'Smart contracts, protocol work and the wallets people actually hold money in, all of it on the Koinos chain: what the platform made easy, and what it made hard.',
 	},
 	architecture: {
 		label: 'architecture',

@@ -1,11 +1,11 @@
 ---
 import Layout from '../layouts/BlogPost.astro';
+import { AUTHOR } from '../consts';
 ---
 
 <Layout
 	title="About Adriano Foschi"
-	description="Full-stack engineer with 20+ years of experience, now a CTO — and what this blog is a record of."
-	pubDate={new Date('July 30 2026')}
+	description="Full-stack engineer with 20+ years of experience, now a CTO: what I've worked on over the years, why I study architecture, and what I build with."
 	type="profile"
 >
 	<p>
@@ -17,8 +17,75 @@ import Layout from '../layouts/BlogPost.astro';
 		experiments, and the occasional lesson learned the hard way. What I happen to be focused
 		on professionally changes over time, and so will what shows up here.
 	</p>
+
+	<h2>What I've worked on</h2>
 	<p>
-		You can find my full CV on <a href="https://rxresu.me/adrianofoschi/cv">rxresu.me</a> and my
-		open source work on <a href="https://github.com/adrianofoschi">GitHub</a>.
+		I started as a teenager, self-taught, and the first serious thing I wrote was software a
+		school actually ran on. Then I began doing it for a living: freelance web projects taken
+		end to end, while administering the hosting infrastructure that paid for my studies — the
+		job that teaches you what happens to an application after you hand it over.
+	</p>
+	<p>
+		For many years I was a full-stack developer in consulting, for clients in sectors where
+		things are not improvised: banking, insurance, e-learning platforms. Today I'm CTO at <a
+			href="https://www.4hse.com/">4HSE</a
+		>: I write less code and spend far more time on architecture and technical choices —
+		multi-tenant systems, scalability, who is allowed to see what, authentication, AI agents —
+		and on coordinating the people building it.
+	</p>
+	<p>
+		Outside working hours I spent a couple of years building on the <a href="https://koinos.io/"
+			>Koinos</a
+		> blockchain, where I tested the ideas that had no place at work: a mobile wallet that won
+		first prize at the official hackathon, a modular framework for smart accounts, a wallet you
+		get into with a passkey instead of having to understand a seed phrase. I'm not working on it
+		any more, but the code is public. And I keep infrastructure of my own at home, for the
+		pleasure of not routing everything through someone else's cloud.
+	</p>
+
+	<h2>Why I study architecture and patterns</h2>
+	<p>
+		I study architecture and design patterns because I follow where coding is going with AI.
+		When producing code becomes much faster, writing is no longer what decides quality: what
+		decides it is the structure the code lands in, and how much of that structure a machine can
+		check.
+	</p>
+	<p>
+		Hence the thing I care about most: making standards explicit rather than implied. An
+		architecture described in a document is a suggestion; the same architecture checked by the
+		build is a rule, and only the second one survives a deadline, a new person on the team, or
+		an agent writing code. Beyond that, I learn new paradigms by building something real in
+		them rather than by reading about them — and when something didn't work, the useful version
+		of the story is the one that says so.
+	</p>
+
+	<h2>What I work with</h2>
+	<p>
+		Deepest in the application layer, on both sides of it: TypeScript and JavaScript, React,
+		React Native and Vue on the front end; Node.js, PHP, REST and GraphQL APIs, microservices
+		and CQRS on the back. Around that:
+	</p>
+	<ul>
+		<li>
+			<strong>Authentication and authorization</strong> — OpenID Connect, OAuth 2.0,
+			WebAuthn and passkeys, <a href="https://www.keycloak.org/">Keycloak</a>, <a href="https://openfga.dev/">OpenFGA</a>.
+		</li>
+		<li><strong>Data</strong> — MySQL and SQL in general, MongoDB, Redis.</li>
+		<li>
+			<strong>Blockchain</strong> — Koinos smart contracts in AssemblyScript, smart accounts,
+			wallets, dApps.
+		</li>
+		<li>
+			<strong>AI</strong> — coding agents, LLM integration, and <a href="https://modelcontextprotocol.io/">MCP</a> servers.
+		</li>
+		<li>
+			<strong>Infrastructure</strong> — Docker, and the AWS services around it: Lambda, S3,
+			CloudFront, EC2.
+		</li>
+	</ul>
+
+	<p>
+		If you want the long form, my full CV is on <a href={AUTHOR.cv}>rxresu.me</a> and my open
+		source work is on <a href={AUTHOR.github}>GitHub</a>.
 	</p>
 </Layout>

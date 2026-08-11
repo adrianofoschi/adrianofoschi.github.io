@@ -1,0 +1,36 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait-square.png';
+import { AUTHOR } from '../consts';
+
+/*
+ * The standing introduction on every listing page: beside the posts on a wide screen, above
+ * them on a narrow one. It says what the About page says, in two sentences — a reader, or an
+ * answer engine, landing on a list of posts should not have to click through to find out
+ * whose archive this is.
+ *
+ * No heading inside it. On the home page the only <h1> is the sr-only one that names the site
+ * and the post titles are <h2>; a heading here would put one out of order.
+ */
+---
+
+<div>
+	{/* The same portrait the opening post uses, cropped square — not a second photo. */}
+	<Image
+		src={portrait}
+		alt={`${AUTHOR.name}, photographed head-on in black and white`}
+		widths={[112, 224]}
+		sizes="112px"
+		class="size-20 rounded-full border border-border object-cover sm:size-28"
+	/>
+	<p class="mt-4 font-bold text-fg">{AUTHOR.name}</p>
+	<p class="mt-2 text-sm text-muted">
+		Full-stack engineer with 20+ years of experience, from early self-taught projects to
+		leading software architecture as a CTO today. This is a record of what I've built and what
+		I'm building now — side projects, experiments, and the occasional lesson learned the hard
+		way.
+	</p>
+	<p class="mt-4 text-sm">
+		<a href="/about" class="text-accent hover:underline">more about me &rarr;</a>
+	</p>
+</div>

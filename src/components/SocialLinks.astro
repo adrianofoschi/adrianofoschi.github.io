@@ -11,7 +11,9 @@ const { class: className = 'text-muted transition-colors hover:text-accent' } = 
 /*
  * These are the same URLs the Person entity claims in its `sameAs`. A structured-data claim
  * is only a claim; a visible, crawlable link is what corroborates it — so the two lists must
- * not drift apart. Both read from AUTHOR in consts.ts.
+ * not drift apart. Both read from AUTHOR in consts.ts, and this list now covers all four:
+ * the CV used to be a word in the nav, which left it claimed in `sameAs` and linked nowhere
+ * a crawler reads as a profile.
  */
 const links = [
 	{
@@ -32,6 +34,13 @@ const links = [
 		viewBox: '0 0 24 24',
 		path: 'M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932zM17.61 20.644h2.039L6.486 3.24H4.298z',
 	},
+	{
+		// Two letters rather than a glyph. The CV has no mark of its own — a document icon was
+		// tried and read as a generic file — and "CV" is a label, which is the monospace's job.
+		href: AUTHOR.cv,
+		label: `${AUTHOR.name}'s CV`,
+		text: 'CV',
+	},
 ];
 ---
 
@@ -39,9 +48,21 @@ const links = [
 	links.map((link) => (
 		<a href={link.href} target="_blank" rel="me noopener" class={className}>
 			<span class="sr-only">{link.label}</span>
-			<svg viewBox={link.viewBox} aria-hidden="true" width="24" height="24">
-				<path fill="currentColor" d={link.path} />
-			</svg>
+			{link.text ? (
+				// Sized by cap height rather than by font size: the glyphs beside this fill their
+				// 24px box, so the letters are set at 26px, where the capitals are as tall as a
+				// brand mark. They end up a little wider than an icon, which two letters must be.
+				<span
+					aria-hidden="true"
+					class="flex h-6 items-center justify-center font-mono text-[26px] font-bold leading-none tracking-tight"
+				>
+					{link.text}
+				</span>
+			) : (
+				<svg viewBox={link.viewBox} aria-hidden="true" width="24" height="24">
+					<path fill="currentColor" d={link.path} />
+				</svg>
+			)}
 		</a>
 	))
 }

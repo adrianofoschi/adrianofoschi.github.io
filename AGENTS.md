@@ -116,8 +116,20 @@ the standing SEO/GEO audit with the current score and what was deliberately not 
   page. Adding a tag means editing `TAGS`, and only when two posts genuinely share the topic.
   Tags are also the site's only internal linking, since rule 1 forbids posts referring to
   each other — that's what they're for, not decoration.
-- `src/pages/tags/[tag].astro`, `src/pages/tags/index.astro` — per-tag lists and the topics
-  index, both generated from the vocabulary.
+- `src/pages/tags/[tag].astro` — per-tag lists, generated from the vocabulary. There is no
+  topics index page: the tabs on every listing page are the list of topics, so a separate page
+  repeating them was removed. The nav is down to a single link (`about`); the CV is an icon
+  beside the social profiles.
+- **Every list of posts shares one shell**, `src/layouts/Listing.astro`: the home page and each
+  tag page. It holds the topic tabs (`TopicTabs.astro` — the whole vocabulary plus an "all" tab,
+  each one a plain link to a page that already exists, so switching topic is navigation and the
+  site stays scriptless), the post list (`PostList.astro`), and the profile card
+  (`Intro.astro` — portrait, name, two sentences saying what the About page says). Two columns
+  from `lg` up with the card on the right, one column below it with the card on top: the card
+  comes **first in the document** and is moved by `lg:order-last`, so a phone is introduced to
+  the archive before it is listed. A tag page looking like the home page is what makes the tabs
+  read as tabs, so the two must not drift apart. `Header.astro` shares the shell's `1040px`
+  measure so the brand lines up with the left edge of the list.
 - SEO/machine-readable surface, all handled centrally in `src/components/BaseHead.astro`:
   canonical, Open Graph (`article` on posts, `website` elsewhere), Twitter card, and JSON-LD
   (`BlogPosting` with author/dates/keywords on posts, `WebSite` elsewhere). The social image
@@ -154,7 +166,7 @@ the standing SEO/GEO audit with the current score and what was deliberately not 
   day backwards in any timezone east of UTC.
 - `src/assets/blog/<post-dir>/` — one folder per post, holding the real images used inline
   in that post. Posts with no surviving imagery have no folder at all.
-- `src/pages/[...page].astro` — paginated home page (post list).
+- `src/pages/[...page].astro` — paginated home page (post list), rendered in the listing shell.
 - `src/pages/about.astro` — About page.
 - `src/components/`, `src/layouts/BlogPost.astro` — shared header/footer/link/layout.
 - `src/styles/global.css` — theme: white background, dark cyan accent. **Light-only, no dark

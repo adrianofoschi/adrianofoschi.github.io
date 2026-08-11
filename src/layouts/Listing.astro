@@ -1,0 +1,65 @@
+---
+import type { ImageMetadata } from 'astro';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import Intro from '../components/Intro.astro';
+import TopicTabs from '../components/TopicTabs.astro';
+import type { TagName } from '../consts';
+
+/*
+ * The shell every list of posts shares — the home page and each topic page. Both are the same
+ * page furniture with a different set of posts, and the tabs only read as tabs if the frame
+ * around them does not change when one is clicked.
+ *
+ * Two columns from `lg` up, one below it. The profile card comes first in the document, which
+ * is the order a phone gets: it introduces the archive before listing it. On a wide screen
+ * `order-last` moves it to the right, where it stays put while the list scrolls.
+ */
+interface Props {
+	title: string;
+	description: string;
+	/** Which topic tab is current. */
+	active: 'all' | TagName;
+	/** Extra schema.org nodes for this particular listing. */
+	schemaExtras?: object[];
+	/** Social card override — the home page unfurls with the portrait. */
+	image?: ImageMetadata;
+}
+
+const { title, description, active, schemaExtras, image } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={title}
+			description={description}
+			schemaExtras={schemaExtras}
+			image={image}
+		/>
+	</head>
+	<body>
+		<Header />
+		{/* Same max width as the header's own nav, so the two align down the left edge. */}
+		<main class="mx-auto w-full max-w-[1040px] px-4 py-12">
+			<div class="flex flex-col gap-10 lg:flex-row lg:gap-10">
+				<aside
+					class="border-b border-border pb-10 lg:order-last lg:w-[280px] lg:shrink-0 lg:border-b-0 lg:border-l lg:pb-0 lg:pl-10"
+				>
+					{/* The border above stretches the full height of the row; the card itself
+					    follows the reader down instead. */}
+					<div class="lg:sticky lg:top-12">
+						<Intro />
+					</div>
+				</aside>
+				<div class="min-w-0 flex-1 lg:max-w-[680px]">
+					<TopicTabs active={active} />
+					<slot />
+				</div>
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>

@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+import TagList from './TagList.astro';
+import { heroPosterURL } from '../utils/hero';
+
+interface Props {
+	posts: CollectionEntry<'blog'>[];
+}
+
+const { posts } = Astro.props;
+
+// getImage() is async and can't be awaited inline in the list below, so video posters are
+// resolved once up front. Posts with a plain heroImage need nothing here — <Image> handles
+// them directly in the template.
+const posterURLs = new Map(
+	await Promise.all(
+		posts
+			.filter((post) => post.data.heroVideo)
+			.map(async (post) => [post.id, await heroPosterURL(post.data.heroPoster!)] as const),
+	),
+);
+
+/*
+ * One row per post: the writing on the left, the hero as a thumbnail on the right. The hero
+ * used to open each entry at the full width of the column, and moved beside the text when the
+ * list gained a sidebar.
+ *
+ * The date sits above the two columns rather than inside the left one, so the thumbnail lines
+ * up with the title instead of with the date — the title is what the eye pairs the picture
+ * with. Entries are separated by a rule as well as by space.
+ */
+const thumbClass =
+	'aspect-[2/1] w-full rounded-md border border-border object-cover transition-colors group-hover:border-accent';
+---
+
+<ul class="flex list-none flex-col p-0">
+	{
+		posts.map((post) => (
+			<li class="border-b border-border py-8 first:pt-0 last:border-0 last:pb-0">
+				<a href={`/blog/${post.id}/`} class="group block no-underline">
+					<p class="mb-1 text-sm text-muted">
+						<FormattedDate date={post.data.pubDate} />
+					</p>
+					<div class="flex gap-4 sm:gap-6">
+						{/* min-w-0 so a long title wraps instead of pushing the thumbnail out. */}
+						<div class="min-w-0 flex-1">
+							<h2 class="text-lg font-bold leading-tight text-fg transition-colors group-hover:text-accent sm:text-xl">
+								{post.data.title}
+							</h2>
+							<p class="mt-2 text-sm text-muted sm:text-base">{post.data.description}</p>
+						</div>
+						{/* 260px was tried and dropped: a diagram hero is unreadable at either
+						    size, so the thumbnail is sized to keep the row compact rather than
+						    to rescue it. */}
+						<div class="w-24 shrink-0 sm:w-[200px]">
+							{post.data.heroVideo ? (
+								// No autoplay, no controls: in a list this behaves exactly like a
+								// still image — the browser shows the poster and fetches nothing
+								// else — while still literally being the video, per Adriano.
+								<video
+									poster={posterURLs.get(post.id)}
+									muted
+									loop
+									playsinline
+									preload="none"
+									aria-label={post.data.heroAlt}
+									class={thumbClass}
+								/>
+							) : (
+								<Image
+									src={post.data.heroImage!}
+									alt=""
+									widths={[200, 400]}
+									sizes="(min-width: 640px) 200px, 96px"
+									class={thumbClass}
+								/>
+							)}
+						</div>
+					</div>
+				</a>
+				<div class="mt-3">
+					<TagList tags={post.data.tags} size="sm" />
+				</div>
+			</li>
+		))
+	}
+</ul>

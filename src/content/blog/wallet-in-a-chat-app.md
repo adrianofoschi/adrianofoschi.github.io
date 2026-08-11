@@ -2,7 +2,7 @@
 title: "A wallet inside a chat app that holds no keys"
 description: "Putting a self-custody wallet in Telegram means putting it somewhere that must never be allowed to sign anything. The way out was to stop treating the bot as a wallet and start treating it as a remote control."
 pubDate: 'Jul 22 2025'
-tags: ["blockchain", "wallets"]
+tags: ["blockchain"]
 heroImage: "../../assets/blog/chat-wallet/hero.png"
 heroAlt: "The Sovry Telegram bot's chat screen, with the /start command and a menu of Signup, Accounts, Tokens, NFTs, Withdraw and Deposit buttons"
 ---

@@ -15,7 +15,9 @@ import { heroPosterURL } from '../utils/hero';
 interface Props {
 	title: string;
 	description: string;
-	pubDate: Date;
+	/** Every post has one; the About page is a profile, and a date on it would only claim
+	 * that the page was written that day. */
+	pubDate?: Date;
 	updatedDate?: Date;
 	tags?: readonly TagName[];
 	/** The About page is a profile, not an article. */
@@ -101,16 +103,18 @@ const posterURL = heroVideo && heroPoster ? await heroPosterURL(heroPoster) : un
 				}
 				<div class="mx-auto w-full max-w-[760px] px-4 py-8">
 					<div class="mb-8 text-center">
-						<p class="mb-2 text-muted">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<span class="block italic">
-										Last updated on <FormattedDate date={updatedDate} />
-									</span>
-								)
-							}
-						</p>
+						{
+							pubDate && (
+								<p class="mb-2 text-muted">
+									<FormattedDate date={pubDate} />
+									{updatedDate && (
+										<span class="block italic">
+											Last updated on <FormattedDate date={updatedDate} />
+										</span>
+									)}
+								</p>
+							)
+						}
 						<h1 class="mb-4 text-4xl font-bold leading-tight text-fg">{title}</h1>
 						{
 							tags.length > 0 && (
