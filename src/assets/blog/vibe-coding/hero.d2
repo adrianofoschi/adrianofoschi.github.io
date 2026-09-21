@@ -1,0 +1,18 @@
+# The contrast the post draws, as two lanes side by side: a prompt typed into a browser,
+# against the work AI-assisted coding puts around the phase where the code appears.
+# Laid out wide on purpose — the hero frame is 2:1.
+direction: right
+
+vibe: "vibe coding" {
+  prompt: "a prompt"
+  browser: "a web browser" { style.fill: "#171717"; style.font-color: "#ffffff" }
+  prompt -> browser
+}
+
+assisted: "AI-assisted coding" {
+  req: "requirements\nanalysis"
+  spec: "specification\nwriting"
+  gen: "code generated\nby the AI" { style.fill: "#171717"; style.font-color: "#ffffff" }
+  vet: "vetting every\ngenerated line"
+  req -> spec -> gen -> vet
+}
