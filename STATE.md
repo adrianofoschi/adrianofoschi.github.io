@@ -88,9 +88,10 @@ post. For the editorial backlog (what's planned, sourcing notes per post), see
   crawlers, found through the `License:` directive in `public/robots.txt`. `LICENSE` in
   `src/consts.ts` is the source for the first three. The footer said "All rights reserved"
   until Aug 2026 — don't put that back, it contradicts what a crawler now reads.
-- **Umami is the only third-party request the site makes**, in `BaseHead.astro` and therefore
-  on every page. It needs `is:inline` or Astro tries to bundle a script that has to stay a
-  request to `cloud.umami.is`. Cookieless, which is why there's no consent banner.
+- **Simple Analytics is the only third-party request the site makes**, in `BaseHead.astro` and
+  therefore on every page (Umami until Sep 2026). It needs `is:inline` or Astro tries to bundle a
+  script that has to stay a request to `scripts.simpleanalyticscdn.com`, and it has no site id:
+  the account matches the site by hostname. Cookieless, which is why there's no consent banner.
 - **Diagrams are D2, inline in the post** as a ` ```d2 ` block, rendered to SVG at build time
   by `astro-d2` running as WebAssembly (`experimental.useD2js`) — so the deploy workflow needs
   no extra step. Mermaid was rejected: it needs a browser, costing either ~1MB of JS shipped to

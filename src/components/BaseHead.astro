@@ -194,12 +194,18 @@ const structuredData = {
 <script type="application/ld+json" set:html={JSON.stringify(structuredData)} is:inline />
 
 <!--
-	Umami, the only third-party request the site makes. `is:inline` keeps Astro from trying to
-	bundle it — it has to stay a request to their host to work at all. Cookieless, so there is
-	nothing here for a consent banner to ask about.
+	Simple Analytics, the only third-party request the site makes. `is:inline` keeps Astro from
+	trying to bundle it — it has to stay a request to their host to work at all. Cookieless, so
+	there is nothing here for a consent banner to ask about. The site is identified by the
+	hostname the script is served from, which is why there is no id to configure here — the
+	`sa-verify` meta is how that hostname is proved to belong to the account.
 -->
-<script
-	is:inline
-	defer
-	src="https://cloud.umami.is/script.js"
-	data-website-id="6ff44bb0-20f4-4e53-b4dc-ba6b3a5eadf9"></script>
+<meta name="sa-verify" content="3xjoadrianofosc3" />
+<script is:inline async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+<noscript
+	><img
+		src="https://queue.simpleanalyticscdn.com/noscript.gif"
+		alt=""
+		referrerpolicy="no-referrer-when-downgrade"
+	/></noscript
+>

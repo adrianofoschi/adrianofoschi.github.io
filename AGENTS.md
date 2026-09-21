@@ -156,11 +156,16 @@ the standing SEO/GEO audit with the current score and what was deliberately not 
   because being an `<h2>` put an out-of-order heading ahead of every post's `<h1>`. The home
   page's `<h1>` is `sr-only` — it's a bare list by design — and post titles in the list are
   `<h2>`.
-- **Umami is the only third-party request the site makes**, declared in `BaseHead.astro` and
-  therefore present on every page. It needs `is:inline`, or Astro tries to bundle a script that
-  has to stay a request to `cloud.umami.is` to work. It is cookieless, which is why there is no
-  consent banner; adding anything else that phones out is a decision worth taking deliberately,
-  on a site whose posts are partly about not routing through other people's clouds.
+- **Simple Analytics is the only third-party request the site makes**, declared in
+  `BaseHead.astro` and therefore present on every page (Umami was there until Sep 2026). It needs
+  `is:inline`, or Astro tries to bundle a script that has to stay a request to
+  `scripts.simpleanalyticscdn.com` to work, and it carries no site id — the account resolves the
+  site by the hostname it is served from, so the domain has to be registered in the dashboard or
+  the hits go nowhere — the `sa-verify` meta beside the script is what proves the domain belongs
+  to the account. The `<noscript>` pixel is the documented fallback. It is
+  cookieless, which is why there is no consent banner; adding anything else that phones out is a
+  decision worth taking deliberately, on a site whose posts are partly about not routing through
+  other people's clouds.
 - Machine-readable dates use `isoDate()` from `src/utils/date.ts`, never `toISOString()`:
   frontmatter dates are calendar days parsed as local midnight, so an instant shifts them a
   day backwards in any timezone east of UTC.
