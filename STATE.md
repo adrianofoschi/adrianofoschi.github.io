@@ -17,6 +17,10 @@ post. For the editorial backlog (what's planned, sourcing notes per post), see
   exists**, so a removed page stops being served. S3 has to be enabled when the storage
   zone is created and cannot be added later. It is in public preview — if it misbehaves,
   the fallback is a plain PUT per file against the native API.
+  The build also copies `404.html` into `dist/bunnycdn_errors/`, which is where Bunny
+  looks for a custom error page — inside `dist/` rather than uploaded once by hand, so it
+  stays in sync and `--delete` doesn't remove it. **Do not** enable Bunny's "rewrite 404 to
+  200": that is for single-page apps, and this site wants a real 404 status.
 - Domain: `nulltype.org`, DNS on Bunny, apex pointed at the Pull Zone via Bunny's CNAME
   flattening, TLS issued by Bunny. Renamed from `adrianofoschi.com` in Sep 2026, together
   with `SITE_TITLE` becoming `nulltype`; the author stays Adriano Foschi. Redirects from

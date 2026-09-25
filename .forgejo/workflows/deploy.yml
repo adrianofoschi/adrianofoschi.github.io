@@ -47,6 +47,16 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Bunny serve la pagina d'errore personalizzata da bunnycdn_errors/404.html
+      # nella storage zone. La si mette dentro dist/ invece di caricarla a mano
+      # una volta sola: cosi' entra nel sync, resta allineata a ogni build e non
+      # viene cancellata da --delete come accadrebbe a un file esterno all'albero.
+      - name: Prepare Bunny error page
+        run: |
+          set -euo pipefail
+          mkdir -p dist/bunnycdn_errors
+          cp dist/404.html dist/bunnycdn_errors/404.html
+
       - name: Install rclone
         run: |
           set -euo pipefail
