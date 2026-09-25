@@ -209,10 +209,11 @@ the standing SEO/GEO audit with the current score and what was deliberately not 
   reads small in the text column. Sizing is two CSS rules in `global.css`; a previous attempt
   to wrap diagrams in a `<figure>` via a rehype plugin was rejected as over-engineering.
   `public/d2/` is generated output and gitignored.
-- `.forgejo/workflows/deploy.yml` — on every push to `main`, builds and uploads `dist/`
-  to the Bunny Storage Zone, then purges the Pull Zone. Runs on the self-hosted Forgejo
-  runner (`runs-on: docker`, a `node:22-bookworm` container). Bunny credentials are
-  repository secrets, never in the repo.
+- `.forgejo/workflows/deploy.yml` — on every push to `main`, builds and `rclone sync`s
+  `dist/` to the Bunny Storage Zone over its S3 API, then purges the Pull Zone. `sync`
+  deletes files that no longer exist, which a plain upload would leave being served
+  forever. Runs on the self-hosted Forgejo runner (`runs-on: docker`, a `node:22-bookworm`
+  container). Bunny credentials are repository secrets, never in the repo.
 
 ## Development
 

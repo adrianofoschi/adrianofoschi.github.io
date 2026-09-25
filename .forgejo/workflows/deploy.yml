@@ -1,13 +1,20 @@
-# Costruisce il sito e lo carica sulla Storage Zone di Bunny, che fa da origine
-# alla Pull Zone servita su nulltype.org.
+# Costruisce il sito e lo sincronizza sulla Storage Zone di Bunny, che fa da
+# origine alla Pull Zone servita su nulltype.org.
 #
 # L'homelab non riceve mai traffico in ingresso: la CI gira in casa ma parla
 # solo in uscita verso Bunny, che serve i file agli utenti.
 #
+# Si usa l'API S3 della storage zone invece di quella nativa perche' permette
+# 'sync': carica solo i file cambiati e soprattutto CANCELLA quelli che non
+# esistono piu'. Con un upload puro una pagina rimossa resterebbe servita per
+# sempre. L'S3 di Bunny e' in public preview; se dovesse dare problemi si torna
+# all'API nativa, che e' un semplice PUT per file.
+#
 # Segreti richiesti sul repository (Settings -> Actions -> Secrets):
-#   BUNNY_STORAGE_ZONE      nome della storage zone
-#   BUNNY_STORAGE_PASSWORD  password da "FTP & Access" della storage zone
-#   BUNNY_STORAGE_ENDPOINT  host di storage della regione, es. storage.bunnycdn.com
+#   BUNNY_STORAGE_ZONE      nome della storage zone (e' anche l'access key S3)
+#   BUNNY_STORAGE_PASSWORD  password da "FTP & Access" (e' anche il secret S3)
+#   BUNNY_S3_ENDPOINT       es. https://de-s3.storage.bunnycdn.com per Frankfurt
+#   BUNNY_S3_REGION         es. de
 #   BUNNY_API_KEY           API key dell'account, serve solo per la purge
 #   BUNNY_PULLZONE_ID       id numerico della pull zone
 name: Deploy to Bunny
@@ -16,6 +23,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+
+env:
+  # Fissata di proposito: una versione che cambia da sola sotto i piedi e' il
+  # modo piu' rapido per avere una build che ieri funzionava e oggi no.
+  RCLONE_VERSION: v1.75.1
 
 jobs:
   deploy:
@@ -30,30 +42,39 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Upload to Bunny Storage
-        env:
-          ZONE: ${{ secrets.BUNNY_STORAGE_ZONE }}
-          PASSWORD: ${{ secrets.BUNNY_STORAGE_PASSWORD }}
-          ENDPOINT: ${{ secrets.BUNNY_STORAGE_ENDPOINT }}
+      - name: Install rclone
         run: |
           set -euo pipefail
-          cd dist
-          count=0
-          # I file si caricano uno alla volta: la Storage API non accetta archivi.
-          # curl -T fa lo streaming del file invece di leggerlo in memoria.
-          while IFS= read -r -d '' file; do
-            rel="${file#./}"
-            curl -sS --fail --retry 3 --retry-delay 2 \
-              -H "AccessKey: ${PASSWORD}" \
-              -T "$rel" \
-              "https://${ENDPOINT}/${ZONE}/${rel}"
-            count=$((count + 1))
-          done < <(find . -type f -print0)
-          echo "caricati ${count} file"
+          apt-get update -qq
+          apt-get install -y -qq unzip
+          curl -fsSL -o /tmp/rclone.zip \
+            "https://downloads.rclone.org/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-linux-amd64.zip"
+          unzip -qj /tmp/rclone.zip '*/rclone' -d /usr/local/bin
+          chmod +x /usr/local/bin/rclone
+          rclone version
 
-      # NOTA: i file rimossi dal sito restano sulla storage zone e continuano a
-      # essere serviti. Per gli asset con hash nel nome e' innocuo, per una
-      # pagina cancellata no. Va aggiunta una pulizia quando servira'.
+      - name: Sync to Bunny Storage
+        env:
+          # rclone si configura interamente da variabili d'ambiente: nessun file
+          # di config da scrivere, e i segreti non toccano il disco.
+          RCLONE_CONFIG_BUNNY_TYPE: s3
+          RCLONE_CONFIG_BUNNY_PROVIDER: Other
+          RCLONE_CONFIG_BUNNY_ACCESS_KEY_ID: ${{ secrets.BUNNY_STORAGE_ZONE }}
+          RCLONE_CONFIG_BUNNY_SECRET_ACCESS_KEY: ${{ secrets.BUNNY_STORAGE_PASSWORD }}
+          RCLONE_CONFIG_BUNNY_ENDPOINT: ${{ secrets.BUNNY_S3_ENDPOINT }}
+          RCLONE_CONFIG_BUNNY_REGION: ${{ secrets.BUNNY_S3_REGION }}
+          ZONE: ${{ secrets.BUNNY_STORAGE_ZONE }}
+        run: |
+          set -euo pipefail
+          # --checksum invece del confronto per data: la build rigenera i file
+          # a ogni esecuzione, quindi le date cambiano sempre e un confronto su
+          # quelle ricaricherebbe tutto ogni volta.
+          rclone sync dist "bunny:${ZONE}" \
+            --checksum \
+            --transfers 8 \
+            --s3-no-check-bucket \
+            --stats-one-line \
+            --verbose
 
       - name: Purge pull zone
         env:

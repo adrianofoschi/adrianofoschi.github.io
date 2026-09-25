@@ -11,9 +11,12 @@ post. For the editorial backlog (what's planned, sourcing notes per post), see
   secondary push mirror. The separate `adrianofoschi/adrianofoschi` repo on GitHub still
   holds only the profile README + CV JSON files.
 - Deploy: Forgejo Actions (`.forgejo/workflows/deploy.yml`) builds on a self-hosted
-  runner and uploads `dist/` to a Bunny Storage Zone, then purges the Pull Zone, on every
-  push to `main`. Known gap: files removed from the site are not deleted from the storage
-  zone, so a deleted page keeps being served until a cleanup step is added.
+  runner, then `rclone sync`s `dist/` to a Bunny Storage Zone over its S3-compatible API
+  and purges the Pull Zone, on every push to `main`. S3 rather than Bunny's native API
+  because only S3 gives `sync`: it uploads what changed and **deletes what no longer
+  exists**, so a removed page stops being served. S3 has to be enabled when the storage
+  zone is created and cannot be added later. It is in public preview — if it misbehaves,
+  the fallback is a plain PUT per file against the native API.
 - Domain: `nulltype.org`, DNS on Bunny, apex pointed at the Pull Zone via Bunny's CNAME
   flattening, TLS issued by Bunny. Renamed from `adrianofoschi.com` in Sep 2026, together
   with `SITE_TITLE` becoming `nulltype`; the author stays Adriano Foschi. Redirects from
