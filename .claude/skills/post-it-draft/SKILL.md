@@ -6,7 +6,7 @@ description: Drafts a new blog post, or revises an existing one, through an Ital
 
 # Post-it-draft: Italian-first blog post workflow
 
-This blog (`adrianofoschi.com`) publishes in English only, but the author reviews
+This blog (`nulltype.org`) publishes in English only, but the author reviews
 content more easily in Italian. This skill drafts entirely in Italian first, gets
 paragraph-by-paragraph sign-off, and only translates to English at the very end.
 

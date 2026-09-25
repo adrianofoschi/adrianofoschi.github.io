@@ -1,13 +1,17 @@
-# adrianofoschi.com
+# nulltype
 
-Personal blog for Adriano Foschi. Astro + Tailwind, deployed statically to GitHub Pages,
-served on the custom domain `adrianofoschi.com` via Cloudflare DNS (DNS-only CNAME to
-`adrianofoschi.github.io`, no proxy — required for GitHub's TLS cert to work).
+Personal blog written by Adriano Foschi. The site is named `nulltype`; the author is not —
+`SITE_TITLE` and `AUTHOR.name` are separate on purpose and must not be conflated.
 
-**Repo identity**: this repo is `adrianofoschi/adrianofoschi.github.io` (the GitHub user
-site — required name for GitHub Pages to serve at the domain root). It is a DIFFERENT
-repo from `adrianofoschi/adrianofoschi`, which is only the GitHub profile README + CV
-JSON files. Don't confuse the two.
+Astro + Tailwind, built statically and published to **Bunny**: CI uploads `dist/` to a
+Storage Zone, a Pull Zone serves it on `nulltype.org`, and TLS is Bunny's. DNS for the
+zone is on Bunny too. Nothing is served from the author's machines.
+
+**Repo identity**: this repo lives on the self-hosted Forgejo at `git.nulltype.org`, which
+is where CI runs, with GitHub kept as a secondary push mirror. Until Sep 2026 it was
+`adrianofoschi/adrianofoschi.github.io`, deployed to GitHub Pages on `adrianofoschi.com`.
+It remains a DIFFERENT repo from `adrianofoschi/adrianofoschi`, which is only the GitHub
+profile README + CV JSON files. Don't confuse the two.
 
 ## What this blog is (and isn't)
 
@@ -205,8 +209,10 @@ the standing SEO/GEO audit with the current score and what was deliberately not 
   reads small in the text column. Sizing is two CSS rules in `global.css`; a previous attempt
   to wrap diagrams in a `<figure>` via a rehype plugin was rejected as over-engineering.
   `public/d2/` is generated output and gitignored.
-- `.github/workflows/deploy.yml` — builds and deploys to GitHub Pages on every push to
-  `main`.
+- `.forgejo/workflows/deploy.yml` — on every push to `main`, builds and uploads `dist/`
+  to the Bunny Storage Zone, then purges the Pull Zone. Runs on the self-hosted Forgejo
+  runner (`runs-on: docker`, a `node:22-bookworm` container). Bunny credentials are
+  repository secrets, never in the repo.
 
 ## Development
 

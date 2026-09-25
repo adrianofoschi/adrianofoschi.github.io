@@ -7,13 +7,17 @@ post. For the editorial backlog (what's planned, sourcing notes per post), see
 ## Infrastructure — done
 
 - Astro 7 project, Tailwind v4 (`@tailwindcss/vite`), MDX + RSS + sitemap integrations.
-- Repo split: this repo (`adrianofoschi/adrianofoschi.github.io`) hosts the site; the
-  separate `adrianofoschi/adrianofoschi` repo holds only the GitHub profile README + CV
-  JSON files.
-- Deploy: GitHub Actions (`.github/workflows/deploy.yml`) builds and publishes to GitHub
-  Pages on every push to `main`.
-- Domain: `adrianofoschi.com`, DNS on Cloudflare (CNAME to `adrianofoschi.github.io`,
-  DNS-only / no proxy), GitHub-issued TLS cert, HTTPS enforced.
+- Repo: hosted on the self-hosted Forgejo at `git.nulltype.org`, with GitHub kept as a
+  secondary push mirror. The separate `adrianofoschi/adrianofoschi` repo on GitHub still
+  holds only the profile README + CV JSON files.
+- Deploy: Forgejo Actions (`.forgejo/workflows/deploy.yml`) builds on a self-hosted
+  runner and uploads `dist/` to a Bunny Storage Zone, then purges the Pull Zone, on every
+  push to `main`. Known gap: files removed from the site are not deleted from the storage
+  zone, so a deleted page keeps being served until a cleanup step is added.
+- Domain: `nulltype.org`, DNS on Bunny, apex pointed at the Pull Zone via Bunny's CNAME
+  flattening, TLS issued by Bunny. Renamed from `adrianofoschi.com` in Sep 2026, together
+  with `SITE_TITLE` becoming `nulltype`; the author stays Adriano Foschi. Redirects from
+  the old domain are still to be set up.
 - **Theme — light-only since Aug 2026.** It was dark-only (black background, cyan accent)
   from the first rewrite of the Astro starter until then. Now white background, `#171717`
   text, and a dark cyan `#0e7490` accent — the brighter `#22d3ee` failed contrast against

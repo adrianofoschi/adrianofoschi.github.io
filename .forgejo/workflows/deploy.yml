@@ -1,0 +1,67 @@
+# Costruisce il sito e lo carica sulla Storage Zone di Bunny, che fa da origine
+# alla Pull Zone servita su nulltype.org.
+#
+# L'homelab non riceve mai traffico in ingresso: la CI gira in casa ma parla
+# solo in uscita verso Bunny, che serve i file agli utenti.
+#
+# Segreti richiesti sul repository (Settings -> Actions -> Secrets):
+#   BUNNY_STORAGE_ZONE      nome della storage zone
+#   BUNNY_STORAGE_PASSWORD  password da "FTP & Access" della storage zone
+#   BUNNY_STORAGE_ENDPOINT  host di storage della regione, es. storage.bunnycdn.com
+#   BUNNY_API_KEY           API key dell'account, serve solo per la purge
+#   BUNNY_PULLZONE_ID       id numerico della pull zone
+name: Deploy to Bunny
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: docker
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload to Bunny Storage
+        env:
+          ZONE: ${{ secrets.BUNNY_STORAGE_ZONE }}
+          PASSWORD: ${{ secrets.BUNNY_STORAGE_PASSWORD }}
+          ENDPOINT: ${{ secrets.BUNNY_STORAGE_ENDPOINT }}
+        run: |
+          set -euo pipefail
+          cd dist
+          count=0
+          # I file si caricano uno alla volta: la Storage API non accetta archivi.
+          # curl -T fa lo streaming del file invece di leggerlo in memoria.
+          while IFS= read -r -d '' file; do
+            rel="${file#./}"
+            curl -sS --fail --retry 3 --retry-delay 2 \
+              -H "AccessKey: ${PASSWORD}" \
+              -T "$rel" \
+              "https://${ENDPOINT}/${ZONE}/${rel}"
+            count=$((count + 1))
+          done < <(find . -type f -print0)
+          echo "caricati ${count} file"
+
+      # NOTA: i file rimossi dal sito restano sulla storage zone e continuano a
+      # essere serviti. Per gli asset con hash nel nome e' innocuo, per una
+      # pagina cancellata no. Va aggiunta una pulizia quando servira'.
+
+      - name: Purge pull zone
+        env:
+          API_KEY: ${{ secrets.BUNNY_API_KEY }}
+          PULLZONE_ID: ${{ secrets.BUNNY_PULLZONE_ID }}
+        run: |
+          set -euo pipefail
+          curl -sS --fail -X POST \
+            -H "AccessKey: ${API_KEY}" \
+            "https://api.bunny.net/pullzone/${PULLZONE_ID}/purgeCache"
+          echo "cache invalidata"

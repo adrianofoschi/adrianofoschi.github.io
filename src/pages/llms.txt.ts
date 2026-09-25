@@ -8,7 +8,7 @@ import { isoDate } from '../utils/date';
  * collection so it can't drift out of date the way a hand-written file would.
  */
 export const GET: APIRoute = async ({ site }) => {
-	const base = site ?? new URL('https://adrianofoschi.com');
+	const base = site ?? new URL('https://nulltype.org');
 	const url = (path: string) => new URL(path, base).href;
 
 	const posts = (await getCollection('blog')).sort(
@@ -45,7 +45,7 @@ export const GET: APIRoute = async ({ site }) => {
 		'',
 		'## Terms',
 		'',
-		'Quoting with attribution to Adriano Foschi (adrianofoschi.com) is welcome.',
+		'Quoting with attribution to Adriano Foschi (nulltype.org) is welcome.',
 		'',
 	];
 

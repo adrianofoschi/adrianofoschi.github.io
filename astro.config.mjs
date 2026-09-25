@@ -27,7 +27,7 @@ const postLastmod = new Map(
 			const read = (field) => source.match(new RegExp(`^${field}:\\s*['"]?(.+?)['"]?\\s*$`, 'm'))?.[1];
 			const date = new Date(read('updatedDate') ?? read('pubDate'));
 			const day = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-			return [`https://adrianofoschi.com/blog/${file.replace(/\.mdx?$/, '')}/`, day];
+			return [`https://nulltype.org/blog/${file.replace(/\.mdx?$/, '')}/`, day];
 		}),
 );
 
@@ -36,7 +36,7 @@ const newestPost = [...postLastmod.values()].sort().at(-1);
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://adrianofoschi.com',
+	site: 'https://nulltype.org',
 	integrations: [
 		mdx(),
 		sitemap({
@@ -60,8 +60,8 @@ export default defineConfig({
 				italic: 'fonts/IBMPlexMono-Italic.ttf',
 				semibold: 'fonts/IBMPlexMono-SemiBold.ttf',
 			},
-			// WebAssembly generation, so the build needs no `d2` binary — and the
-			// GitHub Pages workflow stays as it is.
+			// WebAssembly generation, so the build needs no `d2` binary — which is
+			// what lets CI run in a plain `node` container with nothing installed.
 			experimental: { useD2js: true },
 		}),
 	],

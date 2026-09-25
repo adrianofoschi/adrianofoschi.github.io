@@ -1,4 +1,4 @@
-# adrianofoschi.com
+# nulltype
 
 Personal site and blog, built with [Astro](https://astro.build).
 
@@ -13,4 +13,7 @@ npm run dev
 
 ## Deployment
 
-Every push to `main` builds the site and deploys it to GitHub Pages via the workflow in `.github/workflows/deploy.yml`.
+Every push to `main` builds the site and publishes it to [Bunny](https://bunny.net) via the
+workflow in `.forgejo/workflows/deploy.yml`: the build output is uploaded to a Storage Zone
+and the Pull Zone serving `nulltype.org` is purged. CI runs on the self-hosted Forgejo
+runner, so the build machine only ever makes outbound connections.
